@@ -26,5 +26,3 @@ version:             2.0.0
 github:
   repo:              https://github.com/kavigupta/kavigupta.github.com
 
-gems:
-  - jekyll-sitemap
