@@ -23,7 +23,15 @@
 
   <!-- RSS -->
   <link rel="alternate" type="application/atom+xml" title="That depends on what the definition of "=" is" href="/atom.xml">
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+ <!-- mathjax javascript -->
+    	 <script type="text/x-mathjax-config">
+      	 MathJax.Hub.Config({
+      		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+      	 	});
+    		</script>
+    	 	<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    	</script>
+
 </head>
 
 
@@ -55,7 +63,7 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-09-11T20:10:54-07:00">2015</time>. All rights reserved.
+          &copy; <time datetime="2015-09-11T20:14:00-07:00">2015</time>. All rights reserved.
         </small>
       </footer>
     </div>
