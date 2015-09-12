@@ -8,22 +8,19 @@
           box-sizing: border-box;
 }
 
-html,
-body {
-  margin: 10;
-  padding: 10;
-}
-
 .header img {
   float: left;
   width: 200px;
   height: 200px;
+  vertical-align: middle
 }
 
 .header h1 {
+  float: center;
   position: relative;
   top: 18px;
   left: 10px;
+  line-height: 100px
 }
 
 html {
