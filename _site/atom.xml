@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2015-09-11T19:58:49-07:00</updated>
+ <updated>2015-09-11T20:07:59-07:00</updated>
  <id></id>
  <author>
    <name>Kavi Gupta</name>
@@ -17,9 +17,13 @@
    <link href="/2015/09/11/Ancient-Greek-Abstract-Algebra-Introduction/"/>
    <updated>2015-09-11T00:00:00-07:00</updated>
    <id>/2015/09/11/Ancient-Greek-Abstract-Algebra-Introduction</id>
-   <content type="html">&lt;p&gt;This is a test page&lt;/p&gt;
+   <content type="html">&lt;p&gt;This is a test page.&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;e^x = \sum_{k=0}^\infty \frac{1}{k!}&lt;/script&gt;
+&lt;p&gt;\[e^x = \sum_{k=0}^\infty \frac{1}{k!}\]&lt;/p&gt;
+
+&lt;p&gt;Here is an example MathJax inline rendering \( 1/x^{2} \), and here is a block rendering: 
+\[ \frac{1}{n^{2}} \]&lt;/p&gt;
+
 </content>
  </entry>
  
