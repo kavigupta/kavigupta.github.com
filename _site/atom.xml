@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>That depends on what the definition of "=" is</title>
+ <link href="/atom.xml" rel="self"/>
+ <link href="/"/>
+ <updated>2015-09-11T19:32:07-07:00</updated>
+ <id></id>
+ <author>
+   <name>Kavi Gupta</name>
+   <email></email>
+ </author>
+
+ 
+ <entry>
+   <title>Ancient Greek Abstract Algebra&#58; Introduction</title>
+   <link href="/2015/09/11/Ancient-Greek-Abstract-Algebra-Introduction/"/>
+   <updated>2015-09-11T00:00:00-07:00</updated>
+   <id>/2015/09/11/Ancient-Greek-Abstract-Algebra-Introduction</id>
+   <content type="html">&lt;p&gt;This is a test page&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;e^x = \sum_{k=0}^\infty \frac{1}{k!}&lt;/script&gt;
+</content>
+ </entry>
+ 
+
+</feed>
