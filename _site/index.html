@@ -40,6 +40,7 @@
       </header>
 
       <main>
+        $$\newcommand{\th}{^\mathrm{th}}$$
         <div class="posts">
   
   <article class="post">
@@ -51,13 +52,28 @@
 
     <time datetime="2015-09-11T00:00:00-07:00" class="post-date">11 Sep 2015</time>
 
-    <p>This is a test page.</p>
+    <h2 id="constructing-mathbbn">Constructing <script type="math/tex">\mathbb{N}</script></h2>
 
-<p>\[e^x = \sum_{k=0}^\infty \frac{1}{k!}\]</p>
+<p>Modern mathematicians seem to have trouble with accepting the natural numbers as first class features of mathematics. In fact, there are not one but two common definitions of the naturals that can be used to prove the Peano Axioms.</p>
 
-<p>Here is an example MathJax inline rendering \( 1/x^{2} \), and here is a block rendering: 
-<script type="math/tex">\frac{1}{n^{2}}</script></p>
+<h2 id="church-numerals">Church Numerals</h2>
 
+<p>\[0 = f \mapsto (t \mapsto t)\]</p>
+
+<p>\[S(n) = f \mapsto (f \circ n(f))\]</p>
+
+<p>In this way, the church numeral <script type="math/tex">n</script> is defined as the function that takes a function and returns the <script type="math/tex">n\th</script> repeated application of it.</p>
+
+<h2 id="set-theory-numerals">Set Theory Numerals</h2>
+
+<p>\[0 = \{\{\}\}\]
+\[S(n) = n \cup \{n\}\]</p>
+
+<p>The set theoretic numerals are therefore defined as the set of all the elements before them</p>
+
+<h2 id="ancient-greek-abstract-algebra">Ancient Greek Abstract Algebra</h2>
+
+<p>A modern mathematician would justify the definition of the natural numbers as a way to minimize axioms. However, they remind me of something else in particular, the ancient Greek preoccupation with geometric constructions of the real numbers. The purpose of this series is to examine this preoccupation though the lens of modern mathematics.</p>
 
   </article>
   
@@ -76,7 +92,7 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-09-11T21:05:42-07:00">2015</time>. All rights reserved.
+          &copy; <time datetime="2015-09-13T23:25:21-07:00">2015</time>. All rights reserved.
         </small>
       </footer>
     </div>

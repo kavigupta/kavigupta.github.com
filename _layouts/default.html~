@@ -10,13 +10,14 @@
         <h3 class="masthead-title">
           <div class="header">
             <img src="/icon.png" alt="icon" style="width:50px;height:50px;vertical-align: middle;">
-            <a href="{{ site.baseurl }}/" title="Home" style = "vertical-align: middle">{{ site.title }}</a>
+            <a href="{{ site.baseurl }}/" title="Home" style = "vertical-align: middle">&nbsp;{{ site.title }}</a>
           </div>
           <small>{{ site.tagline }}</small>
         </h3>
       </header>
 
       <main>
+        $$\newcommand{\th}{\ensuremath{^\mathrm{th}}}$$
         {{ content }}
       </main>
 

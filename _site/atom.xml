@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2015-09-11T21:05:42-07:00</updated>
+ <updated>2015-09-13T23:25:21-07:00</updated>
  <id></id>
  <author>
    <name>Kavi Gupta</name>
@@ -17,13 +17,28 @@
    <link href="/2015/09/11/Ancient-Greek-Abstract-Algebra-Introduction/"/>
    <updated>2015-09-11T00:00:00-07:00</updated>
    <id>/2015/09/11/Ancient-Greek-Abstract-Algebra-Introduction</id>
-   <content type="html">&lt;p&gt;This is a test page.&lt;/p&gt;
+   <content type="html">&lt;h2 id=&quot;constructing-mathbbn&quot;&gt;Constructing &lt;script type=&quot;math/tex&quot;&gt;\mathbb{N}&lt;/script&gt;&lt;/h2&gt;
 
-&lt;p&gt;\[e^x = \sum_{k=0}^\infty \frac{1}{k!}\]&lt;/p&gt;
+&lt;p&gt;Modern mathematicians seem to have trouble with accepting the natural numbers as first class features of mathematics. In fact, there are not one but two common definitions of the naturals that can be used to prove the Peano Axioms.&lt;/p&gt;
 
-&lt;p&gt;Here is an example MathJax inline rendering \( 1/x^{2} \), and here is a block rendering: 
-&lt;script type=&quot;math/tex&quot;&gt;\frac{1}{n^{2}}&lt;/script&gt;&lt;/p&gt;
+&lt;h2 id=&quot;church-numerals&quot;&gt;Church Numerals&lt;/h2&gt;
 
+&lt;p&gt;\[0 = f \mapsto (t \mapsto t)\]&lt;/p&gt;
+
+&lt;p&gt;\[S(n) = f \mapsto (f \circ n(f))\]&lt;/p&gt;
+
+&lt;p&gt;In this way, the church numeral &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is defined as the function that takes a function and returns the &lt;script type=&quot;math/tex&quot;&gt;n\th&lt;/script&gt; repeated application of it.&lt;/p&gt;
+
+&lt;h2 id=&quot;set-theory-numerals&quot;&gt;Set Theory Numerals&lt;/h2&gt;
+
+&lt;p&gt;\[0 = \{\{\}\}\]
+\[S(n) = n \cup \{n\}\]&lt;/p&gt;
+
+&lt;p&gt;The set theoretic numerals are therefore defined as the set of all the elements before them&lt;/p&gt;
+
+&lt;h2 id=&quot;ancient-greek-abstract-algebra&quot;&gt;Ancient Greek Abstract Algebra&lt;/h2&gt;
+
+&lt;p&gt;A modern mathematician would justify the definition of the natural numbers as a way to minimize axioms. However, they remind me of something else in particular, the ancient Greek preoccupation with geometric constructions of the real numbers. The purpose of this series is to examine this preoccupation though the lens of modern mathematics.&lt;/p&gt;
 </content>
  </entry>
  
