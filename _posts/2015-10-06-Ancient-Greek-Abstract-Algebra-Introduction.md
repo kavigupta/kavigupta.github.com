@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Ancient Greek Abstract Algebra&#58; Introduction
+comments: True
 ---
 
 ## Modern constructions of $$\mathbb{N}$$
