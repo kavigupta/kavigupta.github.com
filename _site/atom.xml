@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>That depends on what the definition of "=" is</title>
- <link href="/atom.xml" rel="self"/>
- <link href="/"/>
- <updated>2015-10-06T22:37:49-07:00</updated>
- <id></id>
+ <link href="https://kavigupta.github.io//atom.xml" rel="self"/>
+ <link href="https://kavigupta.github.io//"/>
+ <updated>2015-10-06T22:44:08-07:00</updated>
+ <id>https://kavigupta.github.io/</id>
  <author>
    <name>Kavi Gupta</name>
    <email></email>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>Ancient Greek Abstract Algebra&#58; Introduction</title>
-   <link href="/2015/10/06/Ancient-Greek-Abstract-Algebra-Introduction/"/>
+   <link href="https://kavigupta.github.io//2015/10/06/Ancient-Greek-Abstract-Algebra-Introduction/"/>
    <updated>2015-10-06T00:00:00-07:00</updated>
-   <id>/2015/10/06/Ancient-Greek-Abstract-Algebra-Introduction</id>
+   <id>https://kavigupta.github.io//2015/10/06/Ancient-Greek-Abstract-Algebra-Introduction</id>
    <content type="html">&lt;h2 id=&quot;modern-constructions-of-mathbbn&quot;&gt;Modern constructions of &lt;script type=&quot;math/tex&quot;&gt;\mathbb{N}&lt;/script&gt;&lt;/h2&gt;
 
 &lt;p&gt;The natural numbers are taught to children as a basic facet of mathematics. One of the first things we learn is how to count. In fact, the name “Natural Numbers” itself implies that the natural numbers are basic.&lt;/p&gt;
