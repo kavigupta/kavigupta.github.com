@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-10-06T22:45:12-07:00</updated>
+ <updated>2015-11-20T19:07:32-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
@@ -13,11 +13,121 @@
 
  
  <entry>
+   <title>Who Needs Delta? Defining the Hyper-Real Numbers</title>
+   <link href="https://kavigupta.github.io/2015/11/19/Who-Needs-Delta/"/>
+   <updated>2015-11-19T00:00:00-08:00</updated>
+   <id>https://kavigupta.github.io/2015/11/19/Who-Needs-Delta</id>
+   <content type="html">&lt;p&gt;\(\renewcommand{\ep}{\varepsilon}\)
+\(\renewcommand{\d}{\mathrm d}\)&lt;/p&gt;
+
+&lt;p&gt;In high school Calculus, solving differential equations often involves something like the following:&lt;/p&gt;
+
+&lt;p&gt;\[\frac{\d y}{\d x} = \frac{y}{x}\]&lt;/p&gt;
+
+&lt;p&gt;\[\frac{\d y}{y} = \frac{\d x}{x}\]&lt;/p&gt;
+
+&lt;p&gt;\[\int \frac{\d y}{y} = \int \frac{\d x}{x}\]&lt;/p&gt;
+
+&lt;p&gt;\[\int \log y = c + \log x\]&lt;/p&gt;
+
+&lt;p&gt;\[\int y = kx\]&lt;/p&gt;
+
+&lt;p&gt;Now, I don’t know about anyone else, but this abuse of notation really bothered me at first. Everyone knows that \(\d x\) isn’t an actual number by itself, but we seem to use it all the time as an independent variable.&lt;/p&gt;
+
+&lt;h2 id=&quot;fluxions-and-limits&quot;&gt;Fluxions and Limits&lt;/h2&gt;
+
+&lt;p&gt;Well, as it turns out, early mathematicians had the same problem with Newton’s original formulation of Calculus, in which he called these infinitesimal quantities &lt;a href=&quot;https://en.wikipedia.org/wiki/Method_of_Fluxions&quot;&gt;“fluxions”&lt;/a&gt;. His explanation was that they were quantities which “flowed” to 0 from before to after he took a derivative.&lt;/p&gt;
+
+&lt;p&gt;Obviously, in modern mathematics, this could not stand, and we got the following definition:&lt;/p&gt;
+
+&lt;p&gt;\[ \lim_{x \to a} f(x) = L \iff (\forall \ep &amp;gt; 0)(\exists \delta)(|x - d| &amp;lt; \delta \implies |f(x) - L| &amp;lt; \ep) \]
+\[f’(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \]&lt;/p&gt;
+
+&lt;p&gt;This system, known as \(\ep–\delta\), has been an important part of mathematics ever since it was defined.&lt;/p&gt;
+
+&lt;p&gt;I find this equation particularly elegant; it places the idea of limits and derivatives firmly in the language of set theory, and does so in a simple manner that, after some thought, is somewhat intuitive.&lt;/p&gt;
+
+&lt;h2 id=&quot;back-to-infinitesimals&quot;&gt;Back to Infinitesimals&lt;/h2&gt;
+
+&lt;p&gt;However, when we think about what the velocity of a particle in free fall, we generally don’t think in terms of finding some \(\delta\) for every \(\ep\). I generally tend to find it easier to think in terms of a small change in position over a small change in time.&lt;/p&gt;
+
+&lt;p&gt;In fact, there is a way to formalize this relationship, found in the field of &lt;a href=&quot;https://en.wikipedia.org/wiki/Non-standard_analysis&quot;&gt;non-standard analysis&lt;/a&gt;. To do so, we introduce an infinitesimal element, which is known as \(\ep\). This element has the property that&lt;/p&gt;
+
+&lt;p&gt;\[(\forall n \in \mathbb{N^+})(0 &amp;lt; \ep &amp;lt; \frac{1}{n})\]&lt;/p&gt;
+
+&lt;p&gt;We can therefore define addition and subtraction as simple vector addition and subtraction over \(\{1, \ep\}\) fairly simply, in a similar manner to complex addition and subtraction.&lt;/p&gt;
+
+&lt;h2 id=&quot;ep2&quot;&gt;\(\ep^2\)&lt;/h2&gt;
+&lt;p&gt;Multiplication is a little more complicated. We know that&lt;/p&gt;
+
+&lt;p&gt;\[(a + b\ep)(c + d\ep) = ac + (ad + bc)\ep + bd \ep^2\]&lt;/p&gt;
+
+&lt;p&gt;but what should \(\ep^2\) be? If we decide to keep the result within our new vector-like field, we end up with the equation \(\ep^2 = a\ep + b\), for real \(a, b\). I’ll spare you the &lt;a href=&quot;https://en.wikipedia.org/wiki/Hypercomplex_number#Two-dimensional_real_algebras&quot;&gt;derivation&lt;/a&gt;, but it turns out that there are only three different systems we can get out of this formula. Two are useless for our purposes, being the complex numbers and something called the split-complex numbers, in which there is some \(j^2 = 1, j \neq \pm 1\). The last, the Dual Numbers, is a system in which \(\ep^2 = 0\).&lt;/p&gt;
+
+&lt;h2 id=&quot;dual-numbers&quot;&gt;Dual Numbers&lt;/h2&gt;
+
+&lt;p&gt;Dual Numbers at first seem quite promising. The idea that \(\d x^2 = 0\) sounds pretty similar to the notion of higher order differentials vanishing to 0. However, there are a few problems. First of all, the second derivative \(\frac{\d^2 x}{\d x^2}\) contains second degree differentials on both the numerator and the denominator, which means that it would vanish to 0.&lt;/p&gt;
+
+&lt;p&gt;Secondly, and more disturbingly, \(\ep^{-1}\) is not defined in the dual numbers. This is because of the following. Define \(\omega = \ep ^ {-1}\). Then&lt;/p&gt;
+
+&lt;p&gt;\[\omega\ep = 1\]
+\[\omega^2\ep^2 = 1\]
+\[\omega^2 0 = 1\]&lt;/p&gt;
+
+&lt;p&gt;Which is an obvious contradiction. Therefore, the Dual Numbers are not a field and therefore not what we are looking for.&lt;/p&gt;
+
+&lt;h2 id=&quot;full-system-of-infinitesimals&quot;&gt;Full System of Infinitesimals&lt;/h2&gt;
+
+&lt;p&gt;Obviously, we need to define \(\ep^2\). So let’s just define it as \(\ep^2\). Same for \(\ep^3, \ep^4, \ep^5, \ldots\). We also, by fiat, define \(\ep^{-1} = \omega\). This of course introduces \(\omega^2, \omega^3, \omega^4,\ldots\).&lt;/p&gt;
+
+&lt;p&gt;This set is called the &lt;a href=&quot;https://en.wikipedia.org/wiki/Hyperreal_number&quot;&gt;Hyperreals&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, it might at first appear that we have infinitesimals corresponding to every integer. Some Haskell programmers out there might be thinking in terms of infinite lists (I know that was &lt;em&gt;my&lt;/em&gt; first thought at least). However, here’s a problem: what’s \(\sqrt{\ep}\)?&lt;/p&gt;
+
+&lt;h2 id=&quot;level-comparison&quot;&gt;Level comparison&lt;/h2&gt;
+
+&lt;p&gt;Before we can fully analyze what \(\sqrt{\ep}\) means, we should define some notion of comparability. For example, we might want to define some notion of something being infinitesimal compared to something else. We can define \(\ll\), read “infinitesimal compared to” as follows:&lt;/p&gt;
+
+&lt;p&gt;\[x \ll 1 \iff (\forall n \in \mathbb{N})(|x| &amp;lt; \frac{1}{n})\]
+\[x \ll y \iff y \neq 0 \wedge \frac{x}{y} \ll 1\]&lt;/p&gt;
+
+&lt;p&gt;Note that we decided to use the absolute value. Then, we can say \(0 \ll -1\). This is to allow for negative numbers to be compared in this way; the sign is simply ignored.&lt;/p&gt;
+
+&lt;p&gt;We can also define the comparators \(\gg\) and \(\bot\), read “infinite compared to” and “comparable to” as:&lt;/p&gt;
+
+&lt;p&gt;\[x \gg y \iff y \ll x\]
+\[x \bot y \iff \neg (x \ll y) \wedge \neg (x \gg y)\]&lt;/p&gt;
+
+&lt;p&gt;The following proofs are left as an exercise to the reader:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Exactly one of \(x \gg y\), \(x \ll y\), and \(x \bot y\) is true&lt;/li&gt;
+  &lt;li&gt;\(\ll\) is transitive.&lt;/li&gt;
+  &lt;li&gt;\(x \ll y \iff kx \ll ky\) for every \(k \neq 0\)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;all-powers-of-infinitesimals&quot;&gt;All powers of infinitesimals&lt;/h2&gt;
+
+&lt;p&gt;Now we can analyze what \(\sqrt{\ep}\) means. We know that since \(\ep \ll 1\), \(\sqrt{\ep} \ll 1\). We also know that since \(\frac{\ep}{\sqrt{\ep}} = \sqrt{\ep} \ll 1\), \(\ep \ll \sqrt{\ep}\). We now know that&lt;/p&gt;
+
+&lt;p&gt;\[\ep \ll \sqrt\ep \ll 1\]&lt;/p&gt;
+
+&lt;p&gt;This means that \(\sqrt\ep\) is on a separate level of infinitesimal than any of the integral powers of \(\ep\). Since similar proofs can be constructed for all rational powers, and therefore for all real powers (yes, we have to go back to \(\ep—\delta\) for this), the hyper-reals therefore have as many levels as there are real numbers.&lt;/p&gt;
+
+&lt;h2 id=&quot;derivatives&quot;&gt;Derivatives&lt;/h2&gt;
+
+&lt;p&gt;OK, so I know I promised you at the beginning of this section that this would all eventually lead to a more intuitive approach to derivatives. Unfortunately, however, this is far too long of a post already. I’ll cover derivatives in the next section.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Ancient Greek Abstract Algebra&#58; Introduction</title>
    <link href="https://kavigupta.github.io/2015/10/06/Ancient-Greek-Abstract-Algebra-Introduction/"/>
    <updated>2015-10-06T00:00:00-07:00</updated>
    <id>https://kavigupta.github.io/2015/10/06/Ancient-Greek-Abstract-Algebra-Introduction</id>
-   <content type="html">&lt;h2 id=&quot;modern-constructions-of-mathbbn&quot;&gt;Modern constructions of &lt;script type=&quot;math/tex&quot;&gt;\mathbb{N}&lt;/script&gt;&lt;/h2&gt;
+   <content type="html">&lt;p&gt;Note: I’ve put the Ancient Greek Abstract Algebra series on hold for now. Please take a look at some of my other post(s).&lt;/p&gt;
+
+&lt;h2 id=&quot;modern-constructions-of-mathbbn&quot;&gt;Modern constructions of &lt;script type=&quot;math/tex&quot;&gt;\mathbb{N}&lt;/script&gt;&lt;/h2&gt;
 
 &lt;p&gt;The natural numbers are taught to children as a basic facet of mathematics. One of the first things we learn is how to count. In fact, the name “Natural Numbers” itself implies that the natural numbers are basic.&lt;/p&gt;
 

@@ -4,6 +4,8 @@ title: Ancient Greek Abstract Algebra&#58; Introduction
 comments: True
 ---
 
+Note: I've put the Ancient Greek Abstract Algebra series on hold for now. Please take a look at some of my other post(s).
+
 ## Modern constructions of $$\mathbb{N}$$
 
 The natural numbers are taught to children as a basic facet of mathematics. One of the first things we learn is how to count. In fact, the name "Natural Numbers" itself implies that the natural numbers are basic.
