@@ -27,7 +27,7 @@ Well, as it turns out, early mathematicians had the same problem with Newton's o
 
 Obviously, in modern mathematics, this could not stand, and we got the following definition:
 
-\\[ \lim_{x \to a} f(x) = L \iff (\forall \ep > 0)(\exists \delta)(\|x - d\| < \delta \implies \|f(x) - L\| < \ep) \\]
+\\[\lim_{x \to a} f(x) = L \iff (\forall \ep > 0)(\exists \delta)(\|x - d\| < \delta \implies \|f(x) - L\| < \ep) \\]
 \\[f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \\]
 
 This system, known as \\(\ep--\delta\\), has been an important part of mathematics ever since it was defined.
