@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-11-23T00:04:57-08:00</updated>
+ <updated>2015-11-23T00:06:31-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
@@ -40,8 +40,9 @@
 
 &lt;p&gt;Obviously, in modern mathematics, this could not stand, and we got the following definition:&lt;/p&gt;
 
-&lt;p&gt;\[\lim_{x \to a} f(x) = L \iff (\forall \ep &amp;gt; 0)(\exists \delta)(|x - d| &amp;lt; \delta \implies |f(x) - L| &amp;lt; \ep) \]
-\[f’(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \]&lt;/p&gt;
+&lt;p&gt;\[\lim_{x \to a} f(x) = L \iff (\forall \ep &amp;gt; 0)(\exists \delta)(|x - d| &amp;lt; \delta \implies |f(x) - L| &amp;lt; \ep) \]&lt;/p&gt;
+
+&lt;p&gt;\[f’(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \]&lt;/p&gt;
 
 &lt;p&gt;This system, known as \(\ep–\delta\), has been an important part of mathematics ever since it was defined.&lt;/p&gt;
 
