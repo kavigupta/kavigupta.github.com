@@ -10,6 +10,9 @@ paginate:            1
 baseurl:             ""
 markdown:            kramdown
 
+kramdown:
+    input: GFM
+
 # Assets
 #
 # We specify the directory for Jekyll so we can use @imports.

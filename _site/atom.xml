@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-11-23T00:06:31-08:00</updated>
+ <updated>2015-11-24T00:32:04-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
@@ -13,11 +13,362 @@
 
  
  <entry>
+   <title>Recursivized Types</title>
+   <link href="https://kavigupta.github.io/2015/11/23/Recursivized-Types/"/>
+   <updated>2015-11-23T00:00:00-08:00</updated>
+   <id>https://kavigupta.github.io/2015/11/23/Recursivized-Types</id>
+   <content type="html">&lt;p&gt;So, a short break from \(\varepsilon—\delta\).&lt;/p&gt;
+
+&lt;p&gt;Anyway, I’m going to look at Algebraic types in this section. Specifically, I am going to use Haskell types.&lt;/p&gt;
+
+&lt;p&gt;The provided code is all actual Haskell, in fact, I’m going to have to de-import the standard libraries because some of this is actually defined there. You can find all the code &lt;a href=&quot;/src/2015-11-23-Recursive-Types.hs&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;!--
+```haskell
+{-# LANGUAGE FlexibleContexts, UndecidableInstances #-}
+
+import Prelude(Show, show, (++))
+```
+--&gt;
+
+&lt;h2 id=&quot;algebraic-types&quot;&gt;Algebraic types&lt;/h2&gt;
+
+&lt;p&gt;I’ll start with a quick go-over of Haskell types. If you already know Haskell, feel free to skip this section.&lt;/p&gt;
+
+&lt;h3 id=&quot;enumeration-types&quot;&gt;Enumeration types&lt;/h3&gt;
+
+&lt;p&gt;Some types are enumerations of potential values.&lt;/p&gt;
+
+&lt;p&gt;A quick example is the trivial singleton type:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Singleton = Single
+    deriving Show
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is to be read as “there exists a type Singleton, which contains one element named Single.” The “deriving show” part is Haskell book keeping for those following along on their interpreters to be able to see things&lt;/p&gt;
+
+&lt;p&gt;Another example is&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Void
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is to be read as “there exists a type Void with no possible elements”&lt;/p&gt;
+
+&lt;p&gt;Yet another type is&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Bool = False | True
+    deriving Show
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is to be read as “there exists a type Bool with the possible elements True and False.”&lt;/p&gt;
+
+&lt;h3 id=&quot;structure-types&quot;&gt;Structure types&lt;/h3&gt;
+
+&lt;p&gt;Types can be used as as structures, as such:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Wrapper a = Wrap a
+    deriving Show
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is to be read as “for every type &lt;code&gt;a&lt;/code&gt; there exists a type &lt;code&gt;(Wrapper a)&lt;/code&gt; with a single type constructor &lt;code&gt;Wrap&lt;/code&gt; that takes an &lt;code&gt;a&lt;/code&gt;”&lt;/p&gt;
+
+&lt;p&gt;A more complicated structure is&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Pair a b = ConsPair a b
+    deriving Show
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Which is similar to the previous one except that it contains two possible elements which can be of two different types.&lt;/p&gt;
+
+&lt;h3 id=&quot;aside-kinds&quot;&gt;Aside: Kinds&lt;/h3&gt;
+
+&lt;p&gt;Algebraic types have kinds.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code&gt;Singleton&lt;/code&gt;, &lt;code&gt;Void&lt;/code&gt;, and &lt;code&gt;Bool&lt;/code&gt; are concrete types in their own right.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;Wrapper&lt;/code&gt; needs a type before it can become a type (nothing can be a &lt;code&gt;Wrapper&lt;/code&gt; by itself).&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;Pair&lt;/code&gt; needs two types before it can become a type (nothing can be a &lt;code&gt;Pair&lt;/code&gt; or &lt;code&gt;Pair Bool&lt;/code&gt; by itself).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We refer to the latter two cases as “higher-kinded types.”&lt;/p&gt;
+
+&lt;p&gt;We say that &lt;code&gt;Singleton&lt;/code&gt;, &lt;code&gt;Void&lt;/code&gt;, etc. have kind &lt;code&gt;*&lt;/code&gt;. Types that need one type added on the end to be complete, such as &lt;code&gt;Wrapper&lt;/code&gt; or &lt;code&gt;Pair Bool&lt;/code&gt; have kind &lt;code&gt;* -&amp;gt; *&lt;/code&gt;. Types such as &lt;code&gt;Pair&lt;/code&gt;, which needs two types to be complete, have kind &lt;code&gt;* -&amp;gt; * -&amp;gt; *&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Note also that types such as&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data TwoOfSame a = ConsTwoOfSame a a
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;have kind &lt;code&gt;* -&amp;gt; *&lt;/code&gt; rather than &lt;code&gt;* -&amp;gt; * -&amp;gt; *&lt;/code&gt; because they only take one type argument. &lt;code&gt;TwoOfSame Bool Singleton&lt;/code&gt; wouldn’t make any sense.&lt;/p&gt;
+
+&lt;h3 id=&quot;mixing-structures-and-enumerations&quot;&gt;Mixing Structures and Enumerations&lt;/h3&gt;
+
+&lt;p&gt;Algebraic types are a generalization of both systems, in which you can have multiple constructors, each of which can contain zero or multiple arguments.&lt;/p&gt;
+
+&lt;p&gt;A canonical example combines both forms to create something resembling the concept of &lt;code&gt;null&lt;/code&gt; from Java or &lt;code&gt;None&lt;/code&gt; from Python.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Maybe a = Nothing | Just a
+    deriving Show
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, there is a combination of the enumeration and structure style. Interestingly, while, for example, &lt;code&gt;Just True :: Maybe Bool&lt;/code&gt; (&lt;code&gt;::&lt;/code&gt; is to be read as “is of type”), &lt;code&gt;Nothing :: Maybe a&lt;/code&gt;, which means that it can take on any &lt;code&gt;Just&lt;/code&gt; type (this is key to what we will do later).&lt;/p&gt;
+
+&lt;h2 id=&quot;recursive-algebraic-types&quot;&gt;Recursive Algebraic types&lt;/h2&gt;
+
+&lt;p&gt;Recursive types are similar to the examples shown, except that they can also contain themselves. For example, the not particularly efficient definition of the natural numbers (&lt;a href=&quot;https://en.wikipedia.org/wiki/Peano_axioms&quot;&gt;a natural number is either zero or the successor of another natural number&lt;/a&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Nat = Zero | Succ Nat
+    deriving Show
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Another algebraic type is a stream, which is defined as follows, which is basically an infinite list.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Stream a = ConsStream a (Stream a)
+    deriving Show
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This only works because you can define values as follows, where in each case the same variable name refers to the same value:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;trues = ConsStream True trues
+falses = ConsStream False falses
+alternating = ConsStream True (ConsStream False alternating)
+
+elementAt (ConsStream value rest) Zero = value
+elementAt (ConsStream value rest) (Succ x) = elementAt rest x
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So if you ask for the (fifth element of trues), that reduces to the (fourth element of (the rest of trues)) which reduces to (the fourth element of trues), etc., until you get to the value &lt;code&gt;True&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;A potentially terminating list can be represented as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data List a = Nil | Cons a (List a)
+    deriving Show
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here the list can possibly terminate because you can stop with &lt;code&gt;Nil&lt;/code&gt;. For example, you can represent &lt;code&gt;[True, False, False]&lt;/code&gt; as&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;exampleList = Cons True (Cons False (Cons False Nil))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You could also use stream-like circular definition for a list too, so streams are just a subset of lists.&lt;/p&gt;
+
+&lt;h2 id=&quot;higher-kinded-type-parameters&quot;&gt;Higher-kinded type parameters&lt;/h2&gt;
+
+&lt;p&gt;OK, one final bit of craziness before we get to our actual example. Let’s say we want to create a type representing the shape of another type.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Shape f = Structure (f Singleton)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we, for example, look at &lt;code&gt;Shape List&lt;/code&gt;, we get the values &lt;code&gt;Structure Nil&lt;/code&gt;, &lt;code&gt;Structure (Cons Single Nil)&lt;/code&gt;, &lt;code&gt;Structure (Cons Single (Cons Single Nil))&lt;/code&gt;, etc. Basically, we get a picture of what the type looks like independent of its elements.&lt;/p&gt;
+
+&lt;p&gt;Notice that on the right side of that equation we have &lt;code&gt;(f Singleton)&lt;/code&gt; as a concrete value, meaning that &lt;code&gt;f&lt;/code&gt; is of kind &lt;code&gt;* -&amp;gt; *&lt;/code&gt;. Therefore, &lt;code&gt;Shape&lt;/code&gt; is of kind &lt;code&gt;(* -&amp;gt; *) -&amp;gt; *&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Another example of a &lt;code&gt;(* -&amp;gt; *) -&amp;gt; *&lt;/code&gt; is the &lt;code&gt;NullOf&lt;/code&gt; type, which filters a type for only its nullary constructors, those which do not take a value.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data NullOf f = Null (f Void)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For example, the only possible value of &lt;code&gt;NullOf List&lt;/code&gt; is &lt;code&gt;Null Nil&lt;/code&gt; and the only possible value of &lt;code&gt;NullOf Just&lt;/code&gt; is &lt;code&gt;Null Nothing&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-general-encoding-of-recursive-types&quot;&gt;A general encoding of Recursive Types&lt;/h2&gt;
+
+&lt;p&gt;You might notice a correspondence between the types &lt;code&gt;Maybe&lt;/code&gt; and &lt;code&gt;Nat&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskellcomment&quot;&gt;    data Maybe a = Nothing | Just a
+    data Nat = Zero | Succ Nat
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Basically, &lt;code&gt;Nat&lt;/code&gt; is just &lt;code&gt;Maybe Nat&lt;/code&gt;. We can encode the conversion from &lt;code&gt;Maybe&lt;/code&gt; to &lt;code&gt;Nat&lt;/code&gt; as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Recursive f = Recurse (f (Recursive f))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--
+```haskell
+instance (Show (f (Recursive f))) =&gt; Show (Recursive f) where
+    show (Recurse x) = &quot;Recurse (&quot; ++ show x ++ &quot;)&quot;
+```
+--&gt;
+
+&lt;p&gt;This definition means that for all types &lt;code&gt;f&lt;/code&gt; of kind &lt;code&gt;* -&amp;gt; *&lt;/code&gt;, there exists a type called &lt;code&gt;Recursive f&lt;/code&gt; (let’s call this &lt;code&gt;rf&lt;/code&gt; for now) which contains a single element whose type is &lt;code&gt;f rf&lt;/code&gt;. In other words, &lt;code&gt;Recursive&lt;/code&gt; takes a type and returns a recursive version of that type.&lt;/p&gt;
+
+&lt;p&gt;Constructing a value of &lt;code&gt;Recursive *&lt;/code&gt; at first seems difficult. For example, let us look at &lt;code&gt;Recursive Maybe&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To construct a type of &lt;code&gt;Recursive Maybe&lt;/code&gt; we need to have an element of type &lt;code&gt;Maybe (Recursive Maybe)&lt;/code&gt;. The only element of this we have is &lt;code&gt;Nothing :: Maybe a&lt;/code&gt;. We can therefore construct the value &lt;code&gt;Recurse Nothing :: Recursive Maybe&lt;/code&gt;. Using this value we can construct the value &lt;code&gt;Just (Recurse Nothing) :: Maybe (Recursive Maybe)&lt;/code&gt; and therefore the value &lt;code&gt;Recurse (Just (Recurse Nothing)) :: Recursive Maybe&lt;/code&gt;. We can continue to build values in this manner:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;zero' = Recurse Nothing
+one' = Recurse (Just zero')
+two' = Recurse (Just one')
+three' = Recurse (Just two')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Notice that I used the names for numbers for these. This is to demonstrate their correspondence with the natural numbers:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;zero = Zero
+one = Succ Zero
+two = Succ one
+three = Succ two
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Basically, &lt;code&gt;Zero&lt;/code&gt; is &lt;code&gt;Nothing&lt;/code&gt; and &lt;code&gt;Succ&lt;/code&gt; is &lt;code&gt;Recurse . Just&lt;/code&gt;, where &lt;code&gt;.&lt;/code&gt; is function composition.&lt;/p&gt;
+
+&lt;p&gt;Interestingly, there is another possible value of these types&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;omega' = Recurse (Just omega')
+omega = Succ omega
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The name &lt;code&gt;omega&lt;/code&gt; is used because this number is similar to &lt;a href=&quot;https://en.wikipedia.org/wiki/Ordinal_number&quot;&gt;one particular kind of infinity&lt;/a&gt;. because of the way that it reacts to this definition of comparison:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;_ &amp;lt; Zero        = False
+Zero &amp;lt; Succ _   = True
+Succ x &amp;lt; Succ y = x &amp;lt; y
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see, &lt;code&gt;x &amp;lt; omega&lt;/code&gt; is &lt;code&gt;True&lt;/code&gt; for all &lt;code&gt;x&lt;/code&gt; defined by &lt;code&gt;Succ (Succ (Succ ... Succ (Zero)))&lt;/code&gt;. Note that &lt;code&gt;omega &amp;lt; omega&lt;/code&gt; will never evaluate since &lt;code&gt;omega &amp;lt; omega&lt;/code&gt; reduces to &lt;code&gt;Succ omega &amp;lt; Succ omega&lt;/code&gt;, which reduces to &lt;code&gt;omega &amp;lt; omega&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;recursivizing-types&quot;&gt;Recursivizing Types&lt;/h2&gt;
+
+&lt;p&gt;To begin with, let’s look at the entirely contrived types:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data Constant a = Const
+    deriving (Show)
+data Empty a
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can see that there is one possible value for &lt;code&gt;Constant (Recursvie Constant)&lt;/code&gt;, which is &lt;code&gt;Const&lt;/code&gt;. Therefore, the only possible value for &lt;code&gt;Recursive Constant&lt;/code&gt; is &lt;code&gt;Recurse Const&lt;/code&gt;. Therefore, &lt;code&gt;Recursive Constant&lt;/code&gt; is similar to the Singleton:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;single = Single
+single' = Recurse Const
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Similarly, there is no value &lt;code&gt;Empty (Recursive Empty)&lt;/code&gt; possible, so there is no possible value of &lt;code&gt;Recursive Empty&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s now look at a less contrived &lt;code&gt;* -&amp;gt; *&lt;/code&gt; type, Wrapper, and see how it works. &lt;code&gt;Recursive Wrapper&lt;/code&gt; requires a value of &lt;code&gt;Wrapper (Recursive Wrapper)&lt;/code&gt; in order to initialize. There is in fact only one way to do this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;wrappedRecurse = Recurse (Wrap wrappedRecurse)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This type is also basically &lt;code&gt;Singleton&lt;/code&gt; since it only has one value&lt;/p&gt;
+
+&lt;p&gt;We can also use the partial application of &lt;code&gt;Pair&lt;/code&gt; to a single type variable &lt;code&gt;a&lt;/code&gt; and then construct a recursion of the pair. We can then analyze values of &lt;code&gt;Recurse (Pair Bool)&lt;/code&gt;. At first, this doesn’t seem to work any better than &lt;code&gt;Recurse Wrap&lt;/code&gt; because we need a value of &lt;code&gt;Pair Bool (RPair Bool)&lt;/code&gt; before we can create a value of &lt;code&gt;RPair Bool&lt;/code&gt;. However, since in this case each value also has a &lt;code&gt;Bool&lt;/code&gt;, these form a stream:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;trues' = Recurse (ConsPair True trues')
+falses' = Recurse (ConsPair False falses')
+alternating' = Recurse (ConsPair True (Recurse (ConsPair False alternating')))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Which is remarkably similar to our previous definitions:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskellcomment&quot;&gt;trues = ConsStream True trues
+falses = ConsStream False falses
+alternating = ConsStream True (ConsStream False alternating)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;finding-the-base-type-for-recursive-types&quot;&gt;Finding the base type for recursive types&lt;/h2&gt;
+
+&lt;p&gt;So now we know (I’m using \(\equiv\) to mean that two types have the same structure):&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;Recurse Maybe&lt;/code&gt; \(\equiv\) &lt;code&gt;Nat&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;Recurse Constant&lt;/code&gt; \(\equiv\) &lt;code&gt;Singleton&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;Recurse Wrapper&lt;/code&gt; \(\equiv\) &lt;code&gt;Singleton&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;Recurse Empty&lt;/code&gt; \(\equiv\) &lt;code&gt;Void&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;Recurse Constant&lt;/code&gt; \(\equiv\) &lt;code&gt;Stream&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But what is &lt;code&gt;List&lt;/code&gt; equivalent to? We can look again at the definition of a list:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskellcomment&quot;&gt;data List a = Nil | Cons a (List a)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;OK, so we need to have a type parameter representing the &lt;code&gt;a&lt;/code&gt; and another to be eaten by &lt;code&gt;Recurse&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskellcomment&quot;&gt;data PreList a self = ???
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And we need to have some element &lt;code&gt;Nil&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskellcomment&quot;&gt;data PreList a self = PreNil | ???
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, we just need something to combine both the first and rest of the list&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskellcomment&quot;&gt;data PreList a self = PreNil | PreCons a self
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Hey, what’s on the right of the list looks a lot like a &lt;code&gt;Maybe&lt;/code&gt; with two values instead of one! Here’s a final implementation&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data PreList a self = PreList (Maybe (Pair a self))
+    deriving (Show)
+
+type RecurseList a = Recursive (PreList a)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Redoing our &lt;code&gt;[True, False, False]&lt;/code&gt; example, we get:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;exampleList'
+    = Recurse (PreList (Just (ConsPair
+        True
+        (Recurse (PreList (Just (ConsPair
+            False
+            (Recurse (PreList (Just (ConsPair
+                False
+                (Recurse (PreList Nothing)))))))))))))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;No reasonable person (except (maybe (a (Lisp (fanatic))))) would say that the above code is pretty, but it is clear that &lt;code&gt;Recursive (PreList a)&lt;/code&gt; \(\equiv\) &lt;code&gt;List&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;exercises&quot;&gt;Exercises&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find the de-recursified forms of&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data BinaryTree a = BNode (BinaryTree a) (BinaryTree a) | BLeaf a
+data ListTree a = ListNode a (List (ListTree a))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;What is a general algorithm for de-recursification?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The answers are given at the end of &lt;a href=&quot;/src/2015-11-23-Recursive-Types.hs&quot;&gt;the attached source code&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!--
+
+```haskell
+--------ANSWERS TO EXERCISES--------
+
+data PreBinaryTree a self = PBNode self self | PBLeaf a
+--- Recursive (PreBinaryTree a) === BinaryTree a
+
+data PreListTree a self = PListNode (Pair a (List self))
+    -- equivalent to: data PreListTree a self = PListNode a (List self)
+--- Recursive (PreListTree a) === ListTree a
+
+{-
+    General solution:
+        Add a self type parameter.
+        Replace any recursive calls with self.
+-}
+
+```
+--&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;OK, so this probably doesn’t have any practical applications. And given how ugly the output of such code is, you’re unlikely to ever see this in real life code, even in an academic language like Haskell.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, I hope this hurt your brain a little; it certainly hurt mine. Really, to me, the best part is that with only a simple type system (e.g., non-recursive types), and a single recursive type, you can construct all other simply recursive types. This example shows to me how out of simplicity can grow complexity.&lt;/p&gt;
+
+&lt;p&gt;Also, abstract nonsense is &lt;code&gt;Just fun&lt;/code&gt; :-).&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Who Needs Delta? Defining the Hyper-Real Numbers</title>
    <link href="https://kavigupta.github.io/2015/11/19/Who-Needs-Delta/"/>
    <updated>2015-11-19T00:00:00-08:00</updated>
    <id>https://kavigupta.github.io/2015/11/19/Who-Needs-Delta</id>
-   <content type="html">&lt;p&gt;\(\renewcommand{\ep}{\varepsilon}\)
+   <content type="html">&lt;p&gt;\(\renewcommand{\ep}{\varepsilon}\)&lt;br /&gt;
 \(\renewcommand{\d}{\mathrm d}\)&lt;/p&gt;
 
 &lt;p&gt;In high school Calculus, solving differential equations often involves something like the following:&lt;/p&gt;
@@ -71,8 +422,8 @@
 
 &lt;p&gt;Secondly, and more disturbingly, \(\ep^{-1}\) is not defined in the dual numbers. This is because of the following. Define \(\omega = \ep ^ {-1}\). Then&lt;/p&gt;
 
-&lt;p&gt;\[\omega\ep = 1\]
-\[\omega^2\ep^2 = 1\]
+&lt;p&gt;\[\omega\ep = 1\]&lt;br /&gt;
+\[\omega^2\ep^2 = 1\]&lt;br /&gt;
 \[\omega^2 0 = 1\]&lt;/p&gt;
 
 &lt;p&gt;Which is an obvious contradiction. Therefore, the Dual Numbers are not a field and therefore not what we are looking for.&lt;/p&gt;
@@ -89,14 +440,14 @@
 
 &lt;p&gt;Before we can fully analyze what \(\sqrt{\ep}\) means, we should define some notion of comparability. For example, we might want to define some notion of something being infinitesimal compared to something else. We can define \(\ll\), read “infinitesimal compared to” as follows:&lt;/p&gt;
 
-&lt;p&gt;\[x \ll 1 \iff (\forall n \in \mathbb{N})(|x| &amp;lt; \frac{1}{n})\]
+&lt;p&gt;\[x \ll 1 \iff (\forall n \in \mathbb{N})(|x| &amp;lt; \frac{1}{n})\]&lt;br /&gt;
 \[x \ll y \iff y \neq 0 \wedge \frac{x}{y} \ll 1\]&lt;/p&gt;
 
 &lt;p&gt;Note that we decided to use the absolute value. Then, we can say \(0 \ll -1\). This is to allow for negative numbers to be compared in this way; the sign is simply ignored.&lt;/p&gt;
 
 &lt;p&gt;We can also define the comparators \(\gg\) and \(\bot\), read “infinite compared to” and “comparable to” as:&lt;/p&gt;
 
-&lt;p&gt;\[x \gg y \iff y \ll x\]
+&lt;p&gt;\[x \gg y \iff y \ll x\]&lt;br /&gt;
 \[x \bot y \iff \neg (x \ll y) \wedge \neg (x \gg y)\]&lt;/p&gt;
 
 &lt;p&gt;The following proofs are left as an exercise to the reader:&lt;/p&gt;
@@ -144,7 +495,7 @@
 
 &lt;h3 id=&quot;set-theory-numerals&quot;&gt;Set Theory Numerals&lt;/h3&gt;
 
-&lt;p&gt;\[0 = \{\{\}\}\]
+&lt;p&gt;\[0 = \{\{\}\}\]&lt;br /&gt;
 \[S(n) = n \cup \{n\}\]&lt;/p&gt;
 
 &lt;p&gt;The set theoretic numerals are therefore defined as the set of all the elements before them along with the empty set.&lt;/p&gt;
