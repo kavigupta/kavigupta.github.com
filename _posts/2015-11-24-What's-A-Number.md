@@ -79,9 +79,9 @@ OK, seems to be working. Now let's define a few more.
 <img src="/resources/2015-11-24/two-chains.png">
 
 
-Where did those annoying Greek letters come from! Well, we've said what can be a number: the \\(0, 0_S, 0_{SS}, 0_{SSS}\ldots\\) And we've said that no number is before \\(0\\). And we've said that no two numbers can feed into the same number.
+Where did those annoying Greek letters come from! Well, we've said what can be a number: the \\(0, 0_S, 0_{SS}, 0_{SSS}\\) etc. And we've said that no number is before \\(0\\). And we've said that no two numbers can feed into the same number.
 
-However, what we haven't said is that the only numbers are \\(0, 0_S, 0_{SS}, 0_{SSS}\ldots\\) And, guess what? That's the fifth Law!
+However, what we haven't said is that the only numbers are \\(0, 0_S, 0_{SS}, 0_{SSS}\\), etc. And, guess what? That's the fifth Law!
 
 ## 5. If something is true for \\(n = 0\\) and its being true for \\(n\\) makes it true for \\(n_S\\), then it is true for all numbers.
 
@@ -91,11 +91,11 @@ Let's look at the symbol \\(\isn\\). Basically, \\(x_\isn = \true\\), or true wh
 
 Some examples:
 
-\\[0_\isn = \true\\]
-\\[1_\isn = \true\\]
-\\[2_\isn = \true\\]
-\\[\spadesuit_\isn = \false\\]
-\\[\diamondsuit_\isn = \false\\]
+\\[0_\isn = \true\\\\
+1_\isn = \true\\\\
+2_\isn = \true\\\\
+\spadesuit_\isn = \false\\\\
+\diamondsuit_\isn = \false\\]
 
 As you can see, suits of cards are not numbers, but \\(0, 1, 2\\) are.
 

@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-11-25T15:51:30-08:00</updated>
+ <updated>2015-11-25T15:54:10-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
@@ -87,9 +87,9 @@
 
 &lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/resources/2015-11-24/two-chains.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Where did those annoying Greek letters come from! Well, we’ve said what can be a number: the \(0, 0_S, 0_{SS}, 0_{SSS}\ldots\) And we’ve said that no number is before \(0\). And we’ve said that no two numbers can feed into the same number.&lt;/p&gt;
+&lt;p&gt;Where did those annoying Greek letters come from! Well, we’ve said what can be a number: the \(0, 0_S, 0_{SS}, 0_{SSS}\) etc. And we’ve said that no number is before \(0\). And we’ve said that no two numbers can feed into the same number.&lt;/p&gt;
 
-&lt;p&gt;However, what we haven’t said is that the only numbers are \(0, 0_S, 0_{SS}, 0_{SSS}\ldots\) And, guess what? That’s the fifth Law!&lt;/p&gt;
+&lt;p&gt;However, what we haven’t said is that the only numbers are \(0, 0_S, 0_{SS}, 0_{SSS}\), etc. And, guess what? That’s the fifth Law!&lt;/p&gt;
 
 &lt;h2 id=&quot;if-something-is-true-for-n--0-and-its-being-true-for-n-makes-it-true-for-ns-then-it-is-true-for-all-numbers&quot;&gt;5. If something is true for \(n = 0\) and its being true for \(n\) makes it true for \(n_S\), then it is true for all numbers.&lt;/h2&gt;
 
@@ -99,11 +99,11 @@
 
 &lt;p&gt;Some examples:&lt;/p&gt;
 
-&lt;p&gt;\[0_\isn = \true\]&lt;br /&gt;
-\[1_\isn = \true\]&lt;br /&gt;
-\[2_\isn = \true\]&lt;br /&gt;
-\[\spadesuit_\isn = \false\]&lt;br /&gt;
-\[\diamondsuit_\isn = \false\]&lt;/p&gt;
+&lt;p&gt;\[0_\isn = \true\\&lt;br /&gt;
+1_\isn = \true\\&lt;br /&gt;
+2_\isn = \true\\&lt;br /&gt;
+\spadesuit_\isn = \false\\&lt;br /&gt;
+\diamondsuit_\isn = \false\]&lt;/p&gt;
 
 &lt;p&gt;As you can see, suits of cards are not numbers, but \(0, 1, 2\) are.&lt;/p&gt;
 
