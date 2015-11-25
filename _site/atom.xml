@@ -4,13 +4,145 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-11-24T00:32:04-08:00</updated>
+ <updated>2015-11-25T15:51:30-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>What's a number?</title>
+   <link href="https://kavigupta.github.io/2015/11/24/What's-A-Number/"/>
+   <updated>2015-11-24T00:00:00-08:00</updated>
+   <id>https://kavigupta.github.io/2015/11/24/What's-A-Number</id>
+   <content type="html">&lt;p&gt;OK, so a bit of a silly question. Of course, we all know what numbers are. But humor me, and try to define a number without using “number”, “quantity”, or anything that refers back to a number itself.&lt;/p&gt;
+
+&lt;p&gt;But, before we learn numbers, we have to first understand something simpler: counting. Couldn’t we define numbers in terms of counting? Well, yes, otherwise I wouldn’t be writing this article.&lt;/p&gt;
+
+&lt;p&gt;Now, to not end up with a forty page book, I’m only going to go over how to define the whole numbers (I’m going to ignore negative integers, fractions, \(\pi\), etc.)&lt;/p&gt;
+
+&lt;p&gt;Basically, a mathematician named Peano had a similar idea back in the 1800s. Back then, even mathematicians didn’t really know what numbers were. Some of them felt that they were simple enough that they didn’t need a definition. On the other hand, some mathematicians liked thinking about numbers in terms of geometry. Like if I draw one line, that’s 1. If I draw another line 2 times as long next to it, that’s 2, etc. It works, but it’s a bit annoying to have to work with geometry all the time. Unless you like drawing, which a lot of people go into math to avoid.&lt;/p&gt;
+
+&lt;p&gt;Anyway, back to Peano. During the 1800s, mathematicians were starting to ask some weirdly difficult questions. Like, how do we know that \(a + b = b + a\)? How do we even know that \(2 + 2 = 4\)? How do we even know that \(4\) exists?&lt;/p&gt;
+
+&lt;p&gt;Well, we need to start somewhere, and Peano decided we needed a few basic Laws Of Mathematics for numbers (mathematicians like the word &lt;em&gt;axiom&lt;/em&gt;). These are rules that are considered self-evident.&lt;/p&gt;
+
+&lt;p&gt;He came up with a total of 9. In advanced 21st century mathematics, there are generally considered to be 5. (No, it didn’t turn out that \(9 = 5\). 4 of the axioms are really part of logic. Stuff like if \(a = b\), \(b = a\). In the 19th century, they didn’t really distinguish logic from math, but now we do.)&lt;/p&gt;
+
+&lt;p&gt;Anyway, let’s go through the Laws!&lt;/p&gt;
+
+&lt;h2 id=&quot;zero-is-a-number&quot;&gt;1. Zero is a Number&lt;/h2&gt;
+
+&lt;p&gt;OK, so \(0\) is a number! Very useful.&lt;/p&gt;
+
+&lt;p&gt;Actually, we don’t have to call this \(0\). Let’s call it &lt;code&gt;Peano&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now &lt;code&gt;Peano&lt;/code&gt; is a number! That’s better! Actually, no, it’s exactly the same.&lt;/p&gt;
+
+&lt;p&gt;All this Law Of Mathematics says is that there is some number. We haven’t really said what this number &lt;em&gt;does&lt;/em&gt; yet. Let’s move on.&lt;/p&gt;
+
+&lt;h2 id=&quot;for-every-number-n-there-is-a-number-ns&quot;&gt;2. For every number \(n\), there is a number \(n_S\).&lt;/h2&gt;
+
+&lt;p&gt;OK, so we know that for every number, there is another number! We have defined here basically the concept of counting. \(n_S\) is the “next number”. Are we done?&lt;/p&gt;
+
+&lt;p&gt;Well, no, because I told you that there are 5 Laws Of Mathematics, and we’ve only covered 2.&lt;/p&gt;
+
+&lt;p&gt;Also, think about it for a second. Have we really defined counting? Does this definition tell us that we can’t, for example, have \(0_S = 0\)?&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/resources/2015-11-24/zero-circ.png&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;No. What it does tell us, however, is that we can’t have two different \(n_S\) for the same \(n\).&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/resources/2015-11-24/non-function.png&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;there-is-no-number-n-where-ns--0&quot;&gt;3. There is no number \(n\) where \(n_S = 0\)&lt;/h2&gt;
+
+&lt;p&gt;OK! We dealt with that annoying \(0_S = 0\) problem! We’re done! Well, no… Try to think about a problem with this yourself before you move on.&lt;/p&gt;
+
+&lt;p&gt;Here it is: Let’s define \(0_S = 1\). Now, is there anything that says that you can’t have \(\beta_S = 1\) where \(\beta \neq 0\)?&lt;/p&gt;
+
+&lt;p&gt;Well, no. We have some \(0\) (this follows Law of Mathematics #1). We have, \(0_S = 1\), \(\beta_S = 1\), \(1_S = 2\) (by definition), etc. (this follows Law of Mathematics #2). We have no element \(x\) such that \(x_S = 0\) (this follows Law of Mathematics #3).&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/resources/2015-11-24/non-1-to-1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Well, we have something that is obviously ridiculous but follows all the Laws. Well, let’s close the loophole!&lt;/p&gt;
+
+&lt;h2 id=&quot;for-any-two-numbers-x-and-y-if-xs--ys-x--y&quot;&gt;4. For any two numbers \(x\) and \(y\), if \(x_S = y_S\), \(x = y\)&lt;/h2&gt;
+
+&lt;p&gt;OK! We’re finally done! No more weird numbers that feed into the regular numbers!&lt;/p&gt;
+
+&lt;p&gt;So now let’s define a few numbers:&lt;/p&gt;
+
+&lt;p&gt;\[0_S = 1\]&lt;br /&gt;
+\[1_S = 2\]&lt;br /&gt;
+\[2_S = 3\]&lt;br /&gt;
+\[3_S = 4\]&lt;/p&gt;
+
+&lt;p&gt;OK, seems to be working. Now let’s define a few more.&lt;/p&gt;
+
+&lt;p&gt;\[\gamma_S = \beta\]&lt;br /&gt;
+\[\beta_S = \alpha\]&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/resources/2015-11-24/two-chains.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Where did those annoying Greek letters come from! Well, we’ve said what can be a number: the \(0, 0_S, 0_{SS}, 0_{SSS}\ldots\) And we’ve said that no number is before \(0\). And we’ve said that no two numbers can feed into the same number.&lt;/p&gt;
+
+&lt;p&gt;However, what we haven’t said is that the only numbers are \(0, 0_S, 0_{SS}, 0_{SSS}\ldots\) And, guess what? That’s the fifth Law!&lt;/p&gt;
+
+&lt;h2 id=&quot;if-something-is-true-for-n--0-and-its-being-true-for-n-makes-it-true-for-ns-then-it-is-true-for-all-numbers&quot;&gt;5. If something is true for \(n = 0\) and its being true for \(n\) makes it true for \(n_S\), then it is true for all numbers.&lt;/h2&gt;
+
+&lt;p&gt;OK, so this is a little more complicated than the previous examples. But let’s look at a quick example to see how it completes the definition of the numbers. \(\newcommand{\isn}{\uplus}\)&lt;/p&gt;
+
+&lt;p&gt;Let’s look at the symbol \(\isn\). Basically, \(x_\isn = \true\), or true when \(x\) is a number, and \(\false\), or false, whenever it is not. (I got the symbol by typing “fancy math symbols” into Google. As far as I know, it isn’t commonly used.)&lt;/p&gt;
+
+&lt;p&gt;Some examples:&lt;/p&gt;
+
+&lt;p&gt;\[0_\isn = \true\]&lt;br /&gt;
+\[1_\isn = \true\]&lt;br /&gt;
+\[2_\isn = \true\]&lt;br /&gt;
+\[\spadesuit_\isn = \false\]&lt;br /&gt;
+\[\diamondsuit_\isn = \false\]&lt;/p&gt;
+
+&lt;p&gt;As you can see, suits of cards are not numbers, but \(0, 1, 2\) are.&lt;/p&gt;
+
+&lt;p&gt;Anyway, the first two axioms can be said as “\(0_\isn\)” and “if \(n_\isn\), then \((n_S)_ \isn\)”&lt;/p&gt;
+
+&lt;p&gt;This means that \(n_\isn\) is true for all numbers.&lt;/p&gt;
+
+&lt;p&gt;Let that sink in for a minute.&lt;/p&gt;
+
+&lt;p&gt;OK, so basically, we proved that all numbers are numbers. But that was just to show that the fifth Law of Mathematics makes sense.&lt;/p&gt;
+
+&lt;p&gt;Now for a better example: let’s look at trying to get rid of those annoying Greek Letters. We defined \(\beta\) as some number which isn’t’ the successor of anything in a chain that comes from 0. Let’s define unbetaness as \(n \neq \beta\). We know that \(0 \neq \beta\), and we know that if \(n \neq \beta\) and \(n\) is a number, \(n_S \neq \beta\). Therefore, no number is equal to \(\beta\), so \(\beta\) is not a number.&lt;/p&gt;
+
+&lt;p&gt;Now we’re actually done! Well, not really, because we still don’t know what \(2 + 2\) is, since we don’t know what \(+\) means. Let’s look at the Laws of Addition.&lt;/p&gt;
+
+&lt;h2 id=&quot;n--n&quot;&gt;1. \(0 + n = n\)&lt;/h2&gt;
+
+&lt;p&gt;Adding nothing to something doesn’t change it. Not particularly crazy stuff.&lt;/p&gt;
+
+&lt;h2 id=&quot;as--b--a--b-s&quot;&gt;2. \(a_S + b = (a + b)_ S\)&lt;/h2&gt;
+
+&lt;p&gt;Counting up one of the numbers does the same thing as counting up the sum. In other words, if you have two piles, adding a stone to one of the piles is the same as adding a stone to the system as a whole.&lt;/p&gt;
+
+&lt;h1 id=&quot;so-what-is-2--2&quot;&gt;So, what &lt;em&gt;is&lt;/em&gt; \(2 + 2\)?&lt;/h1&gt;
+
+&lt;p&gt;\[2 + 2\\&lt;br /&gt;
+1_S + 2\\&lt;br /&gt;
+(1 + 2)_ S\\&lt;br /&gt;
+(0_S + 2)_ S\\&lt;br /&gt;
+((0 + 2)_ S)_ S\\&lt;br /&gt;
+(2_ S)_ S\\&lt;br /&gt;
+3_ S\\&lt;br /&gt;
+4\]&lt;/p&gt;
+
+&lt;p&gt;So, you’re wrong, Wikipedia, &lt;a href=&quot;http://en.wikipedia.org/wiki/2+2=5&quot;&gt;\(2 + 2\) is &lt;em&gt;not&lt;/em&gt; 5!&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Anyway, the real point is that while before, you probably thought that \(2 + 2 = 4\) was a basic fact, a Law of Mathematics, now you know that it is just a deduction based on a few other, simpler, laws.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Recursivized Types</title>
