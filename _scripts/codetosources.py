@@ -5,8 +5,8 @@ from os.path import basename
 
 languages = {"haskell": "hs"}
 
-postsdir = "../_posts"
-srcdir = "../src"
+postsdir = "_posts"
+srcdir = "src"
 
 system("mkdir " + srcdir)
 
