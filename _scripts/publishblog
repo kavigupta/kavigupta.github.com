@@ -1,5 +1,5 @@
 #!/bin/bash
-python3 codetosources.py
+python3 "_scripts/codetosources.py"
 
 timeout 5s jekyll serve
 git add --all
