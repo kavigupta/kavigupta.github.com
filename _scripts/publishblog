@@ -2,6 +2,6 @@
 python3 "_scripts/codetosources.py"
 
 timeout 5s jekyll serve
-git add --all
+git add .
 git commit -m "$1"
 git push origin master

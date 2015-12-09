@@ -1,46 +1,30 @@
 #!/usr/bin/python3
 
 from os import listdir, system
-from os.path import basename
+from os.path import basename, join, basename, splitext
+import fileinput
 
-languages = {"haskell": "hs"}
+languages = {}
 
-postsdir = "_posts"
-srcdir = "src"
+srcdir = "../src"
+post = sys.argv[1]
+postname = splitext(basename(post))[0]
 
 system("mkdir " + srcdir)
 
-posts = listdir(postsdir)
+language = ""
 
-for unqual in posts:
-    with open(postsdir + "/" + unqual) as p:
-        used_languages = {}
-        language = ''
-        for line in p:
-            if line[0:3] == '```':
-                language = line[3:].strip().lower()
-                for l in used_languages:
-                    used_languages[l].append("\n")
-                continue
-            if language not in used_languages:
-                used_languages[language] = []
-            used_languages[language].append(line)
-    maximum_count = 0
-    maximum_language = None
-    print (used_languages)
-    for language in list(used_languages.keys()):
-        lines = used_languages[language]
-        if language in languages:
-            if len(lines) > maximum_count:
-                maximum_count = len(lines)
-                maximum_language = language
-    print (maximum_language)
-    if maximum_language is not None:
-        lines = used_languages[maximum_language]
-        print (lines)
-        dot = unqual.rfind(".")
-        if dot > 0:
-            unqual = unqual[:dot]
-        out = srcdir + "/" + unqual + "." + languages[maximum_language]
-        with open(out, "w") as o:
-            o.writelines(lines)
+for line in fileinput.input():
+    dump_directive = re.search("\\s*dump:\\s+(\\S+)\\s+as\\s+(\\S+)", line)
+    if dump_directive:
+        languages[dump_directive.group(0)] = languages[dump_directive.group(1)]
+        continue
+    language_directive = re.search("```\\s*(.*)", line)
+    if language_directive:
+        language = language.group(1)
+        print(line)
+        continue
+    print(line)
+    if language in languages:
+        with open(join(srcdir, postname + "." + languages[language]), "a") as o:
+            o.writeLines([line])
