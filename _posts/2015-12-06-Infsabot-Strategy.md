@@ -1,8 +1,14 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "haskellcomment" -> "haskell"
+    replace "<!--_-->" -> "<!--_-->"
 ---
 layout: post
 title: Infsabot Strategy Part 1
 comments: True
 ---
+
+dump: haskell as hs
 
 OK, so what is this _Infsabot_? Infsabot is a game I designed for people to write programs to play. Basically, it's like chess, except where each piece acts independently of each other.
 
