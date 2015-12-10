@@ -1,5 +1,4 @@
 #!/bin/bash
-python3 "_scripts/codetosources.py"
 
 ./SimplePreprocessor/spp -s "_posts"
 timeout 5s jekyll serve

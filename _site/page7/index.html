@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+  <meta charset="UTF-8">
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    
+      That depends on what the definition of "=" is &middot; 
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.png">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/atom+xml" title="That depends on what the definition of "=" is" href="/atom.xml">
+</head>
+
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68543647-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+	<body>
+	<link rel="stylesheet" href="/highlighting/styles/default.css">
+	<script src="/highlighting/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		<div class="container content">
+			<header class="masthead">
+				<h3 class="masthead-title">
+					<div class="header">
+						<img src="/public/icon.png" alt="icon" style="width:50px;height:50px;vertical-align: middle;">
+						<a href="/" title="Home" style = "vertical-align: middle">&nbsp;That depends on what the definition of "=" is</a>
+					</div>
+					<small></small>
+				</h3>
+			</header>
+
+			<main>
+				\(\newcommand{\th}{^\mathrm{th}}\)
+				\(\newcommand{\false}{\mathrm{F}}\)
+				\(\newcommand{\true}{\mathrm{T}}\)
+				<span class = "major_link"><a href = " about"> About </a> | <a href = " archive"> Archive </a></span>
+<br>
+<br>
+<div class="posts">
+  
+  <article class="post">
+    <h1 class="post-title">
+      <a href="/2015/11/19/Who-Needs-Delta.md/">
+        Who Needs Delta? Defining the Hyper-Real Numbers
+      </a>
+    </h1>
+
+    <time datetime="2015-11-19T00:00:00-08:00" class="post-date">19 Nov 2015</time>
+
+    \\(\renewcommand{\ep}{\varepsilon}\\)
+\\(\renewcommand{\d}{\mathrm d}\\)
+
+In high school Calculus, solving differential equations often involves something like the following:
+
+\\[\frac{\d y}{\d x} = \frac{y}{x}\\]
+
+\\[\frac{\d y}{y} = \frac{\d x}{x}\\]
+
+\\[\int \frac{\d y}{y} = \int \frac{\d x}{x}\\]
+
+\\[\int \log y = c + \log x\\]
+
+\\[\int y = kx\\]
+
+Now, I don't know about anyone else, but this abuse of notation really bothered me at first. Everyone knows that \\(\d x\\) isn't an actual number by itself, but we seem to use it all the time as an independent variable.
+
+## Fluxions and Limits
+
+Well, as it turns out, early mathematicians had the same problem with Newton's original formulation of Calculus, in which he called these infinitesimal quantities ["fluxions"](https://en.wikipedia.org/wiki/Method_of_Fluxions). His explanation was that they were quantities which "flowed" to 0 from before to after he took a derivative.
+
+Obviously, in modern mathematics, this could not stand, and we got the following definition:
+
+\\[\lim_{x \to a} f(x) = L \iff (\forall \ep > 0)(\exists \delta)(\|x - d\| < \delta \implies \|f(x) - L\| < \ep) \\]
+
+\\[f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \\]
+
+This system, known as \\(\ep--\delta\\), has been an important part of mathematics ever since it was defined.
+
+I find this equation particularly elegant; it places the idea of limits and derivatives firmly in the language of set theory, and does so in a simple manner that, after some thought, is somewhat intuitive.
+
+## Back to Infinitesimals
+
+However, when we think about what the velocity of a particle in free fall, we generally don't think in terms of finding some \\(\delta\\) for every \\(\ep\\). I generally tend to find it easier to think in terms of a small change in position over a small change in time.
+
+In fact, there is a way to formalize this relationship, found in the field of [non-standard analysis](https://en.wikipedia.org/wiki/Non-standard_analysis). To do so, we introduce an infinitesimal element, which is known as \\(\ep\\). This element has the property that
+
+\\[(\forall n \in \mathbb{N^+})(0 < \ep < \frac{1}{n})\\]
+
+We can therefore define addition and subtraction as simple vector addition and subtraction over \\(\\{1, \ep\\}\\) fairly simply, in a similar manner to complex addition and subtraction.
+
+## \\(\ep^2\\)
+Multiplication is a little more complicated. We know that
+
+\\[(a + b\ep)(c + d\ep) = ac + (ad + bc)\ep + bd \ep^2\\]
+
+but what should \\(\ep^2\\) be? If we decide to keep the result within our new vector-like field, we end up with the equation \\(\ep^2 = a\ep + b\\), for real \\(a, b\\). I'll spare you the [derivation](https://en.wikipedia.org/wiki/Hypercomplex_number#Two-dimensional_real_algebras), but it turns out that there are only three different systems we can get out of this formula. Two are useless for our purposes, being the complex numbers and something called the split-complex numbers, in which there is some \\(j^2 = 1, j \neq \pm 1\\). The last, the Dual Numbers, is a system in which \\(\ep^2 = 0\\).
+
+
+## Dual Numbers
+
+Dual Numbers at first seem quite promising. The idea that \\(\d x^2 = 0\\) sounds pretty similar to the notion of higher order differentials vanishing to 0. However, there are a few problems. First of all, the second derivative \\(\frac{\d^2 x}{\d x^2}\\) contains second degree differentials on both the numerator and the denominator, which means that it would vanish to 0.
+
+Secondly, and more disturbingly, \\(\ep^{-1}\\) is not defined in the dual numbers. This is because of the following. Define \\(\omega = \ep ^ {-1}\\). Then
+
+\\[\omega\ep = 1\\]
+\\[\omega^2\ep^2 = 1\\]
+\\[\omega^2 0 = 1\\]
+
+Which is an obvious contradiction. Therefore, the Dual Numbers are not a field and therefore not what we are looking for.
+
+## Full System of Infinitesimals
+
+Obviously, we need to define \\(\ep^2\\). So let's just define it as \\(\ep^2\\). Same for \\(\ep^3, \ep^4, \ep^5, \ldots\\). We also, by fiat, define \\(\ep^{-1} = \omega\\). This of course introduces \\(\omega^2, \omega^3, \omega^4,\ldots\\).
+
+This set is called the [Hyperreals](https://en.wikipedia.org/wiki/Hyperreal_number).
+
+Now, it might at first appear that we have infinitesimals corresponding to every integer. Some Haskell programmers out there might be thinking in terms of infinite lists (I know that was _my_ first thought at least). However, here's a problem: what's \\(\sqrt{\ep}\\)?
+
+## Level comparison
+
+Before we can fully analyze what \\(\sqrt{\ep}\\) means, we should define some notion of comparability. For example, we might want to define some notion of something being infinitesimal compared to something else. We can define \\(\ll\\), read "infinitesimal compared to" as follows:
+
+\\[x \ll 1 \iff (\forall n \in \mathbb{N})(|x| < \frac{1}{n})\\]
+\\[x \ll y \iff y \neq 0 \wedge \frac{x}{y} \ll 1\\]
+
+Note that we decided to use the absolute value. Then, we can say \\(0 \ll -1\\). This is to allow for negative numbers to be compared in this way; the sign is simply ignored.
+
+We can also define the comparators \\(\gg\\) and \\(\bot\\), read "infinite compared to" and "comparable to" as:
+
+\\[x \\gg y \iff y \\ll x\\]
+\\[x \bot y \iff \neg (x \ll y) \wedge \neg (x \gg y)\\]
+
+The following proofs are left as an exercise to the reader:
+
+1. Exactly one of \\(x \gg y\\), \\(x \ll y\\), and \\(x \bot y\\) is true
+2. \\(\ll\\) is transitive.
+3. \\(x \ll y \iff kx \ll ky\\) for every \\(k \neq 0\\)
+
+## All powers of infinitesimals
+
+Now we can analyze what \\(\sqrt{\ep}\\) means. We know that since \\(\ep \ll 1\\), \\(\\sqrt{\ep} \ll 1\\). We also know that since \\(\frac{\ep}{\sqrt{\ep}} = \sqrt{\ep} \ll 1\\), \\(\ep \ll \sqrt{\ep}\\). We now know that
+
+\\[\ep \ll \sqrt\ep \ll 1\\]
+
+This means that \\(\sqrt\ep\\) is on a separate level of infinitesimal than any of the integral powers of \\(\ep\\). Since similar proofs can be constructed for all rational powers, and therefore for all real powers (yes, we have to go back to \\(\ep---\delta\\) for this), the hyper-reals therefore have as many levels as there are real numbers.
+
+## Derivatives
+
+OK, so I know I promised you at the beginning of this section that this would all eventually lead to a more intuitive approach to derivatives. Unfortunately, however, this is far too long of a post already. I'll cover derivatives in the next section.
+
+  </article>
+  
+</div>
+<div class="pagination">
+  
+    <a class="pagination-item older" href="/page8">Older</a>
+  
+  
+    <a class="pagination-item newer" href="/page6">Newer</a>
+  
+</div>
+
+			</main>
+
+			<footer class="footer">
+				<small>
+					&copy; <time datetime="2015-12-09T16:32:50-08:00">2015</time>. All rights reserved.
+				</small>
+			</footer>
+		</div>
+	
+
+	</body>
+</html>

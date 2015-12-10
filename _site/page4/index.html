@@ -62,114 +62,137 @@
   
   <article class="post">
     <h1 class="post-title">
-      <a href="/2015/11/19/Who-Needs-Delta/">
-        Who Needs Delta? Defining the Hyper-Real Numbers
+      <a href="/2015/11/24/What's-A-Number/">
+        What's a number?
       </a>
     </h1>
 
-    <time datetime="2015-11-19T00:00:00-08:00" class="post-date">19 Nov 2015</time>
+    <time datetime="2015-11-24T00:00:00-08:00" class="post-date">24 Nov 2015</time>
 
-    <p>\(\renewcommand{\ep}{\varepsilon}\)<br />
-\(\renewcommand{\d}{\mathrm d}\)</p>
+    <p>OK, so a bit of a silly question. Of course, we all know what numbers are. But humor me, and try to define a number without using “number”, “quantity”, or anything that refers back to a number itself.</p>
 
-<p>In high school Calculus, solving differential equations often involves something like the following:</p>
+<p>But, before we learn numbers, we have to first understand something simpler: counting. Couldn’t we define numbers in terms of counting? Well, yes, otherwise I wouldn’t be writing this article.</p>
 
-<p>\[\frac{\d y}{\d x} = \frac{y}{x}\]</p>
+<p>Now, to not end up with a forty page book, I’m only going to go over how to define the whole numbers (I’m going to ignore negative integers, fractions, \(\pi\), etc.)</p>
 
-<p>\[\frac{\d y}{y} = \frac{\d x}{x}\]</p>
+<p>Basically, a mathematician named Peano had a similar idea back in the 1800s. Back then, even mathematicians didn’t really know what numbers were. Some of them felt that they were simple enough that they didn’t need a definition. On the other hand, some mathematicians liked thinking about numbers in terms of geometry. Like if I draw one line, that’s 1. If I draw another line 2 times as long next to it, that’s 2, etc. It works, but it’s a bit annoying to have to work with geometry all the time. Unless you like drawing, which a lot of people go into math to avoid.</p>
 
-<p>\[\int \frac{\d y}{y} = \int \frac{\d x}{x}\]</p>
+<p>Anyway, back to Peano. During the 1800s, mathematicians were starting to ask some weirdly difficult questions. Like, how do we know that \(a + b = b + a\)? How do we even know that \(2 + 2 = 4\)? How do we even know that \(4\) exists?</p>
 
-<p>\[\int \log y = c + \log x\]</p>
+<p>Well, we need to start somewhere, and Peano decided we needed a few basic Laws Of Mathematics for numbers (mathematicians like the word <em>axiom</em>). These are rules that are considered self-evident.</p>
 
-<p>\[\int y = kx\]</p>
+<p>He came up with a total of 9. In advanced 21st century mathematics, there are generally considered to be 5. (No, it didn’t turn out that \(9 = 5\). 4 of the axioms are really part of logic. Stuff like if \(a = b\), \(b = a\). In the 19th century, they didn’t really distinguish logic from math, but now we do.)</p>
 
-<p>Now, I don’t know about anyone else, but this abuse of notation really bothered me at first. Everyone knows that \(\d x\) isn’t an actual number by itself, but we seem to use it all the time as an independent variable.</p>
+<p>Anyway, let’s go through the Laws!</p>
 
-<h2 id="fluxions-and-limits">Fluxions and Limits</h2>
+<h2 id="zero-is-a-number">1. Zero is a Number</h2>
 
-<p>Well, as it turns out, early mathematicians had the same problem with Newton’s original formulation of Calculus, in which he called these infinitesimal quantities <a href="https://en.wikipedia.org/wiki/Method_of_Fluxions">“fluxions”</a>. His explanation was that they were quantities which “flowed” to 0 from before to after he took a derivative.</p>
+<p>OK, so \(0\) is a number! Very useful.</p>
 
-<p>Obviously, in modern mathematics, this could not stand, and we got the following definition:</p>
+<p>Actually, we don’t have to call this \(0\). Let’s call it <code>Peano</code>.</p>
 
-<p>\[\lim_{x \to a} f(x) = L \iff (\forall \ep &gt; 0)(\exists \delta)(|x - d| &lt; \delta \implies |f(x) - L| &lt; \ep) \]</p>
+<p>Now <code>Peano</code> is a number! That’s better! Actually, no, it’s exactly the same.</p>
 
-<p>\[f’(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \]</p>
+<p>All this Law Of Mathematics says is that there is some number. We haven’t really said what this number <em>does</em> yet. Let’s move on.</p>
 
-<p>This system, known as \(\ep–\delta\), has been an important part of mathematics ever since it was defined.</p>
+<h2 id="for-every-number-n-there-is-a-number-ns">2. For every number \(n\), there is a number \(n_S\).</h2>
 
-<p>I find this equation particularly elegant; it places the idea of limits and derivatives firmly in the language of set theory, and does so in a simple manner that, after some thought, is somewhat intuitive.</p>
+<p>OK, so we know that for every number, there is another number! We have defined here basically the concept of counting. \(n_S\) is the “next number”. Are we done?</p>
 
-<h2 id="back-to-infinitesimals">Back to Infinitesimals</h2>
+<p>Well, no, because I told you that there are 5 Laws Of Mathematics, and we’ve only covered 2.</p>
 
-<p>However, when we think about what the velocity of a particle in free fall, we generally don’t think in terms of finding some \(\delta\) for every \(\ep\). I generally tend to find it easier to think in terms of a small change in position over a small change in time.</p>
+<p>Also, think about it for a second. Have we really defined counting? Does this definition tell us that we can’t, for example, have \(0_S = 0\)?</p>
 
-<p>In fact, there is a way to formalize this relationship, found in the field of <a href="https://en.wikipedia.org/wiki/Non-standard_analysis">non-standard analysis</a>. To do so, we introduce an infinitesimal element, which is known as \(\ep\). This element has the property that</p>
+<p class="center"><img src="/resources/2015-11-24/zero-circ.png" width="50%" /></p>
 
-<p>\[(\forall n \in \mathbb{N^+})(0 &lt; \ep &lt; \frac{1}{n})\]</p>
+<p>No. What it does tell us, however, is that we can’t have two different \(n_S\) for the same \(n\).</p>
 
-<p>We can therefore define addition and subtraction as simple vector addition and subtraction over \(\{1, \ep\}\) fairly simply, in a similar manner to complex addition and subtraction.</p>
+<p class="center"><img src="/resources/2015-11-24/non-function.png" width="50%" /></p>
 
-<h2 id="ep2">\(\ep^2\)</h2>
-<p>Multiplication is a little more complicated. We know that</p>
+<h2 id="there-is-no-number-n-where-ns--0">3. There is no number \(n\) where \(n_S = 0\)</h2>
 
-<p>\[(a + b\ep)(c + d\ep) = ac + (ad + bc)\ep + bd \ep^2\]</p>
+<p>OK! We dealt with that annoying \(0_S = 0\) problem! We’re done! Well, no… Try to think about a problem with this yourself before you move on.</p>
 
-<p>but what should \(\ep^2\) be? If we decide to keep the result within our new vector-like field, we end up with the equation \(\ep^2 = a\ep + b\), for real \(a, b\). I’ll spare you the <a href="https://en.wikipedia.org/wiki/Hypercomplex_number#Two-dimensional_real_algebras">derivation</a>, but it turns out that there are only three different systems we can get out of this formula. Two are useless for our purposes, being the complex numbers and something called the split-complex numbers, in which there is some \(j^2 = 1, j \neq \pm 1\). The last, the Dual Numbers, is a system in which \(\ep^2 = 0\).</p>
+<p>Here it is: Let’s define \(0_S = 1\). Now, is there anything that says that you can’t have \(\beta_S = 1\) where \(\beta \neq 0\)?</p>
 
-<h2 id="dual-numbers">Dual Numbers</h2>
+<p>Well, no. We have some \(0\) (this follows Law of Mathematics #1). We have, \(0_S = 1\), \(\beta_S = 1\), \(1_S = 2\) (by definition), etc. (this follows Law of Mathematics #2). We have no element \(x\) such that \(x_S = 0\) (this follows Law of Mathematics #3).</p>
 
-<p>Dual Numbers at first seem quite promising. The idea that \(\d x^2 = 0\) sounds pretty similar to the notion of higher order differentials vanishing to 0. However, there are a few problems. First of all, the second derivative \(\frac{\d^2 x}{\d x^2}\) contains second degree differentials on both the numerator and the denominator, which means that it would vanish to 0.</p>
+<p class="center"><img src="/resources/2015-11-24/non-1-to-1.png" /></p>
 
-<p>Secondly, and more disturbingly, \(\ep^{-1}\) is not defined in the dual numbers. This is because of the following. Define \(\omega = \ep ^ {-1}\). Then</p>
+<p>Well, we have something that is obviously ridiculous but follows all the Laws. Well, let’s close the loophole!</p>
 
-<p>\[\omega\ep = 1\]<br />
-\[\omega^2\ep^2 = 1\]<br />
-\[\omega^2 0 = 1\]</p>
+<h2 id="for-any-two-numbers-x-and-y-if-xs--ys-x--y">4. For any two numbers \(x\) and \(y\), if \(x_S = y_S\), \(x = y\)</h2>
 
-<p>Which is an obvious contradiction. Therefore, the Dual Numbers are not a field and therefore not what we are looking for.</p>
+<p>OK! We’re finally done! No more weird numbers that feed into the regular numbers!</p>
 
-<h2 id="full-system-of-infinitesimals">Full System of Infinitesimals</h2>
+<p>So now let’s define a few numbers:</p>
 
-<p>Obviously, we need to define \(\ep^2\). So let’s just define it as \(\ep^2\). Same for \(\ep^3, \ep^4, \ep^5, \ldots\). We also, by fiat, define \(\ep^{-1} = \omega\). This of course introduces \(\omega^2, \omega^3, \omega^4,\ldots\).</p>
+<p>\[0_S = 1\]<br />
+\[1_S = 2\]<br />
+\[2_S = 3\]<br />
+\[3_S = 4\]</p>
 
-<p>This set is called the <a href="https://en.wikipedia.org/wiki/Hyperreal_number">Hyperreals</a>.</p>
+<p>OK, seems to be working. Now let’s define a few more.</p>
 
-<p>Now, it might at first appear that we have infinitesimals corresponding to every integer. Some Haskell programmers out there might be thinking in terms of infinite lists (I know that was <em>my</em> first thought at least). However, here’s a problem: what’s \(\sqrt{\ep}\)?</p>
+<p>\[\gamma_S = \beta\]<br />
+\[\beta_S = \alpha\]</p>
 
-<h2 id="level-comparison">Level comparison</h2>
+<p class="center"><img src="/resources/2015-11-24/two-chains.png" /></p>
 
-<p>Before we can fully analyze what \(\sqrt{\ep}\) means, we should define some notion of comparability. For example, we might want to define some notion of something being infinitesimal compared to something else. We can define \(\ll\), read “infinitesimal compared to” as follows:</p>
+<p>Where did those annoying Greek letters come from! Well, we’ve said what can be a number: the \(0, 0_S, 0_{SS}, 0_{SSS}\) etc. And we’ve said that no number is before \(0\). And we’ve said that no two numbers can feed into the same number.</p>
 
-<p>\[x \ll 1 \iff (\forall n \in \mathbb{N})(|x| &lt; \frac{1}{n})\]<br />
-\[x \ll y \iff y \neq 0 \wedge \frac{x}{y} \ll 1\]</p>
+<p>However, what we haven’t said is that the only numbers are \(0, 0_S, 0_{SS}, 0_{SSS}\), etc. And, guess what? That’s the fifth Law!</p>
 
-<p>Note that we decided to use the absolute value. Then, we can say \(0 \ll -1\). This is to allow for negative numbers to be compared in this way; the sign is simply ignored.</p>
+<h2 id="if-something-is-true-for-n--0-and-its-being-true-for-n-makes-it-true-for-ns-then-it-is-true-for-all-numbers">5. If something is true for \(n = 0\) and its being true for \(n\) makes it true for \(n_S\), then it is true for all numbers.</h2>
 
-<p>We can also define the comparators \(\gg\) and \(\bot\), read “infinite compared to” and “comparable to” as:</p>
+<p>OK, so this is a little more complicated than the previous examples. But let’s look at a quick example to see how it completes the definition of the numbers. \(\newcommand{\isn}{\uplus}\)</p>
 
-<p>\[x \gg y \iff y \ll x\]<br />
-\[x \bot y \iff \neg (x \ll y) \wedge \neg (x \gg y)\]</p>
+<p>Let’s look at the symbol \(\isn\). Basically, \(x_\isn = \true\), or true when \(x\) is a number, and \(\false\), or false, whenever it is not. (I got the symbol by typing “fancy math symbols” into Google. As far as I know, it isn’t commonly used.)</p>
 
-<p>The following proofs are left as an exercise to the reader:</p>
+<p>Some examples:</p>
 
-<ol>
-  <li>Exactly one of \(x \gg y\), \(x \ll y\), and \(x \bot y\) is true</li>
-  <li>\(\ll\) is transitive.</li>
-  <li>\(x \ll y \iff kx \ll ky\) for every \(k \neq 0\)</li>
-</ol>
+<p>\[0_\isn = \true\\<br />
+1_\isn = \true\\<br />
+2_\isn = \true\\<br />
+\spadesuit_\isn = \false\\<br />
+\diamondsuit_\isn = \false\]</p>
 
-<h2 id="all-powers-of-infinitesimals">All powers of infinitesimals</h2>
+<p>As you can see, suits of cards are not numbers, but \(0, 1, 2\) are.</p>
 
-<p>Now we can analyze what \(\sqrt{\ep}\) means. We know that since \(\ep \ll 1\), \(\sqrt{\ep} \ll 1\). We also know that since \(\frac{\ep}{\sqrt{\ep}} = \sqrt{\ep} \ll 1\), \(\ep \ll \sqrt{\ep}\). We now know that</p>
+<p>Anyway, the first two axioms can be said as “\(0_\isn\)” and “if \(n_\isn\), then \((n_S)_ \isn\)”</p>
 
-<p>\[\ep \ll \sqrt\ep \ll 1\]</p>
+<p>This means that \(n_\isn\) is true for all numbers.</p>
 
-<p>This means that \(\sqrt\ep\) is on a separate level of infinitesimal than any of the integral powers of \(\ep\). Since similar proofs can be constructed for all rational powers, and therefore for all real powers (yes, we have to go back to \(\ep—\delta\) for this), the hyper-reals therefore have as many levels as there are real numbers.</p>
+<p>Let that sink in for a minute.</p>
 
-<h2 id="derivatives">Derivatives</h2>
+<p>OK, so basically, we proved that all numbers are numbers. But that was just to show that the fifth Law of Mathematics makes sense.</p>
 
-<p>OK, so I know I promised you at the beginning of this section that this would all eventually lead to a more intuitive approach to derivatives. Unfortunately, however, this is far too long of a post already. I’ll cover derivatives in the next section.</p>
+<p>Now for a better example: let’s look at trying to get rid of those annoying Greek Letters. We defined \(\beta\) as some number which isn’t’ the successor of anything in a chain that comes from 0. Let’s define unbetaness as \(n \neq \beta\). We know that \(0 \neq \beta\), and we know that if \(n \neq \beta\) and \(n\) is a number, \(n_S \neq \beta\). Therefore, no number is equal to \(\beta\), so \(\beta\) is not a number.</p>
+
+<p>Now we’re actually done! Well, not really, because we still don’t know what \(2 + 2\) is, since we don’t know what \(+\) means. Let’s look at the Laws of Addition.</p>
+
+<h2 id="n--n">1. \(0 + n = n\)</h2>
+
+<p>Adding nothing to something doesn’t change it. Not particularly crazy stuff.</p>
+
+<h2 id="as--b--a--b-s">2. \(a_S + b = (a + b)_ S\)</h2>
+
+<p>Counting up one of the numbers does the same thing as counting up the sum. In other words, if you have two piles, adding a stone to one of the piles is the same as adding a stone to the system as a whole.</p>
+
+<h1 id="so-what-is-2--2">So, what <em>is</em> \(2 + 2\)?</h1>
+
+<p>\[2 + 2\\<br />
+1_S + 2\\<br />
+(1 + 2)_ S\\<br />
+(0_S + 2)_ S\\<br />
+((0 + 2)_ S)_ S\\<br />
+(2_ S)_ S\\<br />
+3_ S\\<br />
+4\]</p>
+
+<p>So, you’re wrong, Wikipedia, <a href="http://en.wikipedia.org/wiki/2+2=5">\(2 + 2\) is <em>not</em> 5!</a></p>
+
+<p>Anyway, the real point is that while before, you probably thought that \(2 + 2 = 4\) was a basic fact, a Law of Mathematics, now you know that it is just a deduction based on a few other, simpler, laws.</p>
 
   </article>
   
@@ -187,7 +210,7 @@
 
 			<footer class="footer">
 				<small>
-					&copy; <time datetime="2015-12-08T23:43:44-08:00">2015</time>. All rights reserved.
+					&copy; <time datetime="2015-12-09T16:32:50-08:00">2015</time>. All rights reserved.
 				</small>
 			</footer>
 		</div>
