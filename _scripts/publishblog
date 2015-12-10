@@ -2,8 +2,8 @@
 
 ./SimplePreprocessor/spp -s "_posts"
 jekyll build
+./SimplePreprocessor/spp -s "_posts" -c
 git add .
 git add -u
 git commit -m "$1"
 git push origin master
-./SimplePreprocessor/spp -s "_posts" -c
