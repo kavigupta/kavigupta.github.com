@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ./SimplePreprocessor/spp -s "_posts"
-timeout 20s jekyll serve
+jekyll build
 ./SimplePreprocessor/spp -s "_posts" -c
 git add .
 git commit -m "$1"
