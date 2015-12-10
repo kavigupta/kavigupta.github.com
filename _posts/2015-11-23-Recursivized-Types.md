@@ -1,8 +1,14 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "haskellcomment" -> "haskell"
+<!--_-->
 ---
 layout: post
 title: Recursivized Types
 comments: True
 ---
+
+dump: haskell as hs
 
 So, a short break from \\(\varepsilon---\delta\\).
 
