@@ -1,7 +1,9 @@
 #!/bin/bash
 python3 "_scripts/codetosources.py"
 
+./SimplePreprocessor/spp -s "_posts"
 timeout 5s jekyll serve
 git add .
 git commit -m "$1"
 git push origin master
+./SimplePreprocessor/spp -s "_posts" -c
