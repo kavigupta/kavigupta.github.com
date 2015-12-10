@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-12-10T01:07:53-08:00</updated>
+ <updated>2015-12-10T01:12:36-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
@@ -13,18 +13,11 @@
 
  
  <entry>
-   <title>Infsabot Strategy</title>
+   <title>Infsabot Strategy Part 1</title>
    <link href="https://kavigupta.github.io/2015/12/06/Infsabot-Strategy/"/>
    <updated>2015-12-06T00:00:00-08:00</updated>
    <id>https://kavigupta.github.io/2015/12/06/Infsabot-Strategy</id>
-   <content type="html">&lt;!--_--&gt;
-&lt;hr /&gt;
-&lt;p&gt;layout: post&lt;br /&gt;
-title: Infsabot Strategy Part 1&lt;br /&gt;
-comments: True&lt;br /&gt;
-—&lt;/p&gt;
-
-&lt;p&gt;OK, so what is this &lt;em&gt;Infsabot&lt;/em&gt;? Infsabot is a game I designed for people to write programs to play. Basically, it’s like chess, except where each piece acts independently of each other.&lt;/p&gt;
+   <content type="html">&lt;p&gt;OK, so what is this &lt;em&gt;Infsabot&lt;/em&gt;? Infsabot is a game I designed for people to write programs to play. Basically, it’s like chess, except where each piece acts independently of each other.&lt;/p&gt;
 
 &lt;h2 id=&quot;the-game&quot;&gt;The Game&lt;/h2&gt;
 
