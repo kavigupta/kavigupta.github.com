@@ -1,4 +1,3 @@
-<!--_-->
 ---
 layout: post
 title: Recursivized Types

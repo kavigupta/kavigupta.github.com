@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-12-10T01:12:36-08:00</updated>
+ <updated>2015-12-10T01:19:28-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
@@ -289,14 +289,7 @@ instance Evaluable KnownState ExprPath [RDirection] where
    <link href="https://kavigupta.github.io/2015/11/23/Recursivized-Types/"/>
    <updated>2015-11-23T00:00:00-08:00</updated>
    <id>https://kavigupta.github.io/2015/11/23/Recursivized-Types</id>
-   <content type="html">&lt;!--_--&gt;
-&lt;hr /&gt;
-&lt;p&gt;layout: post&lt;br /&gt;
-title: Recursivized Types&lt;br /&gt;
-comments: True&lt;br /&gt;
-—&lt;/p&gt;
-
-&lt;p&gt;So, a short break from \(\varepsilon—\delta\).&lt;/p&gt;
+   <content type="html">&lt;p&gt;So, a short break from \(\varepsilon—\delta\).&lt;/p&gt;
 
 &lt;p&gt;Anyway, I’m going to look at Algebraic types in this section. Specifically, I am going to use Haskell types.&lt;/p&gt;
 
