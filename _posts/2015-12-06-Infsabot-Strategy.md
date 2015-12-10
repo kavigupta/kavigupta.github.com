@@ -1,6 +1,3 @@
-preprocess:
-    pass ../_scripts/codetosources.py
-    replace "haskellcomment" -> "haskell"
 <!--_-->
 ---
 layout: post
