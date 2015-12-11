@@ -122,16 +122,24 @@ digStrategy
     = IfRP (MaterialAt Here)
         (DefaultRepresentation TDig)
         (ModifyDirection
-            (IfDir (MaterialAt (ConstDir N))
-                N
-                (IfDir (MaterialAt (ConstDir E))
-                    E
-                    IfDir (MaterialAt (ConstDir S))
-                        S
-                        W))
-            (DefaultRepresentation TMove))
+            (IfDir
+                (MaterialAt
+                    (Offset (ConstDir N) Here))
+                (ConstDir N)
+                (IfDir
+                    (MaterialAt
+                        (Offset (ConstDir E) Here))
+                    (ConstDir E)
+                    (IfDir
+                        (MaterialAt
+                            (Offset (ConstDir S) Here))
+                        (ConstDir S)
+                        (ConstDir W))))
+            (DefaultRepresentation TMoveIn))
 ```
 
 That's some damn good looking Scheme---ahem, Infsabot Strategy DSL!
 
 Anyway, next time I'll cover how to generate code in the form of this structure. Hopefully, the computer can do most of the heavy lifting!
+
+Note: I made a few corrections to `digStrategy` because it wasn't exactly compiling.

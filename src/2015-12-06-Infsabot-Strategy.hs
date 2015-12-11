@@ -66,12 +66,18 @@ digStrategy
     = IfRP (MaterialAt Here)
         (DefaultRepresentation TDig)
         (ModifyDirection
-            (IfDir (MaterialAt (ConstDir N))
-                N
-                (IfDir (MaterialAt (ConstDir E))
-                    E
-                    IfDir (MaterialAt (ConstDir S))
-                        S
-                        W))
-            (DefaultRepresentation TMove))
+            (IfDir
+                (MaterialAt
+                    (Offset (ConstDir N) Here))
+                (ConstDir N)
+                (IfDir
+                    (MaterialAt
+                        (Offset (ConstDir E) Here))
+                    (ConstDir E)
+                    (IfDir
+                        (MaterialAt
+                            (Offset (ConstDir S) Here))
+                        (ConstDir S)
+                        (ConstDir W))))
+            (DefaultRepresentation TMoveIn))
 

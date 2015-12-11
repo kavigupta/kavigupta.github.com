@@ -188,19 +188,27 @@ instance Evaluable KnownState ExprPath [RDirection] where
     = IfRP (MaterialAt Here)
         (DefaultRepresentation TDig)
         (ModifyDirection
-            (IfDir (MaterialAt (ConstDir N))
-                N
-                (IfDir (MaterialAt (ConstDir E))
-                    E
-                    IfDir (MaterialAt (ConstDir S))
-                        S
-                        W))
-            (DefaultRepresentation TMove))
+            (IfDir
+                (MaterialAt
+                    (Offset (ConstDir N) Here))
+                (ConstDir N)
+                (IfDir
+                    (MaterialAt
+                        (Offset (ConstDir E) Here))
+                    (ConstDir E)
+                    (IfDir
+                        (MaterialAt
+                            (Offset (ConstDir S) Here))
+                        (ConstDir S)
+                        (ConstDir W))))
+            (DefaultRepresentation TMoveIn))
 </code></pre>
 
 <p>That’s some damn good looking Scheme—ahem, Infsabot Strategy DSL!</p>
 
 <p>Anyway, next time I’ll cover how to generate code in the form of this structure. Hopefully, the computer can do most of the heavy lifting!</p>
+
+<p>Note: I made a few corrections to <code>digStrategy</code> because it wasn’t exactly compiling.</p>
 
   </article>
   
@@ -218,7 +226,7 @@ instance Evaluable KnownState ExprPath [RDirection] where
 
 			<footer class="footer">
 				<small>
-					&copy; <time datetime="2015-12-10T17:09:49-08:00">2015</time>. All rights reserved.
+					&copy; <time datetime="2015-12-10T21:45:13-08:00">2015</time>. All rights reserved.
 				</small>
 			</footer>
 		</div>

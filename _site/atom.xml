@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-12-10T17:09:49-08:00</updated>
+ <updated>2015-12-10T21:45:13-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
@@ -136,19 +136,27 @@ instance Evaluable KnownState ExprPath [RDirection] where
     = IfRP (MaterialAt Here)
         (DefaultRepresentation TDig)
         (ModifyDirection
-            (IfDir (MaterialAt (ConstDir N))
-                N
-                (IfDir (MaterialAt (ConstDir E))
-                    E
-                    IfDir (MaterialAt (ConstDir S))
-                        S
-                        W))
-            (DefaultRepresentation TMove))
+            (IfDir
+                (MaterialAt
+                    (Offset (ConstDir N) Here))
+                (ConstDir N)
+                (IfDir
+                    (MaterialAt
+                        (Offset (ConstDir E) Here))
+                    (ConstDir E)
+                    (IfDir
+                        (MaterialAt
+                            (Offset (ConstDir S) Here))
+                        (ConstDir S)
+                        (ConstDir W))))
+            (DefaultRepresentation TMoveIn))
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;That’s some damn good looking Scheme—ahem, Infsabot Strategy DSL!&lt;/p&gt;
 
 &lt;p&gt;Anyway, next time I’ll cover how to generate code in the form of this structure. Hopefully, the computer can do most of the heavy lifting!&lt;/p&gt;
+
+&lt;p&gt;Note: I made a few corrections to &lt;code&gt;digStrategy&lt;/code&gt; because it wasn’t exactly compiling.&lt;/p&gt;
 </content>
  </entry>
  
