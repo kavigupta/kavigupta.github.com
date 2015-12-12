@@ -6,6 +6,12 @@ from subprocess import check_call
 
 print (argv)
 
+def call(*args):
+    try:
+        check_call(args)
+    except Exception as e:
+        print (str(e))
+
 if argv[1] == 'serve':
     commit = False
     print ("No commit")
@@ -16,11 +22,11 @@ if commit:
     system('jekyll build')
     system('git add .')
     system('git add -u')
-    check_call(['git', 'commit', '-m', commit])
+    call('git', 'commit', '-m', commit)
     system('git push origin master')
     system('git add .')
     system('git add -u')
-    check_call(['git', 'commit', '-m', commit])
+    call('git', 'commit', '-m', commit)
 else:
     system('jekyll serve')
 system('./SimplePreprocessor/spp -s "_posts" -c')
