@@ -26,6 +26,7 @@ if commit:
     system('git push origin master')
     system('git add .')
     system('git add -u')
+    system('git status')
     call('git', 'commit', '-m', commit)
 else:
     system('jekyll serve')
