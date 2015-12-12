@@ -7,14 +7,14 @@ complexity :: RP -> Int
 
 getDeltas :: Ratio -> RP -> [RP]
 
-applyDeltas :: [Ratio] -> RP -> RP
+applyDeltas :: [Ratio Int] -> RP -> RP
 
 constantToParameter :: HistoricalStates -> RP -> StdGen -> (RP, StdGen)
 
 simplify :: HistoricalStates -> RP -> StdGen -> (RP, StdGen)
 
 data GeneratorParameters = GeneratorParameters {
-    closeEnoughThreshold :: Ratio
+    closeEnoughThreshold :: Ratio Int
 }
 
 simplify :: GeneratorParameters -> HistoricalStates -> RP -> StdGen -> (RP, StdGen)
@@ -28,9 +28,9 @@ instance Random RP where
 
 class (Random a) => Expr a where
     complexity :: a -> Int
-    getDeltas :: Ratio -> a -> [a]
-    applyDeltas :: [Ratio] -> a -> a
+    getDeltas :: Ratio Int -> a -> [a]
+    applyDeltas :: [Ratio Int] -> a -> a
     constantToParameter :: HistoricalStates -> a -> StdGen -> (a, StdGen)
     simplify :: HistoricalStates -> a -> StdGen -> (a, StdGen)
-    complicate :: Int -> RP -> StdGen -> (RP, StdGen)
+    complicate :: Int -> a -> StdGen -> (RP, StdGen)
 

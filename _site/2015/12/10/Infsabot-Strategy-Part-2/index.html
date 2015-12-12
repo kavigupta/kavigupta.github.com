@@ -104,7 +104,7 @@ modify :: RP -&gt; StdGen -&gt; (RP, StdGen)
 
 <p>We also want to be able to apply perturbations to an <code>RP</code>:</p>
 
-<pre><code class="language-haskell">applyDeltas :: [Ratio] -&gt; RP -&gt; RP
+<pre><code class="language-haskell">applyDeltas :: [Ratio Int] -&gt; RP -&gt; RP
 </code></pre>
 
 <p>Using these two techniques we can find a local maximum by something akin to Euler’s method for differential equations.</p>
@@ -122,7 +122,7 @@ modify :: RP -&gt; StdGen -&gt; (RP, StdGen)
 <p>In fact, <code>simplify</code> can be seen as a more general form of <code>constantToParameter</code>; we can simply require some threshold determining whether or not a parameter or constant is “close enough” to be considered the same as a tree or not.</p>
 
 <pre><code class="language-haskell">data GeneratorParameters = GeneratorParameters {
-    closeEnoughThreshold :: Ratio
+    closeEnoughThreshold :: Ratio Int
 }
 
 simplify :: GeneratorParameters -&gt; HistoricalStates -&gt; RP -&gt; StdGen -&gt; (RP, StdGen)
@@ -159,11 +159,11 @@ simplify :: GeneratorParameters -&gt; HistoricalStates -&gt; RP -&gt; StdGen -&g
 
 <pre><code class="language-haskell">class (Random a) =&gt; Expr a where
     complexity :: a -&gt; Int
-    getDeltas :: Ratio -&gt; a -&gt; [a]
-    applyDeltas :: [Ratio] -&gt; a -&gt; a
+    getDeltas :: Ratio Int -&gt; a -&gt; [a]
+    applyDeltas :: [Ratio Int] -&gt; a -&gt; a
     constantToParameter :: HistoricalStates -&gt; a -&gt; StdGen -&gt; (a, StdGen)
     simplify :: HistoricalStates -&gt; a -&gt; StdGen -&gt; (a, StdGen)
-    complicate :: Int -&gt; RP -&gt; StdGen -&gt; (RP, StdGen)
+    complicate :: Int -&gt; a -&gt; StdGen -&gt; (RP, StdGen)
 </code></pre>
 
 <p>OK, so that’’s it for now. I’ll cover implementation tomorrow after I typecheck this mess!</p>
@@ -183,7 +183,7 @@ simplify :: GeneratorParameters -&gt; HistoricalStates -&gt; RP -&gt; StdGen -&g
 
 			<footer class="footer">
 				<small>
-					&copy; <time datetime="2015-12-12T00:56:16-08:00">2015</time>. All rights reserved.
+					&copy; <time datetime="2015-12-12T01:04:03-08:00">2015</time>. All rights reserved.
 				</small>
 			</footer>
 		</div>

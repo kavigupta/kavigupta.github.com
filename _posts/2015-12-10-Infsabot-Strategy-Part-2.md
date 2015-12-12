@@ -54,7 +54,7 @@ getDeltas :: Ratio -> RP -> [RP]
 We also want to be able to apply perturbations to an `RP`:
 
 ```haskell
-applyDeltas :: [Ratio] -> RP -> RP
+applyDeltas :: [Ratio Int] -> RP -> RP
 ```
 
 Using these two techniques we can find a local maximum by something akin to Euler's method for differential equations.
@@ -75,7 +75,7 @@ In fact, `simplify` can be seen as a more general form of `constantToParameter`;
 
 ```haskell
 data GeneratorParameters = GeneratorParameters {
-    closeEnoughThreshold :: Ratio
+    closeEnoughThreshold :: Ratio Int
 }
 
 simplify :: GeneratorParameters -> HistoricalStates -> RP -> StdGen -> (RP, StdGen)
@@ -116,11 +116,11 @@ Let's therefore collate all these function definitions into a single typeclass:
 ```haskell
 class (Random a) => Expr a where
     complexity :: a -> Int
-    getDeltas :: Ratio -> a -> [a]
-    applyDeltas :: [Ratio] -> a -> a
+    getDeltas :: Ratio Int -> a -> [a]
+    applyDeltas :: [Ratio Int] -> a -> a
     constantToParameter :: HistoricalStates -> a -> StdGen -> (a, StdGen)
     simplify :: HistoricalStates -> a -> StdGen -> (a, StdGen)
-    complicate :: Int -> RP -> StdGen -> (RP, StdGen)
+    complicate :: Int -> a -> StdGen -> (RP, StdGen)
 ```
 
 OK, so that''s it for now. I'll cover implementation tomorrow after I typecheck this mess!

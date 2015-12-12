@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-12-12T00:56:16-08:00</updated>
+ <updated>2015-12-12T01:04:03-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
@@ -63,7 +63,7 @@ modify :: RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
 
 &lt;p&gt;We also want to be able to apply perturbations to an &lt;code&gt;RP&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;applyDeltas :: [Ratio] -&amp;gt; RP -&amp;gt; RP
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;applyDeltas :: [Ratio Int] -&amp;gt; RP -&amp;gt; RP
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Using these two techniques we can find a local maximum by something akin to Euler’s method for differential equations.&lt;/p&gt;
@@ -81,7 +81,7 @@ modify :: RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
 &lt;p&gt;In fact, &lt;code&gt;simplify&lt;/code&gt; can be seen as a more general form of &lt;code&gt;constantToParameter&lt;/code&gt;; we can simply require some threshold determining whether or not a parameter or constant is “close enough” to be considered the same as a tree or not.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data GeneratorParameters = GeneratorParameters {
-    closeEnoughThreshold :: Ratio
+    closeEnoughThreshold :: Ratio Int
 }
 
 simplify :: GeneratorParameters -&amp;gt; HistoricalStates -&amp;gt; RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
@@ -118,11 +118,11 @@ simplify :: GeneratorParameters -&amp;gt; HistoricalStates -&amp;gt; RP -&amp;gt
 
 &lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;class (Random a) =&amp;gt; Expr a where
     complexity :: a -&amp;gt; Int
-    getDeltas :: Ratio -&amp;gt; a -&amp;gt; [a]
-    applyDeltas :: [Ratio] -&amp;gt; a -&amp;gt; a
+    getDeltas :: Ratio Int -&amp;gt; a -&amp;gt; [a]
+    applyDeltas :: [Ratio Int] -&amp;gt; a -&amp;gt; a
     constantToParameter :: HistoricalStates -&amp;gt; a -&amp;gt; StdGen -&amp;gt; (a, StdGen)
     simplify :: HistoricalStates -&amp;gt; a -&amp;gt; StdGen -&amp;gt; (a, StdGen)
-    complicate :: Int -&amp;gt; RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
+    complicate :: Int -&amp;gt; a -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;OK, so that’’s it for now. I’ll cover implementation tomorrow after I typecheck this mess!&lt;/p&gt;

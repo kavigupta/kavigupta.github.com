@@ -27,6 +27,8 @@ if commit:
 else:
     system('jekyll serve')
 
+system('./SimplePreprocessor/spp -s "_posts" -c')
+
 if commit:
     system('git add .')
     system('git add -u')
