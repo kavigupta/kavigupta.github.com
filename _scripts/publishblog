@@ -3,6 +3,8 @@
 from sys import argv
 from os import system
 
+print (argv)
+
 if argv[1] == 'serve':
     commit = None
 commit = argv[1]
