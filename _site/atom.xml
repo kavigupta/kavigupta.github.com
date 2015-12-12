@@ -4,7 +4,7 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-12-12T00:31:48-08:00</updated>
+ <updated>2015-12-12T00:38:30-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
@@ -125,7 +125,7 @@ simplify :: GeneratorParameters -&amp;gt; HistoricalStates -&amp;gt; RP -&amp;gt
     complicate :: Int -&amp;gt; RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Generally,&lt;/p&gt;
+&lt;p&gt;OK, so that’’s it for now. I’ll cover implementation tomorrow after I typecheck this mess!&lt;/p&gt;
 </content>
  </entry>
  

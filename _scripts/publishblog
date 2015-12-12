@@ -6,9 +6,10 @@ from os import system
 print (argv)
 
 if argv[1] == 'serve':
-    commit = None
+    commit = False
     print ("No commit")
-commit = argv[1]
+else:
+    commit = argv[1]
 system('./SimplePreprocessor/spp -s "_posts"')
 if commit:
     system('jekyll build')
@@ -16,6 +17,9 @@ if commit:
     system('git add -u')
     system('git commit -m ' + commit)
     system('git push origin master')
+    system('git add .')
+    system('git add -u')
+    system('git commit -m "' + commit + ' (Saving actual state of my computer so git diff works; cannot push because that breaks the website.)"')
 else:
     system('jekyll serve')
 system('./SimplePreprocessor/spp -s "_posts" -c')
