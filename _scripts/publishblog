@@ -16,6 +16,7 @@ if commit:
     system('git add .')
     system('git add -u')
     system('git commit -m ' + commit)
+    print ("A")
     system('git push origin master')
     system('git add .')
     system('git add -u')
