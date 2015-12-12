@@ -4,13 +4,130 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-12-10T21:45:13-08:00</updated>
+ <updated>2015-12-11T17:31:35-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Infsabot Strategy Part 1</title>
+   <link href="https://kavigupta.github.io/2015/12/10/Infsabot-Strategy-Part-2/"/>
+   <updated>2015-12-10T00:00:00-08:00</updated>
+   <id>https://kavigupta.github.io/2015/12/10/Infsabot-Strategy-Part-2</id>
+   <content type="html">&lt;p&gt;OK, so to continue our Infsaboting.&lt;/p&gt;
+
+&lt;h3 id=&quot;correction&quot;&gt;Correction&lt;/h3&gt;
+
+&lt;p&gt;I made a mistake last time. I included &lt;code&gt;SwitchInt&lt;/code&gt;, a way to switch on values of &lt;code&gt;ExprDir&lt;/code&gt;, which is ridiculous since an &lt;code&gt;ExprDir&lt;/code&gt; can only be constructed as a constant or an &lt;code&gt;if&lt;/code&gt; branch to begin with.&lt;/p&gt;
+
+&lt;p&gt;So just imagine that I never did that.&lt;/p&gt;
+
+&lt;h2 id=&quot;guess-and-check&quot;&gt;Guess and Check&lt;/h2&gt;
+
+&lt;p&gt;OK, so how should our AI construct these syntax trees? At a very high level, we want to be able to 1) assess trees against collections of trees and 2) modify them randomly. We can represent this as a pair of types:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;asses :: [RP] -&amp;gt; RP -&amp;gt; Double
+modify :: RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I think the implementation of &lt;code&gt;asses&lt;/code&gt; should be pretty clear: simply find the win rate (given that we can simulate an unlimited number of games).&lt;/p&gt;
+
+&lt;p&gt;Modify, on the other hand, is a little more complicated. There are a few ways a tree can be modified:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Modify the value of a constant to be something else.&lt;/li&gt;
+  &lt;li&gt;Modify the value of a field to point to something else or a field&lt;/li&gt;
+  &lt;li&gt;Add leaves to the tree&lt;/li&gt;
+  &lt;li&gt;Remove leaves as a simplification step&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It might seem as if some of these factors might be aided by adding a field to everything that tracks typical values of the course of the application at different points within the tree. In this way, one can tell how big a difference between two strategies are. We can actually pretty easily keep track of this separately by recording a list of &lt;code&gt;KnownState&lt;/code&gt;s from our simulations. For now, we’ll just keep of all states or some random subset.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;type HistoricalStates = [KnownState]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;shopping-list-for-functions&quot;&gt;Shopping List for Functions&lt;/h2&gt;
+
+&lt;p&gt;Overall, we want to generate simpler strategies. But what do we mean by “simple”? Well, we can define complexity as the number of leaves of an expression tree:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;complexity :: RP -&amp;gt; Int
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We might also want to be able to check what happens with small changes to individual parameters. To do this, we return a vector of slightly modified values where each parameter is a dimension.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;getDeltas :: Ratio -&amp;gt; RP -&amp;gt; [RP]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We also want to be able to apply perturbations to an &lt;code&gt;RP&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;applyDeltas :: [Ratio] -&amp;gt; RP -&amp;gt; RP
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Using these two techniques we can find a local maximum by something akin to Euler’s method for differential equations.&lt;/p&gt;
+
+&lt;p&gt;We also want to be able to switch between constants and parameters that make sense given context easily. For this, we can provide a typical set of &lt;code&gt;KnownState&lt;/code&gt;s that can be used to find some parameter that would be similar and substitute it in. For simplicity, we’ll only change one at a time.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;constantToParameter :: HistoricalStates -&amp;gt; RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is a little out of order, but simplification should work in a similar manner, replacing complex sections of tree with constants or parameters.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;simplify :: HistoricalStates -&amp;gt; RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In fact, &lt;code&gt;simplify&lt;/code&gt; can be seen as a more general form of &lt;code&gt;constantToParameter&lt;/code&gt;; we can simply require some threshold determining whether or not a parameter or constant is “close enough” to be considered the same as a tree or not.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;data GeneratorParameters = GeneratorParameters {
+    closeEnoughThreshold :: Ratio
+}
+
+simplify :: GeneratorParameters -&amp;gt; HistoricalStates -&amp;gt; RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Finally, we want the ability to complicate a given expression tree.&lt;/p&gt;
+
+&lt;p&gt;This can be accomplished most atomically by defining a function &lt;code&gt;complicate&lt;/code&gt; that is allowed to make structural but non-effective changes, e.g.,&lt;br /&gt;
+ - &lt;code&gt;x -&amp;gt; 1 * x, x / 1, 0 + x, x - 0&lt;/code&gt;&lt;br /&gt;
+ - &lt;code&gt;x -&amp;gt; if &amp;lt;some bool expression&amp;gt; then x else x&lt;/code&gt;&lt;br /&gt;
+ - &lt;code&gt;b -&amp;gt; b &amp;amp;&amp;amp; True, b || False&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;This will accept an integer argument of how much to complicate its tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;complicate :: Int -&amp;gt; RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, in mentioning everything above, glossed over some things. For example, most parameters accept some sort of argument, so generating them requires said argument. Additionally, &lt;code&gt;&amp;lt;some bool expression&amp;gt;&lt;/code&gt; will need to actually be filled in in the redundant branch seen above. So we need some way to randomly generate parts of a tree&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;randomlyGenerate :: StdGen -&amp;gt; (RP, StdGen)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In fact, this function is provided by the &lt;code&gt;Random&lt;/code&gt; typeclass, so we can instead say&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;instance Random RP where
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;an-expr-type-class&quot;&gt;An &lt;code&gt;Expr&lt;/code&gt; type class&lt;/h2&gt;
+
+&lt;p&gt;OK, so if you were looking carefully, that last type didn’t make much sense. I said we needed to be able to generate random elements of various types, but the definition I gave was specifically for &lt;code&gt;RP&lt;/code&gt;. In fact, all the definitions I gave apply equally well to any of the various &lt;code&gt;Expr*&lt;/code&gt; types.&lt;/p&gt;
+
+&lt;p&gt;Let’s therefore collate all these function definitions into a single typeclass:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;class (Random a) =&amp;gt; Expr a where
+    complexity :: a -&amp;gt; Int
+    getDeltas :: Ratio -&amp;gt; a -&amp;gt; [a]
+    applyDeltas :: [Ratio] -&amp;gt; a -&amp;gt; a
+    constantToParameter :: HistoricalStates -&amp;gt; a -&amp;gt; StdGen -&amp;gt; (a, StdGen)
+    simplify :: HistoricalStates -&amp;gt; a -&amp;gt; StdGen -&amp;gt; (a, StdGen)
+    complicate :: Int -&amp;gt; RP -&amp;gt; StdGen -&amp;gt; (RP, StdGen)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Generally,&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Infsabot Strategy Part 1</title>

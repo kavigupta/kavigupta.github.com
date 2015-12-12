@@ -62,74 +62,121 @@
   
   <article class="post">
     <h1 class="post-title">
-      <a href="/2015/10/06/Ancient-Greek-Abstract-Algebra-Introduction/">
-        Ancient Greek Abstract Algebra&#58; Introduction
+      <a href="/2015/11/19/Who-Needs-Delta/">
+        Who Needs Delta? Defining the Hyper-Real Numbers
       </a>
       <!--Dummy info-->
     </h1>
-    <time datetime="2015-10-06T00:00:00-07:00" class="post-date">06 Oct 2015</time>
+    <time datetime="2015-11-19T00:00:00-08:00" class="post-date">19 Nov 2015</time>
 
-    <p>Note: I’ve put the Ancient Greek Abstract Algebra series on hold for now. Please take a look at some of my other post(s).</p>
+    <p>\(\renewcommand{\ep}{\varepsilon}\)<br />
+\(\renewcommand{\d}{\mathrm d}\)</p>
 
-<h2 id="modern-constructions-of-mathbbn">Modern constructions of <script type="math/tex">\mathbb{N}</script></h2>
+<p>In high school Calculus, solving differential equations often involves something like the following:</p>
 
-<p>The natural numbers are taught to children as a basic facet of mathematics. One of the first things we learn is how to count. In fact, the name “Natural Numbers” itself implies that the natural numbers are basic.</p>
+<p>\[\frac{\d y}{\d x} = \frac{y}{x}\]</p>
 
-<p>However, modern mathematicians seem to have trouble with accepting the natural numbers as first class features of mathematics. In fact, there are not one but two common definitions of the naturals that can be used to prove the Peano Axioms (the basic axioms from which most of number theory can be proven).</p>
+<p>\[\frac{\d y}{y} = \frac{\d x}{x}\]</p>
 
-<h3 id="church-numerals">Church Numerals</h3>
+<p>\[\int \frac{\d y}{y} = \int \frac{\d x}{x}\]</p>
 
-<p>\[0 = f \mapsto (t \mapsto t)\]</p>
+<p>\[\int \log y = c + \log x\]</p>
 
-<p>\[S(n) = f \mapsto (f \circ n(f))\]</p>
+<p>\[\int y = kx\]</p>
 
-<p>In this way, the church numeral <script type="math/tex">n</script> is defined as the function that takes a function and outputs the <script type="math/tex">n\th</script> repeated application of it.</p>
+<p>Now, I don’t know about anyone else, but this abuse of notation really bothered me at first. Everyone knows that \(\d x\) isn’t an actual number by itself, but we seem to use it all the time as an independent variable.</p>
 
-<h3 id="set-theory-numerals">Set Theory Numerals</h3>
+<h2 id="fluxions-and-limits">Fluxions and Limits</h2>
 
-<p>\[0 = \{\{\}\}\]<br />
-\[S(n) = n \cup \{n\}\]</p>
+<p>Well, as it turns out, early mathematicians had the same problem with Newton’s original formulation of Calculus, in which he called these infinitesimal quantities <a href="https://en.wikipedia.org/wiki/Method_of_Fluxions">“fluxions”</a>. His explanation was that they were quantities which “flowed” to 0 from before to after he took a derivative.</p>
 
-<p>The set theoretic numerals are therefore defined as the set of all the elements before them along with the empty set.</p>
+<p>Obviously, in modern mathematics, this could not stand, and we got the following definition:</p>
 
-<h2 id="ancient-greek-abstract-algebra">Ancient Greek Abstract Algebra</h2>
+<p>\[\lim_{x \to a} f(x) = L \iff (\forall \ep &gt; 0)(\exists \delta)(|x - d| &lt; \delta \implies |f(x) - L| &lt; \ep) \]</p>
 
-<p>A modern mathematician would justify the definition of the natural numbers as a way to base an inherently complicated system with an infinite number of elements on a far simpler system containing only a few axioms.</p>
+<p>\[f’(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \]</p>
 
-<p>However, modern mathematicians’ discomfort with numbers and desire for algebraic constructions, to the uninitiated, can often seem bizarre. In fact, my first thought when I learned about the construction of the natural numbers was to think of another type of construction: Euclid’s compass and straightedge.</p>
+<p>This system, known as \(\ep–\delta\), has been an important part of mathematics ever since it was defined.</p>
 
-<p>Personally, I like modern algebra, but I don’t like geometry. Whenever I see a problem in geometry, I immediately try to transform it into an algebraic problem by introducing coordinates. I used to think that I didn’t like geometry because it is unsystematic. However, I have come to realize that a large part of my aversion has to do with language.</p>
+<p>I find this equation particularly elegant; it places the idea of limits and derivatives firmly in the language of set theory, and does so in a simple manner that, after some thought, is somewhat intuitive.</p>
 
-<h2 id="language">Language</h2>
+<h2 id="back-to-infinitesimals">Back to Infinitesimals</h2>
 
-<p>Algebra has an important modern advantage over geometry: a symbolic language. For example, the following is the converse of the Pythagorean theorem, quoted from <a href="http://aleph0.clarku.edu/~djoyce/java/elements/bookI/propI48.html">Professor D.E. Joyce’s page at Clark University </a>:</p>
+<p>However, when we think about what the velocity of a particle in free fall, we generally don’t think in terms of finding some \(\delta\) for every \(\ep\). I generally tend to find it easier to think in terms of a small change in position over a small change in time.</p>
 
-<blockquote>
-  <p>If in a triangle the square on one of the sides equals the sum of the squares on the remaining two sides of the triangle, then the angle contained by the remaining two sides of the triangle is right.</p>
-</blockquote>
+<p>In fact, there is a way to formalize this relationship, found in the field of <a href="https://en.wikipedia.org/wiki/Non-standard_analysis">non-standard analysis</a>. To do so, we introduce an infinitesimal element, which is known as \(\ep\). This element has the property that</p>
 
-<p>In symbols, this statement would be</p>
+<p>\[(\forall n \in \mathbb{N^+})(0 &lt; \ep &lt; \frac{1}{n})\]</p>
 
-<p>\[AC^2 = AB^2 + BC^2 \implies AB \perp BC\]</p>
+<p>We can therefore define addition and subtraction as simple vector addition and subtraction over \(\{1, \ep\}\) fairly simply, in a similar manner to complex addition and subtraction.</p>
 
-<p>I will say, and I think without the guilt of modern arrogance, that this formulation is much simpler. While it does require a little more background knowledge than the sentence form (one must know what the symbols represent), it is much shorter and can generalize to more than three variable quantities easily.</p>
+<h2 id="ep2">\(\ep^2\)</h2>
+<p>Multiplication is a little more complicated. We know that</p>
 
-<p>For example, try putting the quadratic formula <script type="math/tex">ax^2 + bx + c = 0 \implies x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</script> in a language with no concept of symbolic operations or variable names. The simplest result I can think of (with <script type="math/tex">c</script> flipped to the other side to avoid saying “zero”) is:</p>
+<p>\[(a + b\ep)(c + d\ep) = ac + (ad + bc)\ep + bd \ep^2\]</p>
 
-<blockquote>
-  <p>If the sum of the the product of the square of a number and some coefficient and the number and some other coefficient is equal to some value, the number is equal to the quotient between the difference of a number whose square is equal to the sum between the square of the coefficient of the number and four times the product of the coefficient of the square of the number and the value and the coefficient of the number and twice the coefficient of the square of the number.</p>
-</blockquote>
+<p>but what should \(\ep^2\) be? If we decide to keep the result within our new vector-like field, we end up with the equation \(\ep^2 = a\ep + b\), for real \(a, b\). I’ll spare you the <a href="https://en.wikipedia.org/wiki/Hypercomplex_number#Two-dimensional_real_algebras">derivation</a>, but it turns out that there are only three different systems we can get out of this formula. Two are useless for our purposes, being the complex numbers and something called the split-complex numbers, in which there is some \(j^2 = 1, j \neq \pm 1\). The last, the Dual Numbers, is a system in which \(\ep^2 = 0\).</p>
 
-<p>I can conclude with some confidence that putting Euclidean geometry into the language of abstract mathematics will make it more manageable.</p>
+<h2 id="dual-numbers">Dual Numbers</h2>
 
-<p>Hey, it might even break down anti-geometry prejudices of people like me.</p>
+<p>Dual Numbers at first seem quite promising. The idea that \(\d x^2 = 0\) sounds pretty similar to the notion of higher order differentials vanishing to 0. However, there are a few problems. First of all, the second derivative \(\frac{\d^2 x}{\d x^2}\) contains second degree differentials on both the numerator and the denominator, which means that it would vanish to 0.</p>
+
+<p>Secondly, and more disturbingly, \(\ep^{-1}\) is not defined in the dual numbers. This is because of the following. Define \(\omega = \ep ^ {-1}\). Then</p>
+
+<p>\[\omega\ep = 1\]<br />
+\[\omega^2\ep^2 = 1\]<br />
+\[\omega^2 0 = 1\]</p>
+
+<p>Which is an obvious contradiction. Therefore, the Dual Numbers are not a field and therefore not what we are looking for.</p>
+
+<h2 id="full-system-of-infinitesimals">Full System of Infinitesimals</h2>
+
+<p>Obviously, we need to define \(\ep^2\). So let’s just define it as \(\ep^2\). Same for \(\ep^3, \ep^4, \ep^5, \ldots\). We also, by fiat, define \(\ep^{-1} = \omega\). This of course introduces \(\omega^2, \omega^3, \omega^4,\ldots\).</p>
+
+<p>This set is called the <a href="https://en.wikipedia.org/wiki/Hyperreal_number">Hyperreals</a>.</p>
+
+<p>Now, it might at first appear that we have infinitesimals corresponding to every integer. Some Haskell programmers out there might be thinking in terms of infinite lists (I know that was <em>my</em> first thought at least). However, here’s a problem: what’s \(\sqrt{\ep}\)?</p>
+
+<h2 id="level-comparison">Level comparison</h2>
+
+<p>Before we can fully analyze what \(\sqrt{\ep}\) means, we should define some notion of comparability. For example, we might want to define some notion of something being infinitesimal compared to something else. We can define \(\ll\), read “infinitesimal compared to” as follows:</p>
+
+<p>\[x \ll 1 \iff (\forall n \in \mathbb{N})(|x| &lt; \frac{1}{n})\]<br />
+\[x \ll y \iff y \neq 0 \wedge \frac{x}{y} \ll 1\]</p>
+
+<p>Note that we decided to use the absolute value. Then, we can say \(0 \ll -1\). This is to allow for negative numbers to be compared in this way; the sign is simply ignored.</p>
+
+<p>We can also define the comparators \(\gg\) and \(\bot\), read “infinite compared to” and “comparable to” as:</p>
+
+<p>\[x \gg y \iff y \ll x\]<br />
+\[x \bot y \iff \neg (x \ll y) \wedge \neg (x \gg y)\]</p>
+
+<p>The following proofs are left as an exercise to the reader:</p>
+
+<ol>
+  <li>Exactly one of \(x \gg y\), \(x \ll y\), and \(x \bot y\) is true</li>
+  <li>\(\ll\) is transitive.</li>
+  <li>\(x \ll y \iff kx \ll ky\) for every \(k \neq 0\)</li>
+</ol>
+
+<h2 id="all-powers-of-infinitesimals">All powers of infinitesimals</h2>
+
+<p>Now we can analyze what \(\sqrt{\ep}\) means. We know that since \(\ep \ll 1\), \(\sqrt{\ep} \ll 1\). We also know that since \(\frac{\ep}{\sqrt{\ep}} = \sqrt{\ep} \ll 1\), \(\ep \ll \sqrt{\ep}\). We now know that</p>
+
+<p>\[\ep \ll \sqrt\ep \ll 1\]</p>
+
+<p>This means that \(\sqrt\ep\) is on a separate level of infinitesimal than any of the integral powers of \(\ep\). Since similar proofs can be constructed for all rational powers, and therefore for all real powers (yes, we have to go back to \(\ep—\delta\) for this), the hyper-reals therefore have as many levels as there are real numbers.</p>
+
+<h2 id="derivatives">Derivatives</h2>
+
+<p>OK, so I know I promised you at the beginning of this section that this would all eventually lead to a more intuitive approach to derivatives. Unfortunately, however, this is far too long of a post already. I’ll cover derivatives in the next section.</p>
 
   </article>
   
 </div>
 <div class="pagination">
   
-    <span class="pagination-item older">Older</span>
+    <a class="pagination-item older" href="/page6">Older</a>
   
   
     <a class="pagination-item newer" href="/page4">Newer</a>
@@ -140,7 +187,7 @@
 
 			<footer class="footer">
 				<small>
-					&copy; <time datetime="2015-12-10T21:45:13-08:00">2015</time>. All rights reserved.
+					&copy; <time datetime="2015-12-11T17:31:35-08:00">2015</time>. All rights reserved.
 				</small>
 			</footer>
 		</div>

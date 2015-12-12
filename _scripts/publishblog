@@ -1,9 +1,18 @@
-#!/bin/bash
+#!/usr/bin/python3
 
-./SimplePreprocessor/spp -s "_posts"
-jekyll build
-git add .
-git add -u
-git commit -m "$1"
-git push origin master
-./SimplePreprocessor/spp -s "_posts" -c
+from sys import argv
+from os import system
+
+if argv[1] == 'serve':
+    commit = None
+commit = argv[1]
+system('./SimplePreprocessor/spp -s "_posts"')
+if commit:
+    system('jekyll build')
+    system('git add .')
+    system('git add -u')
+    system('git commit -m ' + commit)
+    system('git push origin master')
+else:
+    system('jekyll serve')
+system('./SimplePreprocessor/spp -s "_posts" -c')
