@@ -19,6 +19,7 @@ if commit:
     system('git push origin master')
     system('git add .')
     system('git add -u')
+    print ('git commit -m "' + commit.replace("\"", "") + ' (Saving actual state of my computer so git diff works; cannot push because that breaks the website.)"')
     system('git commit -m "' + commit.replace("\"", "") + ' (Saving actual state of my computer so git diff works; cannot push because that breaks the website.)"')
 else:
     system('jekyll serve')
