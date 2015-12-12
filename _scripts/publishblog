@@ -7,6 +7,7 @@ print (argv)
 
 if argv[1] == 'serve':
     commit = None
+    print ("No commit")
 commit = argv[1]
 system('./SimplePreprocessor/spp -s "_posts"')
 if commit:

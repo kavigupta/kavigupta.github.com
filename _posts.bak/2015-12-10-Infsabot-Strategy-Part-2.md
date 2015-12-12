@@ -4,7 +4,7 @@ preprocess:
     replace "<!--_-->" -> "<!--_-->"
 ---
 layout: post
-title: Infsabot Strategy Part 1
+title: Infsabot Strategy Part 2
 comments: True
 ---
 
@@ -128,4 +128,4 @@ class (Random a) => Expr a where
     complicate :: Int -> RP -> StdGen -> (RP, StdGen)
 ```
 
-Generally, 
+OK, so that''s it for now. I'll cover implementation tomorrow after I typecheck this mess!
