@@ -20,7 +20,7 @@ if commit:
     system('git push origin master')
     system('git add .')
     system('git add -u')
-    check_call(['git', 'commit', '-m', commit.replace("\"", "")
+    check_call(['git', 'commit', '-m', commit
             + ' (Saving actual state of my computer so git diff works;'
             + ' cannot push because that breaks the website.)'], shell=True)
 else:
