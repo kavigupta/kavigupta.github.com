@@ -2,6 +2,7 @@
 
 from sys import argv
 from os import system
+from subprocess import check_call
 
 print (argv)
 
@@ -15,13 +16,14 @@ if commit:
     system('jekyll build')
     system('git add .')
     system('git add -u')
-    system('git commit -m ' + commit)
+    check_call(['git', 'commit', '-m', commit])
     print ("A")
     system('git push origin master')
     system('git add .')
     system('git add -u')
-    print ('git commit -m "' + commit.replace("\"", "") + ' (Saving actual state of my computer so git diff works; cannot push because that breaks the website.)"')
-    system('git commit -m "' + commit.replace("\"", "") + ' (Saving actual state of my computer so git diff works; cannot push because that breaks the website.)"')
+    check_call(['git', 'commit', '-m', commit.replace("\"", "")
+            + ' (Saving actual state of my computer so git diff works;'
+            + ' cannot push because that breaks the website.)'])
 else:
     system('jekyll serve')
 system('./SimplePreprocessor/spp -s "_posts" -c')
