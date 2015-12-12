@@ -24,10 +24,13 @@ if commit:
     system('git add -u')
     call('git', 'commit', '-m', commit)
     system('git push origin master')
+else:
+    system('jekyll serve')
+
+if commit:
     system('git add .')
     system('git add -u')
     system('git status')
-    call('git', 'commit', '-m', commit)
-else:
-    system('jekyll serve')
-system('./SimplePreprocessor/spp -s "_posts" -c')
+    call('git', 'commit', '-m', commit.replace("\"", "")
+            + ' (Saving actual state of my computer so git diff works;'
+            + ' cannot push because that breaks the website.)')
