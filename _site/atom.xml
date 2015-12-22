@@ -4,13 +4,121 @@
  <title>That depends on what the definition of "=" is</title>
  <link href="https://kavigupta.github.io/atom.xml" rel="self"/>
  <link href="https://kavigupta.github.io/"/>
- <updated>2015-12-12T01:04:03-08:00</updated>
+ <updated>2015-12-21T23:28:40-08:00</updated>
  <id>https://kavigupta.github.io</id>
  <author>
    <name>Kavi Gupta</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Dictp Part 1</title>
+   <link href="https://kavigupta.github.io/2015/12/21/Dictp/"/>
+   <updated>2015-12-21T00:00:00-08:00</updated>
+   <id>https://kavigupta.github.io/2015/12/21/Dictp</id>
+   <content type="html">&lt;p&gt;So, a friend and I (I’m going to protect his anonymity in case he doesn’t want to be associated with the travesty that is what we ended up thinking up) were discussing ridiculous ideas for programming languages: you know the deal, writing C interpreters in Python, using only integers to represent everything, etc.&lt;/p&gt;
+
+&lt;p&gt;One idea, however, seemed a little less ridiculous to us (OK, just to me): a language in which there are two data types: Dictionary and String.&lt;/p&gt;
+
+&lt;h2 id=&quot;everything-is-a-dictionary&quot;&gt;Everything is a dictionary&lt;/h2&gt;
+
+&lt;p&gt;Every dictionary has keys which are dictionaries and values which are dictionaries. Lists are just a special case of dictionary:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;[a, b, c]
+    == {&#39;__len__&#39; : &#39;3&#39;, &#39;0&#39; : a, &#39;1&#39; : b, &#39;2&#39; : c}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And strings are just a special case of lists:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&#39;Hello&#39;
+    == [&#39;H&#39;, &#39;e&#39;, &#39;l&#39;, &#39;l&#39;, &#39;o&#39;]
+    == {&#39;__len__&#39; : &#39;5&#39;, &#39;0&#39; : &#39;H&#39;, &#39;1&#39; : &#39;e&#39;, &#39;2&#39; : &#39;l&#39;, &#39;3&#39; : &#39;l&#39;, &#39;4&#39;, &#39;o&#39;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Integers, floating points, etc. are just special cases of strings, and objects are just special cases of dictionaries, where keys are attribute names and values are their values. In fact, the current environment is merely a dictionary of the current bindings and a parent frame.&lt;/p&gt;
+
+&lt;p&gt;Functions are themselves just dictionaries. For example, &lt;code&gt;add&lt;/code&gt; is a dictionary which maps list of number inputs to a numeric output:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;plus[[&#39;2&#39;,&#39;3&#39;]] == &#39;5&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;types-of-dictionaries&quot;&gt;Types of Dictionaries&lt;/h2&gt;
+
+&lt;p&gt;There are two basic types of dictionary.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Discrete and strictly finite. e.g., Strings. These dictionaries need no special marker.&lt;/li&gt;
+  &lt;li&gt;Continuous and lazy, potentially infinite. e.g., functions. These dictionaries contain the mapping &lt;code&gt;__lazy__ : &#39;True&#39;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;language-built-ins&quot;&gt;Language built-ins&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-empty-dictionary&quot;&gt;The empty dictionary&lt;/h3&gt;
+
+&lt;p&gt;An empty dictionary is built by using the directive &lt;code&gt;__empty__&lt;/code&gt;. It produces a dictionary containing no keys and no values. &lt;code&gt;__empty__&lt;/code&gt; itself is not a dictionary, it is merely replaced by the call to generate a new dictionary and use it in that context.&lt;/p&gt;
+
+&lt;h3 id=&quot;strings&quot;&gt;Strings&lt;/h3&gt;
+
+&lt;p&gt;Strings are built according to python string conventions. They can be represented with single or double quotes; both &lt;code&gt;&quot;this&quot;&lt;/code&gt; and &lt;code&gt;&#39;this&#39;&lt;/code&gt; should work. It contains the key &lt;code&gt;__len__&lt;/code&gt; which maps to the length of the string as well as keys &lt;code&gt;0&lt;/code&gt;, &lt;code&gt;1&lt;/code&gt;, &lt;code&gt;2&lt;/code&gt;… up till one less than the value of &lt;code&gt;__len__&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;contains&quot;&gt;Contains&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;&amp;lt;dictionary&amp;gt;[&amp;lt;key&amp;gt;]?&lt;/code&gt; outputs &lt;code&gt;&#39;True&#39;&lt;/code&gt; if the dictionary contains the key and &lt;code&gt;&#39;False&#39;&lt;/code&gt; otherwise. Note that this does not check parent frames (see “Get”)&lt;/p&gt;
+
+&lt;h3 id=&quot;nonlocal-directive&quot;&gt;Nonlocal directive&lt;/h3&gt;
+
+&lt;p&gt;By convention, the dictionary &lt;code&gt;{&#39;__nonlocal__&#39; : &#39;True&#39;}&lt;/code&gt; is referred to as a “Nonlocal Directive”.&lt;/p&gt;
+
+&lt;h3 id=&quot;get&quot;&gt;Get&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;&amp;lt;dictionary&amp;gt;[&amp;lt;key&amp;gt;]&lt;/code&gt; outputs the key associated with the given value. If the key is not in the dictionary or if it is associated with a nonlocal directive, it checks for a &lt;code&gt;__parent__&lt;/code&gt; and looks it up there. If there is no &lt;code&gt;__parent__&lt;/code&gt;, it raises a &lt;code&gt;KeyError&lt;/code&gt; which results in the halting of the given code.&lt;/p&gt;
+
+&lt;h3 id=&quot;put&quot;&gt;Put&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;&amp;lt;dictionary&amp;gt;[&amp;lt;key&amp;gt;] = &amp;lt;value&amp;gt;&lt;/code&gt; associates the given key with the given value in the given dictionary. This does not check parent frames unless the given key is associated with a nonlocal directive, in which case it does. If there is no error, it raises a &lt;code&gt;KeyError&lt;/code&gt;. It’s value is the empty dictionary.&lt;/p&gt;
+
+&lt;h3 id=&quot;local&quot;&gt;Local&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;__local__&lt;/code&gt; is the local frame, it can be discrete or continuous (see &lt;code&gt;__call__&lt;/code&gt; for how this case can come to pass).&lt;/p&gt;
+
+&lt;h3 id=&quot;if&quot;&gt;If&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;__if__[&amp;lt;condition&amp;gt;][&amp;lt;ifso&amp;gt;][&amp;lt;ifelse&amp;gt;]&lt;/code&gt; evaluates the condition in the local environment, then conditionally evaluates the &lt;code&gt;ifso&lt;/code&gt; and &lt;code&gt;ifelse&lt;/code&gt; programs (text).&lt;/p&gt;
+
+&lt;h3 id=&quot;call&quot;&gt;Call&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;__call__&lt;/code&gt; is a higher-order dictionary that takes a sequence of lines of code (with the key &lt;code&gt;__program__&lt;/code&gt;) and an environment (&lt;code&gt;__env__&lt;/code&gt;) and outputs a continuous dictionary mapping input dictionaries to the result of executing the program on the given frame with the parent frame forced to be the given parent frame. The result is defined as the value of the key &lt;code&gt;__return__&lt;/code&gt; or the empty dictionary if there is no such value.&lt;/p&gt;
+
+&lt;h2 id=&quot;an-example&quot;&gt;An Example&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;__local__[&#39;factorial&#39;] = __empty__
+__local__[&#39;factorial&#39;][&#39;__program__&#39;]
+    = &#39;__local__[&quot;__return__&quot;] \
+        = __if__ \
+            [&quot;==&quot; \
+                [__local__[&quot;n&quot;]] \
+                [&quot;0&quot;]] \
+            [&quot;1&quot;] \
+            [[&quot;*&quot;] \
+                [__local__[&quot;n&quot;]] \
+                [__local__[&quot;factorial&quot;] \
+                    [&quot;-&quot; \
+                        [__local__[&quot;n&quot;]] \
+                        [&quot;1&quot;]]]]&#39;
+__local__[&#39;factorial&#39;][&#39;__env__&#39;] = __local__
+__local__[&#39;factorial&#39;] = __call__[__local__[&#39;factorial&#39;]]
+__local__[&#39;4&#39;] = __empty__
+__local__[&#39;4&#39;][&#39;n&#39;] = &#39;4&#39;
+__local__[&#39;print&#39;]
+    [__local__[&#39;factorial&#39;]
+        [__local__[&#39;4&#39;]]]
+# ^ Should print 24, given that &quot;print&quot; is defined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;OK, so nothing beautiful. Hopefully, in a future post, we can look at sugaring and turning this into a practical language.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Infsabot Strategy Part 2</title>
@@ -218,8 +326,8 @@ data ExprDir =
 data ExprBool =
     ConstBool Bool |
     CanSee ExprPath |
-    MaterialAt ExprPath | -- False if can't see that far
-    RobotAt ExprPath | -- False if can't see that far
+    MaterialAt ExprPath | -- False if can&#39;t see that far
+    RobotAt ExprPath | -- False if can&#39;t see that far
     EqualInt ExprInt ExprInt |
     GreaterInt ExprInt ExprInt |
     EqualDir RDirection RDirection |
@@ -591,10 +699,10 @@ instance (Show (f (Recursive f))) =&gt; Show (Recursive f) where
 
 &lt;p&gt;To construct a type of &lt;code&gt;Recursive Maybe&lt;/code&gt; we need to have an element of type &lt;code&gt;Maybe (Recursive Maybe)&lt;/code&gt;. The only element of this we have is &lt;code&gt;Nothing :: Maybe a&lt;/code&gt;. We can therefore construct the value &lt;code&gt;Recurse Nothing :: Recursive Maybe&lt;/code&gt;. Using this value we can construct the value &lt;code&gt;Just (Recurse Nothing) :: Maybe (Recursive Maybe)&lt;/code&gt; and therefore the value &lt;code&gt;Recurse (Just (Recurse Nothing)) :: Recursive Maybe&lt;/code&gt;. We can continue to build values in this manner:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;zero' = Recurse Nothing
-one' = Recurse (Just zero')
-two' = Recurse (Just one')
-three' = Recurse (Just two')
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;zero&#39; = Recurse Nothing
+one&#39; = Recurse (Just zero&#39;)
+two&#39; = Recurse (Just one&#39;)
+three&#39; = Recurse (Just two&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Notice that I used the names for numbers for these. This is to demonstrate their correspondence with the natural numbers:&lt;/p&gt;
@@ -608,7 +716,7 @@ three = Succ two
 
 &lt;p&gt;Interestingly, there is another possible value of these types&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;omega' = Recurse (Just omega')
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;omega&#39; = Recurse (Just omega&#39;)
 omega = Succ omega
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -633,7 +741,7 @@ data Empty a
 &lt;p&gt;We can see that there is one possible value for &lt;code&gt;Constant (Recursvie Constant)&lt;/code&gt;, which is &lt;code&gt;Const&lt;/code&gt;. Therefore, the only possible value for &lt;code&gt;Recursive Constant&lt;/code&gt; is &lt;code&gt;Recurse Const&lt;/code&gt;. Therefore, &lt;code&gt;Recursive Constant&lt;/code&gt; is similar to the Singleton:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;single = Single
-single' = Recurse Const
+single&#39; = Recurse Const
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Similarly, there is no value &lt;code&gt;Empty (Recursive Empty)&lt;/code&gt; possible, so there is no possible value of &lt;code&gt;Recursive Empty&lt;/code&gt;.&lt;/p&gt;
@@ -647,9 +755,9 @@ single' = Recurse Const
 
 &lt;p&gt;We can also use the partial application of &lt;code&gt;Pair&lt;/code&gt; to a single type variable &lt;code&gt;a&lt;/code&gt; and then construct a recursion of the pair. We can then analyze values of &lt;code&gt;Recurse (Pair Bool)&lt;/code&gt;. At first, this doesn’t seem to work any better than &lt;code&gt;Recurse Wrap&lt;/code&gt; because we need a value of &lt;code&gt;Pair Bool (RPair Bool)&lt;/code&gt; before we can create a value of &lt;code&gt;RPair Bool&lt;/code&gt;. However, since in this case each value also has a &lt;code&gt;Bool&lt;/code&gt;, these form a stream:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;trues' = Recurse (ConsPair True trues')
-falses' = Recurse (ConsPair False falses')
-alternating' = Recurse (ConsPair True (Recurse (ConsPair False alternating')))
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;trues&#39; = Recurse (ConsPair True trues&#39;)
+falses&#39; = Recurse (ConsPair False falses&#39;)
+alternating&#39; = Recurse (ConsPair True (Recurse (ConsPair False alternating&#39;)))
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Which is remarkably similar to our previous definitions:&lt;/p&gt;
@@ -701,7 +809,7 @@ type RecurseList a = Recursive (PreList a)
 
 &lt;p&gt;Redoing our &lt;code&gt;[True, False, False]&lt;/code&gt; example, we get:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;exampleList'
+&lt;pre&gt;&lt;code class=&quot;language-haskell&quot;&gt;exampleList&#39;
     = Recurse (PreList (Just (ConsPair
         True
         (Recurse (PreList (Just (ConsPair

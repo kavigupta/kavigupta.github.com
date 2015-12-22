@@ -62,356 +62,137 @@
   
   <article class="post">
     <h1 class="post-title">
-      <a href="/2015/11/23/Recursivized-Types/">
-        Recursivized Types
+      <a href="/2015/11/24/What's-A-Number/">
+        What's a number?
       </a>
       <!--Dummy info-->
     </h1>
-    <time datetime="2015-11-23T00:00:00-08:00" class="post-date">23 Nov 2015</time>
+    <time datetime="2015-11-24T00:00:00-08:00" class="post-date">24 Nov 2015</time>
 
-    <p>So, a short break from \(\varepsilon—\delta\).</p>
+    <p>OK, so a bit of a silly question. Of course, we all know what numbers are. But humor me, and try to define a number without using “number”, “quantity”, or anything that refers back to a number itself.</p>
 
-<p>Anyway, I’m going to look at Algebraic types in this section. Specifically, I am going to use Haskell types.</p>
+<p>But, before we learn numbers, we have to first understand something simpler: counting. Couldn’t we define numbers in terms of counting? Well, yes, otherwise I wouldn’t be writing this article.</p>
 
-<p>The provided code is all actual Haskell, in fact, I’m going to have to de-import the standard libraries because some of this is actually defined there. You can find all the code <a href="/src/2015-11-23-Recursive-Types.hs">here</a></p>
+<p>Now, to not end up with a forty page book, I’m only going to go over how to define the whole numbers (I’m going to ignore negative integers, fractions, \(\pi\), etc.)</p>
 
-<!--
-```haskell
-{-# LANGUAGE FlexibleContexts, UndecidableInstances #-}
+<p>Basically, a mathematician named Peano had a similar idea back in the 1800s. Back then, even mathematicians didn’t really know what numbers were. Some of them felt that they were simple enough that they didn’t need a definition. On the other hand, some mathematicians liked thinking about numbers in terms of geometry. Like if I draw one line, that’s 1. If I draw another line 2 times as long next to it, that’s 2, etc. It works, but it’s a bit annoying to have to work with geometry all the time. Unless you like drawing, which a lot of people go into math to avoid.</p>
 
-import Prelude(Show, show, (++))
-```
--->
+<p>Anyway, back to Peano. During the 1800s, mathematicians were starting to ask some weirdly difficult questions. Like, how do we know that \(a + b = b + a\)? How do we even know that \(2 + 2 = 4\)? How do we even know that \(4\) exists?</p>
 
-<h2 id="algebraic-types">Algebraic types</h2>
+<p>Well, we need to start somewhere, and Peano decided we needed a few basic Laws Of Mathematics for numbers (mathematicians like the word <em>axiom</em>). These are rules that are considered self-evident.</p>
 
-<p>I’ll start with a quick go-over of Haskell types. If you already know Haskell, feel free to skip this section.</p>
+<p>He came up with a total of 9. In advanced 21st century mathematics, there are generally considered to be 5. (No, it didn’t turn out that \(9 = 5\). 4 of the axioms are really part of logic. Stuff like if \(a = b\), \(b = a\). In the 19th century, they didn’t really distinguish logic from math, but now we do.)</p>
 
-<h3 id="enumeration-types">Enumeration types</h3>
+<p>Anyway, let’s go through the Laws!</p>
 
-<p>Some types are enumerations of potential values.</p>
+<h2 id="zero-is-a-number">1. Zero is a Number</h2>
 
-<p>A quick example is the trivial singleton type:</p>
+<p>OK, so \(0\) is a number! Very useful.</p>
 
-<pre><code class="language-haskell">data Singleton = Single
-    deriving Show
-</code></pre>
+<p>Actually, we don’t have to call this \(0\). Let’s call it <code>Peano</code>.</p>
 
-<p>This is to be read as “there exists a type Singleton, which contains one element named Single.” The “deriving show” part is Haskell book keeping for those following along on their interpreters to be able to see things</p>
+<p>Now <code>Peano</code> is a number! That’s better! Actually, no, it’s exactly the same.</p>
 
-<p>Another example is</p>
+<p>All this Law Of Mathematics says is that there is some number. We haven’t really said what this number <em>does</em> yet. Let’s move on.</p>
 
-<pre><code class="language-haskell">data Void
-</code></pre>
-<p>This is to be read as “there exists a type Void with no possible elements”</p>
+<h2 id="for-every-number-n-there-is-a-number-ns">2. For every number \(n\), there is a number \(n_S\).</h2>
 
-<p>Yet another type is</p>
+<p>OK, so we know that for every number, there is another number! We have defined here basically the concept of counting. \(n_S\) is the “next number”. Are we done?</p>
 
-<pre><code class="language-haskell">data Bool = False | True
-    deriving Show
-</code></pre>
+<p>Well, no, because I told you that there are 5 Laws Of Mathematics, and we’ve only covered 2.</p>
 
-<p>This is to be read as “there exists a type Bool with the possible elements True and False.”</p>
+<p>Also, think about it for a second. Have we really defined counting? Does this definition tell us that we can’t, for example, have \(0_S = 0\)?</p>
 
-<h3 id="structure-types">Structure types</h3>
+<p class="center"><img src="/resources/2015-11-24/zero-circ.png" width="50%" /></p>
 
-<p>Types can be used as as structures, as such:</p>
+<p>No. What it does tell us, however, is that we can’t have two different \(n_S\) for the same \(n\).</p>
 
-<pre><code class="language-haskell">data Wrapper a = Wrap a
-    deriving Show
-</code></pre>
+<p class="center"><img src="/resources/2015-11-24/non-function.png" width="50%" /></p>
 
-<p>This is to be read as “for every type <code>a</code> there exists a type <code>(Wrapper a)</code> with a single type constructor <code>Wrap</code> that takes an <code>a</code>”</p>
+<h2 id="there-is-no-number-n-where-ns--0">3. There is no number \(n\) where \(n_S = 0\)</h2>
 
-<p>A more complicated structure is</p>
+<p>OK! We dealt with that annoying \(0_S = 0\) problem! We’re done! Well, no… Try to think about a problem with this yourself before you move on.</p>
 
-<pre><code class="language-haskell">data Pair a b = ConsPair a b
-    deriving Show
-</code></pre>
+<p>Here it is: Let’s define \(0_S = 1\). Now, is there anything that says that you can’t have \(\beta_S = 1\) where \(\beta \neq 0\)?</p>
 
-<p>Which is similar to the previous one except that it contains two possible elements which can be of two different types.</p>
+<p>Well, no. We have some \(0\) (this follows Law of Mathematics #1). We have, \(0_S = 1\), \(\beta_S = 1\), \(1_S = 2\) (by definition), etc. (this follows Law of Mathematics #2). We have no element \(x\) such that \(x_S = 0\) (this follows Law of Mathematics #3).</p>
 
-<h3 id="aside-kinds">Aside: Kinds</h3>
+<p class="center"><img src="/resources/2015-11-24/non-1-to-1.png" /></p>
 
-<p>Algebraic types have kinds.</p>
+<p>Well, we have something that is obviously ridiculous but follows all the Laws. Well, let’s close the loophole!</p>
 
-<ol>
-  <li><code>Singleton</code>, <code>Void</code>, and <code>Bool</code> are concrete types in their own right.</li>
-  <li><code>Wrapper</code> needs a type before it can become a type (nothing can be a <code>Wrapper</code> by itself).</li>
-  <li><code>Pair</code> needs two types before it can become a type (nothing can be a <code>Pair</code> or <code>Pair Bool</code> by itself).</li>
-</ol>
+<h2 id="for-any-two-numbers-x-and-y-if-xs--ys-x--y">4. For any two numbers \(x\) and \(y\), if \(x_S = y_S\), \(x = y\)</h2>
 
-<p>We refer to the latter two cases as “higher-kinded types.”</p>
+<p>OK! We’re finally done! No more weird numbers that feed into the regular numbers!</p>
 
-<p>We say that <code>Singleton</code>, <code>Void</code>, etc. have kind <code>*</code>. Types that need one type added on the end to be complete, such as <code>Wrapper</code> or <code>Pair Bool</code> have kind <code>* -&gt; *</code>. Types such as <code>Pair</code>, which needs two types to be complete, have kind <code>* -&gt; * -&gt; *</code>.</p>
+<p>So now let’s define a few numbers:</p>
 
-<p>Note also that types such as</p>
+<p>\[0_S = 1\]<br />
+\[1_S = 2\]<br />
+\[2_S = 3\]<br />
+\[3_S = 4\]</p>
 
-<pre><code class="language-haskell">data TwoOfSame a = ConsTwoOfSame a a
-</code></pre>
+<p>OK, seems to be working. Now let’s define a few more.</p>
 
-<p>have kind <code>* -&gt; *</code> rather than <code>* -&gt; * -&gt; *</code> because they only take one type argument. <code>TwoOfSame Bool Singleton</code> wouldn’t make any sense.</p>
+<p>\[\gamma_S = \beta\]<br />
+\[\beta_S = \alpha\]</p>
 
-<h3 id="mixing-structures-and-enumerations">Mixing Structures and Enumerations</h3>
+<p class="center"><img src="/resources/2015-11-24/two-chains.png" /></p>
 
-<p>Algebraic types are a generalization of both systems, in which you can have multiple constructors, each of which can contain zero or multiple arguments.</p>
+<p>Where did those annoying Greek letters come from! Well, we’ve said what can be a number: the \(0, 0_S, 0_{SS}, 0_{SSS}\) etc. And we’ve said that no number is before \(0\). And we’ve said that no two numbers can feed into the same number.</p>
 
-<p>A canonical example combines both forms to create something resembling the concept of <code>null</code> from Java or <code>None</code> from Python.</p>
+<p>However, what we haven’t said is that the only numbers are \(0, 0_S, 0_{SS}, 0_{SSS}\), etc. And, guess what? That’s the fifth Law!</p>
 
-<pre><code class="language-haskell">data Maybe a = Nothing | Just a
-    deriving Show
-</code></pre>
+<h2 id="if-something-is-true-for-n--0-and-its-being-true-for-n-makes-it-true-for-ns-then-it-is-true-for-all-numbers">5. If something is true for \(n = 0\) and its being true for \(n\) makes it true for \(n_S\), then it is true for all numbers.</h2>
 
-<p>Here, there is a combination of the enumeration and structure style. Interestingly, while, for example, <code>Just True :: Maybe Bool</code> (<code>::</code> is to be read as “is of type”), <code>Nothing :: Maybe a</code>, which means that it can take on any <code>Just</code> type (this is key to what we will do later).</p>
+<p>OK, so this is a little more complicated than the previous examples. But let’s look at a quick example to see how it completes the definition of the numbers. \(\newcommand{\isn}{\uplus}\)</p>
 
-<h2 id="recursive-algebraic-types">Recursive Algebraic types</h2>
+<p>Let’s look at the symbol \(\isn\). Basically, \(x_\isn = \true\), or true when \(x\) is a number, and \(\false\), or false, whenever it is not. (I got the symbol by typing “fancy math symbols” into Google. As far as I know, it isn’t commonly used.)</p>
 
-<p>Recursive types are similar to the examples shown, except that they can also contain themselves. For example, the not particularly efficient definition of the natural numbers (<a href="https://en.wikipedia.org/wiki/Peano_axioms">a natural number is either zero or the successor of another natural number</a>):</p>
+<p>Some examples:</p>
 
-<pre><code class="language-haskell">data Nat = Zero | Succ Nat
-    deriving Show
-</code></pre>
-<p>Another algebraic type is a stream, which is defined as follows, which is basically an infinite list.</p>
+<p>\[0_\isn = \true\\<br />
+1_\isn = \true\\<br />
+2_\isn = \true\\<br />
+\spadesuit_\isn = \false\\<br />
+\diamondsuit_\isn = \false\]</p>
 
-<pre><code class="language-haskell">data Stream a = ConsStream a (Stream a)
-    deriving Show
-</code></pre>
+<p>As you can see, suits of cards are not numbers, but \(0, 1, 2\) are.</p>
 
-<p>This only works because you can define values as follows, where in each case the same variable name refers to the same value:</p>
+<p>Anyway, the first two axioms can be said as “\(0_\isn\)” and “if \(n_\isn\), then \((n_S)_ \isn\)”</p>
 
-<pre><code class="language-haskell">trues = ConsStream True trues
-falses = ConsStream False falses
-alternating = ConsStream True (ConsStream False alternating)
+<p>This means that \(n_\isn\) is true for all numbers.</p>
 
-elementAt (ConsStream value rest) Zero = value
-elementAt (ConsStream value rest) (Succ x) = elementAt rest x
-</code></pre>
+<p>Let that sink in for a minute.</p>
 
-<p>So if you ask for the (fifth element of trues), that reduces to the (fourth element of (the rest of trues)) which reduces to (the fourth element of trues), etc., until you get to the value <code>True</code>.</p>
+<p>OK, so basically, we proved that all numbers are numbers. But that was just to show that the fifth Law of Mathematics makes sense.</p>
 
-<p>A potentially terminating list can be represented as follows:</p>
+<p>Now for a better example: let’s look at trying to get rid of those annoying Greek Letters. We defined \(\beta\) as some number which isn’t’ the successor of anything in a chain that comes from 0. Let’s define unbetaness as \(n \neq \beta\). We know that \(0 \neq \beta\), and we know that if \(n \neq \beta\) and \(n\) is a number, \(n_S \neq \beta\). Therefore, no number is equal to \(\beta\), so \(\beta\) is not a number.</p>
 
-<pre><code class="language-haskell">data List a = Nil | Cons a (List a)
-    deriving Show
-</code></pre>
+<p>Now we’re actually done! Well, not really, because we still don’t know what \(2 + 2\) is, since we don’t know what \(+\) means. Let’s look at the Laws of Addition.</p>
 
-<p>Here the list can possibly terminate because you can stop with <code>Nil</code>. For example, you can represent <code>[True, False, False]</code> as</p>
+<h2 id="n--n">1. \(0 + n = n\)</h2>
 
-<pre><code class="language-haskell">exampleList = Cons True (Cons False (Cons False Nil))
-</code></pre>
+<p>Adding nothing to something doesn’t change it. Not particularly crazy stuff.</p>
 
-<p>You could also use stream-like circular definition for a list too, so streams are just a subset of lists.</p>
+<h2 id="as--b--a--b-s">2. \(a_S + b = (a + b)_ S\)</h2>
 
-<h2 id="higher-kinded-type-parameters">Higher-kinded type parameters</h2>
+<p>Counting up one of the numbers does the same thing as counting up the sum. In other words, if you have two piles, adding a stone to one of the piles is the same as adding a stone to the system as a whole.</p>
 
-<p>OK, one final bit of craziness before we get to our actual example. Let’s say we want to create a type representing the shape of another type.</p>
+<h1 id="so-what-is-2--2">So, what <em>is</em> \(2 + 2\)?</h1>
 
-<pre><code class="language-haskell">data Shape f = Structure (f Singleton)
-</code></pre>
+<p>\[2 + 2\\<br />
+1_S + 2\\<br />
+(1 + 2)_ S\\<br />
+(0_S + 2)_ S\\<br />
+((0 + 2)_ S)_ S\\<br />
+(2_ S)_ S\\<br />
+3_ S\\<br />
+4\]</p>
 
-<p>If we, for example, look at <code>Shape List</code>, we get the values <code>Structure Nil</code>, <code>Structure (Cons Single Nil)</code>, <code>Structure (Cons Single (Cons Single Nil))</code>, etc. Basically, we get a picture of what the type looks like independent of its elements.</p>
+<p>So, you’re wrong, Wikipedia, <a href="http://en.wikipedia.org/wiki/2+2=5">\(2 + 2\) is <em>not</em> 5!</a></p>
 
-<p>Notice that on the right side of that equation we have <code>(f Singleton)</code> as a concrete value, meaning that <code>f</code> is of kind <code>* -&gt; *</code>. Therefore, <code>Shape</code> is of kind <code>(* -&gt; *) -&gt; *</code>.</p>
-
-<p>Another example of a <code>(* -&gt; *) -&gt; *</code> is the <code>NullOf</code> type, which filters a type for only its nullary constructors, those which do not take a value.</p>
-
-<pre><code class="language-haskell">data NullOf f = Null (f Void)
-</code></pre>
-
-<p>For example, the only possible value of <code>NullOf List</code> is <code>Null Nil</code> and the only possible value of <code>NullOf Just</code> is <code>Null Nothing</code>.</p>
-
-<h2 id="a-general-encoding-of-recursive-types">A general encoding of Recursive Types</h2>
-
-<p>You might notice a correspondence between the types <code>Maybe</code> and <code>Nat</code>:</p>
-
-<pre><code class="language-haskell">    data Maybe a = Nothing | Just a
-    data Nat = Zero | Succ Nat
-</code></pre>
-
-<p>Basically, <code>Nat</code> is just <code>Maybe Nat</code>. We can encode the conversion from <code>Maybe</code> to <code>Nat</code> as follows:</p>
-
-<pre><code class="language-haskell">data Recursive f = Recurse (f (Recursive f))
-</code></pre>
-
-<!--
-```haskell
-instance (Show (f (Recursive f))) => Show (Recursive f) where
-    show (Recurse x) = "Recurse (" ++ show x ++ ")"
-```
--->
-
-<p>This definition means that for all types <code>f</code> of kind <code>* -&gt; *</code>, there exists a type called <code>Recursive f</code> (let’s call this <code>rf</code> for now) which contains a single element whose type is <code>f rf</code>. In other words, <code>Recursive</code> takes a type and returns a recursive version of that type.</p>
-
-<p>Constructing a value of <code>Recursive *</code> at first seems difficult. For example, let us look at <code>Recursive Maybe</code>.</p>
-
-<p>To construct a type of <code>Recursive Maybe</code> we need to have an element of type <code>Maybe (Recursive Maybe)</code>. The only element of this we have is <code>Nothing :: Maybe a</code>. We can therefore construct the value <code>Recurse Nothing :: Recursive Maybe</code>. Using this value we can construct the value <code>Just (Recurse Nothing) :: Maybe (Recursive Maybe)</code> and therefore the value <code>Recurse (Just (Recurse Nothing)) :: Recursive Maybe</code>. We can continue to build values in this manner:</p>
-
-<pre><code class="language-haskell">zero' = Recurse Nothing
-one' = Recurse (Just zero')
-two' = Recurse (Just one')
-three' = Recurse (Just two')
-</code></pre>
-
-<p>Notice that I used the names for numbers for these. This is to demonstrate their correspondence with the natural numbers:</p>
-
-<pre><code class="language-haskell">zero = Zero
-one = Succ Zero
-two = Succ one
-three = Succ two
-</code></pre>
-<p>Basically, <code>Zero</code> is <code>Nothing</code> and <code>Succ</code> is <code>Recurse . Just</code>, where <code>.</code> is function composition.</p>
-
-<p>Interestingly, there is another possible value of these types</p>
-
-<pre><code class="language-haskell">omega' = Recurse (Just omega')
-omega = Succ omega
-</code></pre>
-
-<p>The name <code>omega</code> is used because this number is similar to <a href="https://en.wikipedia.org/wiki/Ordinal_number">one particular kind of infinity</a>. because of the way that it reacts to this definition of comparison:</p>
-
-<pre><code class="language-haskell">_ &lt; Zero        = False
-Zero &lt; Succ _   = True
-Succ x &lt; Succ y = x &lt; y
-</code></pre>
-
-<p>As you can see, <code>x &lt; omega</code> is <code>True</code> for all <code>x</code> defined by <code>Succ (Succ (Succ ... Succ (Zero)))</code>. Note that <code>omega &lt; omega</code> will never evaluate since <code>omega &lt; omega</code> reduces to <code>Succ omega &lt; Succ omega</code>, which reduces to <code>omega &lt; omega</code>.</p>
-
-<h2 id="recursivizing-types">Recursivizing Types</h2>
-
-<p>To begin with, let’s look at the entirely contrived types:</p>
-
-<pre><code class="language-haskell">data Constant a = Const
-    deriving (Show)
-data Empty a
-</code></pre>
-
-<p>We can see that there is one possible value for <code>Constant (Recursvie Constant)</code>, which is <code>Const</code>. Therefore, the only possible value for <code>Recursive Constant</code> is <code>Recurse Const</code>. Therefore, <code>Recursive Constant</code> is similar to the Singleton:</p>
-
-<pre><code class="language-haskell">single = Single
-single' = Recurse Const
-</code></pre>
-
-<p>Similarly, there is no value <code>Empty (Recursive Empty)</code> possible, so there is no possible value of <code>Recursive Empty</code>.</p>
-
-<p>Let’s now look at a less contrived <code>* -&gt; *</code> type, Wrapper, and see how it works. <code>Recursive Wrapper</code> requires a value of <code>Wrapper (Recursive Wrapper)</code> in order to initialize. There is in fact only one way to do this:</p>
-
-<pre><code class="language-haskell">wrappedRecurse = Recurse (Wrap wrappedRecurse)
-</code></pre>
-
-<p>This type is also basically <code>Singleton</code> since it only has one value</p>
-
-<p>We can also use the partial application of <code>Pair</code> to a single type variable <code>a</code> and then construct a recursion of the pair. We can then analyze values of <code>Recurse (Pair Bool)</code>. At first, this doesn’t seem to work any better than <code>Recurse Wrap</code> because we need a value of <code>Pair Bool (RPair Bool)</code> before we can create a value of <code>RPair Bool</code>. However, since in this case each value also has a <code>Bool</code>, these form a stream:</p>
-
-<pre><code class="language-haskell">trues' = Recurse (ConsPair True trues')
-falses' = Recurse (ConsPair False falses')
-alternating' = Recurse (ConsPair True (Recurse (ConsPair False alternating')))
-</code></pre>
-
-<p>Which is remarkably similar to our previous definitions:</p>
-
-<pre><code class="language-haskell">trues = ConsStream True trues
-falses = ConsStream False falses
-alternating = ConsStream True (ConsStream False alternating)
-</code></pre>
-
-<h2 id="finding-the-base-type-for-recursive-types">Finding the base type for recursive types</h2>
-
-<p>So now we know (I’m using \(\equiv\) to mean that two types have the same structure):</p>
-
-<ul>
-  <li><code>Recurse Maybe</code> \(\equiv\) <code>Nat</code></li>
-  <li><code>Recurse Constant</code> \(\equiv\) <code>Singleton</code></li>
-  <li><code>Recurse Wrapper</code> \(\equiv\) <code>Singleton</code></li>
-  <li><code>Recurse Empty</code> \(\equiv\) <code>Void</code></li>
-  <li><code>Recurse Constant</code> \(\equiv\) <code>Stream</code></li>
-</ul>
-
-<p>But what is <code>List</code> equivalent to? We can look again at the definition of a list:</p>
-
-<pre><code class="language-haskell">data List a = Nil | Cons a (List a)
-</code></pre>
-
-<p>OK, so we need to have a type parameter representing the <code>a</code> and another to be eaten by <code>Recurse</code>.</p>
-
-<pre><code class="language-haskell">data PreList a self = ???
-</code></pre>
-
-<p>And we need to have some element <code>Nil</code>.</p>
-
-<pre><code class="language-haskell">data PreList a self = PreNil | ???
-</code></pre>
-
-<p>Now, we just need something to combine both the first and rest of the list</p>
-
-<pre><code class="language-haskell">data PreList a self = PreNil | PreCons a self
-</code></pre>
-
-<p>Hey, what’s on the right of the list looks a lot like a <code>Maybe</code> with two values instead of one! Here’s a final implementation</p>
-
-<pre><code class="language-haskell">data PreList a self = PreList (Maybe (Pair a self))
-    deriving (Show)
-
-type RecurseList a = Recursive (PreList a)
-</code></pre>
-
-<p>Redoing our <code>[True, False, False]</code> example, we get:</p>
-
-<pre><code class="language-haskell">exampleList'
-    = Recurse (PreList (Just (ConsPair
-        True
-        (Recurse (PreList (Just (ConsPair
-            False
-            (Recurse (PreList (Just (ConsPair
-                False
-                (Recurse (PreList Nothing)))))))))))))
-</code></pre>
-
-<p>No reasonable person (except (maybe (a (Lisp (fanatic))))) would say that the above code is pretty, but it is clear that <code>Recursive (PreList a)</code> \(\equiv\) <code>List</code>.</p>
-
-<h2 id="exercises">Exercises</h2>
-
-<ul>
-  <li>Find the de-recursified forms of</li>
-</ul>
-
-<pre><code class="language-haskell">data BinaryTree a = BNode (BinaryTree a) (BinaryTree a) | BLeaf a
-data ListTree a = ListNode a (List (ListTree a))
-</code></pre>
-
-<ul>
-  <li>What is a general algorithm for de-recursification?</li>
-</ul>
-
-<p>The answers are given at the end of <a href="/src/2015-11-23-Recursive-Types.hs">the attached source code</a>.</p>
-
-<!--
-
-```haskell
---------ANSWERS TO EXERCISES--------
-
-data PreBinaryTree a self = PBNode self self | PBLeaf a
---- Recursive (PreBinaryTree a) === BinaryTree a
-
-data PreListTree a self = PListNode (Pair a (List self))
-    -- equivalent to: data PreListTree a self = PListNode a (List self)
---- Recursive (PreListTree a) === ListTree a
-
-{-
-    General solution:
-        Add a self type parameter.
-        Replace any recursive calls with self.
--}
-
-```
--->
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>OK, so this probably doesn’t have any practical applications. And given how ugly the output of such code is, you’re unlikely to ever see this in real life code, even in an academic language like Haskell.</p>
-
-<p>On the other hand, I hope this hurt your brain a little; it certainly hurt mine. Really, to me, the best part is that with only a simple type system (e.g., non-recursive types), and a single recursive type, you can construct all other simply recursive types. This example shows to me how out of simplicity can grow complexity.</p>
-
-<p>Also, abstract nonsense is <code>Just fun</code> :-).</p>
+<p>Anyway, the real point is that while before, you probably thought that \(2 + 2 = 4\) was a basic fact, a Law of Mathematics, now you know that it is just a deduction based on a few other, simpler, laws.</p>
 
   </article>
   
@@ -429,7 +210,7 @@ data PreListTree a self = PListNode (Pair a (List self))
 
 			<footer class="footer">
 				<small>
-					&copy; <time datetime="2015-12-12T01:04:03-08:00">2015</time>. All rights reserved.
+					&copy; <time datetime="2015-12-21T23:28:40-08:00">2015</time>. All rights reserved.
 				</small>
 			</footer>
 		</div>

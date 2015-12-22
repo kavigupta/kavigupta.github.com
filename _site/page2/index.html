@@ -62,153 +62,122 @@
   
   <article class="post">
     <h1 class="post-title">
-      <a href="/2015/12/06/Infsabot-Strategy/">
-        Infsabot Strategy Part 1
+      <a href="/2015/12/10/Infsabot-Strategy-Part-2/">
+        Infsabot Strategy Part 2
       </a>
       <!--Dummy info-->
     </h1>
-    <time datetime="2015-12-06T00:00:00-08:00" class="post-date">06 Dec 2015</time>
+    <time datetime="2015-12-10T00:00:00-08:00" class="post-date">10 Dec 2015</time>
 
-    <p>OK, so what is this <em>Infsabot</em>? Infsabot is a game I designed for people to write programs to play. Basically, it’s like chess, except where each piece acts independently of each other.</p>
+    <p>OK, so to continue our Infsaboting.</p>
 
-<h2 id="the-game">The Game</h2>
+<h3 id="correction">Correction</h3>
 
-<p>There is a square board where each square is either empty or contains material. The game pieces, robots, require material to stay alive and perform tasks. At each turn, every robot reports which of the following it wants to do:</p>
+<p>I made a mistake last time. I included <code>SwitchInt</code>, a way to switch on values of <code>ExprDir</code>, which is ridiculous since an <code>ExprDir</code> can only be constructed as a constant or an <code>if</code> branch to begin with.</p>
+
+<p>So just imagine that I never did that.</p>
+
+<h2 id="guess-and-check">Guess and Check</h2>
+
+<p>OK, so how should our AI construct these syntax trees? At a very high level, we want to be able to 1) assess trees against collections of trees and 2) modify them randomly. We can represent this as a pair of types:</p>
+
+<pre><code class="language-haskell">asses :: [RP] -&gt; RP -&gt; Double
+modify :: RP -&gt; StdGen -&gt; (RP, StdGen)
+</code></pre>
+
+<p>I think the implementation of <code>asses</code> should be pretty clear: simply find the win rate (given that we can simulate an unlimited number of games).</p>
+
+<p>Modify, on the other hand, is a little more complicated. There are a few ways a tree can be modified:</p>
 
 <ul>
-  <li>Noop: The robot does nothing</li>
-  <li>Die: The robot dies</li>
-  <li>Dig: The robot digs to try to extract material</li>
-  <li>Move: The robot can move in one of the four compass directions</li>
-  <li>Fire: The robot can fire a quick-moving projectile (e.g., travel time = 0) in a compass direction</li>
-  <li>Message: The robot can send a quick-moving message in a compass direction</li>
-  <li>Spawn: The robot can create a new robot with its own initial material and appearance</li>
+  <li>Modify the value of a constant to be something else.</li>
+  <li>Modify the value of a field to point to something else or a field</li>
+  <li>Add leaves to the tree</li>
+  <li>Remove leaves as a simplification step</li>
 </ul>
 
-<p>To decide what to do, a robot has access to two things:</p>
+<p>It might seem as if some of these factors might be aided by adding a field to everything that tracks typical values of the course of the application at different points within the tree. In this way, one can tell how big a difference between two strategies are. We can actually pretty easily keep track of this separately by recording a list of <code>KnownState</code>s from our simulations. For now, we’ll just keep of all states or some random subset.</p>
 
-<ul>
-  <li>A picture of the positions around it, to a given distance
-    <ul>
-      <li>Whether or not the spot contains material</li>
-      <li>Whether or not the spot contains a robot, and it’s appearance (<em>not</em> it’s team)</li>
-    </ul>
-  </li>
-  <li>A snapshot of its own hard drive, which is a massive relational database between Strings and Strings</li>
-  <li>A list of all messages received</li>
-</ul>
-
-<p>Crucially, there is no way to tell whether a robot one sees is on one’s own team or not. This must be accomplished through sending an receiving messages.</p>
-
-<h2 id="robot-strategies">Robot strategies</h2>
-
-<p>A robot strategy can be expressed as a type</p>
-
-<pre><code class="language-haskell">type RobotProgramResult = (RobotAction, InternalState)
-type RobotProgram = KnownState -&gt; RobotProgramResult
+<pre><code class="language-haskell">type HistoricalStates = [KnownState]
 </code></pre>
 
-<p>To create a baseline for human-written strategies, I am going to use an adaptive algorithm to try to generate a strategy. This basic algorithm won’t take into account any of the “human” factors like messages and internal state.</p>
+<h2 id="shopping-list-for-functions">Shopping List for Functions</h2>
 
-<p>I will reify the concept of a (non-recursive) robot program by representing it as a long expression tree. The basic concept is something like this:</p>
+<p>Overall, we want to generate simpler strategies. But what do we mean by “simple”? Well, we can define complexity as the number of leaves of an expression tree:</p>
 
-<pre><code class="language-haskell">data ActionType = TDie | TNoop | TFire | TDig | TMoveIn | TSpawn
-
-data RP =
-    DefaultRepresentation ActionType |
-    ModifyMaterial ExprInt RP |
-        -- Applies to Fire, Spawn
-    ModifyDirection ExprDir RP |
-        -- Applies to Move, Spawn, Fire, Send
-    ModifyAppearance ExprInt RP |
-        -- Applies to Spawn. RGB treated as a single integer.
-    IfRP ExprBool RP RP
+<pre><code class="language-haskell">complexity :: RP -&gt; Int
 </code></pre>
 
-<p>So, <code>DefaultRepresentation</code> describes a default representation of the given <code>ActionType</code>. <code>Modify*</code> modifies the given field, if it exists, of the given action. The various <code>Expr*</code> types represent expression tree types, given below.</p>
+<p>We might also want to be able to check what happens with small changes to individual parameters. To do this, we return a vector of slightly modified values where each parameter is a dimension.</p>
 
-<pre><code class="language-haskell">data ExprInt =
-    ConstInt Int |
-    RobAppear ExprPath ExprInt | -- Coordinate; Default if no robot
-    MaterialLevel | -- Current material level
-    Age | -- Current Age
-    (:*) ExprInt ExprInt |
-    (:+) ExprInt ExprInt |
-    (:-) ExprInt ExprInt |
-    (:/) ExprInt ExprInt |
-    Mod ExprInt ExprInt |
-    IfInt ExprBool ExprInt ExprInt |
-    SwitchInt ExprDir ExprInt ExprInt ExprInt ExprInt
-
--- Basically [ExprDir]
-    -- Written like this to make the tree more explicit
-data ExprPath =
-    Here |
-    Offset ExprDir ExprPath
-
-data ExprDir =
-    ConstDir RDirection |
-    IfDir ExprBool ExprDir ExprDir
-
-data ExprBool =
-    ConstBool Bool |
-    CanSee ExprPath |
-    MaterialAt ExprPath | -- False if can't see that far
-    RobotAt ExprPath | -- False if can't see that far
-    EqualInt ExprInt ExprInt |
-    GreaterInt ExprInt ExprInt |
-    EqualDir RDirection RDirection |
-    Not ExprBool |
-    (:&amp;) ExprBool ExprBool |
-    (:|) ExprBool ExprBool
+<pre><code class="language-haskell">getDeltas :: Ratio -&gt; RP -&gt; [RP]
 </code></pre>
 
-<p>OK, so that’s a lot of mutually recursive trees. I’m going to skip the boring implementation of <code>eval</code> for each of these trees, but here’s a simple interface for that purpose:</p>
+<p>We also want to be able to apply perturbations to an <code>RP</code>:</p>
 
-<pre><code class="language-haskell">class Evaluable given from to where
-    eval :: given -&gt; from -&gt; to
+<pre><code class="language-haskell">applyDeltas :: [Ratio Int] -&gt; RP -&gt; RP
+</code></pre>
 
-instance Evaluable KnownState ExprInt Ratio where
-    -- Evaluates to a Ratio, or fraction, for precision reasons.
-    -- Round to get an actual integer
-    ...
-instance Evaluable KnownState ExprBool Bool where
-    ...
-instance Evaluable KnownState ExprDir RDirection where
-    ...
-instance Evaluable KnownState ExprPath [RDirection] where
+<p>Using these two techniques we can find a local maximum by something akin to Euler’s method for differential equations.</p>
+
+<p>We also want to be able to switch between constants and parameters that make sense given context easily. For this, we can provide a typical set of <code>KnownState</code>s that can be used to find some parameter that would be similar and substitute it in. For simplicity, we’ll only change one at a time.</p>
+
+<pre><code class="language-haskell">constantToParameter :: HistoricalStates -&gt; RP -&gt; StdGen -&gt; (RP, StdGen)
+</code></pre>
+
+<p>This is a little out of order, but simplification should work in a similar manner, replacing complex sections of tree with constants or parameters.</p>
+
+<pre><code class="language-haskell">simplify :: HistoricalStates -&gt; RP -&gt; StdGen -&gt; (RP, StdGen)
+</code></pre>
+
+<p>In fact, <code>simplify</code> can be seen as a more general form of <code>constantToParameter</code>; we can simply require some threshold determining whether or not a parameter or constant is “close enough” to be considered the same as a tree or not.</p>
+
+<pre><code class="language-haskell">data GeneratorParameters = GeneratorParameters {
+    closeEnoughThreshold :: Ratio Int
+}
+
+simplify :: GeneratorParameters -&gt; HistoricalStates -&gt; RP -&gt; StdGen -&gt; (RP, StdGen)
+</code></pre>
+
+<p>Finally, we want the ability to complicate a given expression tree.</p>
+
+<p>This can be accomplished most atomically by defining a function <code>complicate</code> that is allowed to make structural but non-effective changes, e.g.,<br />
+ - <code>x -&gt; 1 * x, x / 1, 0 + x, x - 0</code><br />
+ - <code>x -&gt; if &lt;some bool expression&gt; then x else x</code><br />
+ - <code>b -&gt; b &amp;&amp; True, b || False</code></p>
+
+<p>This will accept an integer argument of how much to complicate its tree.</p>
+
+<pre><code class="language-haskell">complicate :: Int -&gt; RP -&gt; StdGen -&gt; (RP, StdGen)
+</code></pre>
+
+<p>Now, in mentioning everything above, glossed over some things. For example, most parameters accept some sort of argument, so generating them requires said argument. Additionally, <code>&lt;some bool expression&gt;</code> will need to actually be filled in in the redundant branch seen above. So we need some way to randomly generate parts of a tree</p>
+
+<pre><code class="language-haskell">randomlyGenerate :: StdGen -&gt; (RP, StdGen)
+</code></pre>
+
+<p>In fact, this function is provided by the <code>Random</code> typeclass, so we can instead say</p>
+
+<pre><code class="language-haskell">instance Random RP where
     ...
 </code></pre>
 
-<h2 id="constructing-trees">Constructing Trees</h2>
+<h2 id="an-expr-type-class">An <code>Expr</code> type class</h2>
 
-<p>OK, so to construct some trees. Here’s a simple move and dig strategy that tries to maximize the digginess of a given robot.</p>
+<p>OK, so if you were looking carefully, that last type didn’t make much sense. I said we needed to be able to generate random elements of various types, but the definition I gave was specifically for <code>RP</code>. In fact, all the definitions I gave apply equally well to any of the various <code>Expr*</code> types.</p>
 
-<pre><code class="language-haskell">digStrategy
-    = IfRP (MaterialAt Here)
-        (DefaultRepresentation TDig)
-        (ModifyDirection
-            (IfDir
-                (MaterialAt
-                    (Offset (ConstDir N) Here))
-                (ConstDir N)
-                (IfDir
-                    (MaterialAt
-                        (Offset (ConstDir E) Here))
-                    (ConstDir E)
-                    (IfDir
-                        (MaterialAt
-                            (Offset (ConstDir S) Here))
-                        (ConstDir S)
-                        (ConstDir W))))
-            (DefaultRepresentation TMoveIn))
+<p>Let’s therefore collate all these function definitions into a single typeclass:</p>
+
+<pre><code class="language-haskell">class (Random a) =&gt; Expr a where
+    complexity :: a -&gt; Int
+    getDeltas :: Ratio Int -&gt; a -&gt; [a]
+    applyDeltas :: [Ratio Int] -&gt; a -&gt; a
+    constantToParameter :: HistoricalStates -&gt; a -&gt; StdGen -&gt; (a, StdGen)
+    simplify :: HistoricalStates -&gt; a -&gt; StdGen -&gt; (a, StdGen)
+    complicate :: Int -&gt; a -&gt; StdGen -&gt; (RP, StdGen)
 </code></pre>
 
-<p>That’s some damn good looking Scheme—ahem, Infsabot Strategy DSL!</p>
-
-<p>Anyway, next time I’ll cover how to generate code in the form of this structure. Hopefully, the computer can do most of the heavy lifting!</p>
-
-<p>Note: I made a few corrections to <code>digStrategy</code> because it wasn’t exactly compiling.</p>
+<p>OK, so that’’s it for now. I’ll cover implementation tomorrow after I typecheck this mess!</p>
 
   </article>
   
@@ -226,7 +195,7 @@ instance Evaluable KnownState ExprPath [RDirection] where
 
 			<footer class="footer">
 				<small>
-					&copy; <time datetime="2015-12-12T01:04:03-08:00">2015</time>. All rights reserved.
+					&copy; <time datetime="2015-12-21T23:28:40-08:00">2015</time>. All rights reserved.
 				</small>
 			</footer>
 		</div>
