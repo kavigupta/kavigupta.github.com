@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 
 try:
-    from os import listdir, system
+    from os import listdir, system, makedirs
     import sys
     import re
-    from os.path import basename, join, basename, splitext
+    from os.path import basename, join, basename, splitext, exists
     import fileinput
     import traceback
 
@@ -32,7 +32,8 @@ try:
     post = sys.argv[1]
     postname = splitext(basename(post))[0]
 
-    system("mkdir " + srcdir)
+    if not exists(srcdir):
+        makedirs(srcdir)
 
     language = ""
     for line in sys.stdin:
