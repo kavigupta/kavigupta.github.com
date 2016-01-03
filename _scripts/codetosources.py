@@ -18,7 +18,10 @@ try:
         else:
             a = "w"
             outputs[language] = True
-        return open(join(srcdir, postname + "." + languages[language]), a)
+        ext, loc = languages[language]
+        if loc is None:
+            loc = join(srcdir, postname + "." + ext)
+        return open(loc, a)
 
     def write_to_language(language, line):
         if language in languages:
@@ -37,9 +40,9 @@ try:
 
     language = ""
     for line in sys.stdin:
-        dump_directive = re.search("dump:\\s+(\\S+)\\s+as\\s+(\\S+)", line)
+        dump_directive = re.search("dump:\\s+(\\S+)\\s+as\\s+(\\S+)(?:\\s+to\\s+(\\S+))?", line)
         if dump_directive:
-            languages[dump_directive.group(1)] = dump_directive.group(2)
+            languages[dump_directive.group(1)] = dump_directive.group(2), dump_directive.group(3)
             continue
         language_directive = re.search("```\\s*(.*)", line)
         if language_directive:
