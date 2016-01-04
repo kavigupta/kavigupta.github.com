@@ -17,11 +17,12 @@ if argv[1] == 'serve':
     print ("No commit")
 else:
     commit = argv[1]
+system('./SimplePreprocessor/spp -s "_posts"')
 try:
+    system ("cp -r _resources/* resources")
     system ('_scripts/indexresources.py')
 except Exception:
     pass
-system('./SimplePreprocessor/spp -s "_posts"')
 if commit:
     system('jekyll build')
     system('git add .')
@@ -35,6 +36,7 @@ system('./SimplePreprocessor/spp -s "_posts" -c')
 
 try:
     system ('_scripts/indexresources.py clean')
+    system ("rm -r resources")
 except Exception as e:
     print (e)
 
