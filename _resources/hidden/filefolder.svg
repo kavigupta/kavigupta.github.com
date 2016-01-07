@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="544.7253"
-     inkscape:cy="360.24176"
+     inkscape:zoom="0.32"
+     inkscape:cx="-289.67891"
+     inkscape:cy="366.32931"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -54,9 +54,38 @@
      id="layer1">
     <path
        style="fill:#edc855;fill-opacity:0.99215686;fill-rule:evenodd;stroke:#000000;stroke-width:12.39999962;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 100,259.50506 0,424.28572 517.14286,0 0,-360 -374.28571,0 0,-64.28572 z"
+       d="m 34.285714,25.219346 0,424.285724 517.142856,0 0,-360.000004 -374.28571,0 0,-64.28572 z"
        id="path4155"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccc" />
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-xdpi="2.4731741"
+       inkscape:export-ydpi="2.4731741" />
+    <g
+       id="g4190"
+       transform="translate(1071.875,353.125)"
+       inkscape:export-xdpi="2.4731741"
+       inkscape:export-ydpi="2.4731741">
+      <rect
+         y="201.28117"
+         x="-995.65106"
+         height="655.46228"
+         width="474.21228"
+         id="rect4188"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:0.98999999;fill:#5dff6a;fill-opacity:0.99215686;fill-rule:nonzero;stroke:#000000;stroke-width:13.18772411;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <flowRoot
+         transform="translate(-1040.625,-221.875)"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="flowRoot4178"
+         xml:space="preserve"><flowRegion
+           id="flowRegion4180"><rect
+             y="433.16577"
+             x="59.464287"
+             height="629.64282"
+             width="443.57144"
+             id="rect4182" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, ';text-align:center;text-anchor:middle"
+           id="flowPara4184">We the people of the United States, in order to form a more perfect union, establish justice, insure domestic tranquility, provide for the common defense, promote the general welfare, and secure the blessings of liberty to ourselves and our posterity, do ordain and establish this Constitution for the United States of ...</flowPara><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50px;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, ';text-align:center;text-anchor:middle"
+           id="flowPara4186" /></flowRoot>    </g>
   </g>
 </svg>
