@@ -17,9 +17,9 @@ if argv[1] == 'serve':
     print ("No commit")
 else:
     commit = argv[1]
+system ("cp -r _resources/* resources")
 system('./SimplePreprocessor/spp -s "_posts"')
 try:
-    system ("cp -r _resources/* resources")
     system ('_scripts/indexresources.py')
 except Exception:
     pass
