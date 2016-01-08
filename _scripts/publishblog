@@ -17,6 +17,7 @@ if argv[1] == 'serve':
     print ("No commit")
 else:
     commit = argv[1]
+system("mkdir resources")
 system ("cp -r _resources/* resources")
 system('./SimplePreprocessor/spp -s "_posts"')
 try:
