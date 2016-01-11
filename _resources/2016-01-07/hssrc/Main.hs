@@ -1,7 +1,9 @@
-module Main(main) where
+module Main(main, standard_main) where
 
 import ImageManip
+
 import StarIdentification
+import Coor
 import Data.Ratio
 
 import Codec.Picture
@@ -10,7 +12,10 @@ inset :: (Int, Int, Int, Int)
 inset = (900, 1200, 400, 400)
 
 main :: IO ()
-main = do
+main = prof_main
+
+standard_main :: IO ()
+standard_main = do
     raws_ <- raws
     let clusters = map (allClusters ((5 :: Int)%10)) raws_
     --let idstars = map identifyStars clusters
@@ -27,6 +32,13 @@ main = do
         $ vis0 :$: visualization 1
     putStrLn "Second identification of stars"
     return ()
+
+prof_main :: IO ()
+prof_main = do
+    imgs <- raws
+    let img = head imgs
+    let cluster = allClusters (0.5 :: Double) img
+    writeImage "temp" $ visualizeStars cluster $ empty img
 
 redBlueLayerer :: Coor PixelRGB8 -> PixelRGB8
 redBlueLayerer (a:$:b)

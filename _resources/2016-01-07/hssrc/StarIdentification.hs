@@ -5,22 +5,13 @@ import qualified Data.Set as S
 import Control.Arrow
 import Data.Monoid
 
+import Control.Monad.ST.Safe
+
+import BitMatrix
+
+import Coor
+
 import Codec.Picture
-
-infixr 1 :$:
-infixr 5 *$
-data Coor x = x :$: x
-    deriving (Eq, Ord, Show)
-
-(*$) :: (Num a) => a -> Coor a -> Coor a
-(*$) k = fmap (*k)
-
-instance Functor Coor where
-    fmap f (x:$:y) = f x:$:f y
-
-instance (Num a) => Monoid (Coor a) where
-    mempty = 0:$:0
-    (x:$:y) `mappend` (w:$:z) = x+w:$:y+z
 
 data Star = Star { location :: Coor Double, brightness :: Double } deriving (Eq, Show)
 
@@ -33,34 +24,38 @@ identifyStars clusters img = IdentifiedStars $ foldr (.) id (zipWith M.insert st
     starCentInt = map (fmap round . location) stars
 
 star :: Image PixelRGB8 -> S.Set (Coor Int) -> Star
-star img set = Star {location=averageloc, brightness=bright}
+star img coorset = Star {location=averageloc, brightness=bright}
     where
-    brightlocs = map (lightness . extract img &&& fmap fromIntegral) . S.toList $ set
+    brightlocs = map (lightness . extract img &&& fmap fromIntegral) . S.toList $ coorset
     bright =  sum (map fst brightlocs)
     averageloc = (1 / bright) *$ mconcat (map (uncurry (*$)) brightlocs)
 
 allClusters :: (Fractional a, Ord a) => a -> Image PixelRGB8 -> [S.Set (Coor Int)]
 allClusters thresh img
-        = partialIdentify
-            [x :$: y | x <- [0..imageWidth img - 1], y <- [0..imageWidth img - 1]]
-            (S.fromList [])
-            []
+        = runST $ do
+            used <- newBitMatrix (imageWidth img) (imageHeight img)
+            partialIdentify
+                [x :$: y | x <- [0..imageWidth img - 1], y <- [0..imageWidth img - 1]]
+                used
+                []
     where
     partialIdentify ::
             [Coor Int] ->
-            S.Set (Coor Int) ->
+            BitMatrix s ->
             [S.Set (Coor Int)] ->
-            [S.Set (Coor Int)]
-    partialIdentify [] _ clusters = clusters
-    partialIdentify (current:rest) used clusters
-        | current `S.member` used
-            = partialIdentify rest used clusters
-        | otherwise
-            = let {
+            ST s [S.Set (Coor Int)]
+    partialIdentify [] _ clusters = return clusters
+    partialIdentify (current:rest) used clusters = do
+        hasBeenUsed <- at used current
+        if hasBeenUsed then
+            partialIdentify rest used clusters
+        else do
+            let {
                 cluster = getCluster (whiterThan thresh) img current;
-                used' = S.union used cluster;
                 clusters' = if S.null cluster then clusters else cluster:clusters
-            } in partialIdentify rest used' clusters'
+            } in do
+                setAll used True $ S.toList cluster
+                partialIdentify rest used clusters'
 
 whiterThan :: (Fractional a, Ord a) => a -> PixelRGB8 -> Bool
 whiterThan thresh pixel = lightness pixel > thresh

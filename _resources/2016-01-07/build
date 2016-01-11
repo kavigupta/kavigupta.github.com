@@ -1,5 +1,24 @@
 #!/bin/bash
 
-cd "_resources/2016-01-07/bin"
-java Main
-cd ..
+cd _resources/2016-01-07/
+
+if [ ! -d "raw" ]; then
+    mogrify -format png rawjpg/*.JPG
+    mkdir raw
+    mv rawjpg/*.png raw
+fi
+
+cd hssrc
+
+ghc -Wall -Werror -prof -fprof-auto -rtsopts Main.hs
+
+soundsf $?
+
+if [ $? -ne 0 ] ; then exit 1 ; fi
+
+./Main +RTS -p
+
+soundsf $?
+
+rm ./*.hi
+rm ./*.o

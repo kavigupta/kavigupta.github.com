@@ -9,7 +9,8 @@ import GHC.Word
 
 import qualified Data.Map as M
 import qualified Data.Set as S
-import StarIdentification
+
+import Coor
 
 import Codec.Picture
 import Codec.Picture.Types
@@ -22,9 +23,9 @@ raws = do
     files <- getDirectoryContents $ projectRoot ++ "raw"
     let jpgs = sort
             . map ((projectRoot ++ "raw/") ++)
-            . filter (".JPG" `isSuffixOf`)
+            . filter (".png" `isSuffixOf`)
             $ files
-    maybeImages <- forM jpgs readImage
+    maybeImages <- forM jpgs readPng
     images <- case sequence maybeImages of
         Left err -> putStrLn err >> exitFailure
         Right imgs -> return (map toRGB8 imgs)
