@@ -10,7 +10,7 @@ fi
 
 cd hssrc
 
-ghc -Wall -Werror -prof -fprof-auto -rtsopts Main.hs
+ghc -cpp -DENTIRE_IMAGE -Wall -Werror -prof -fprof-auto -rtsopts Main.hs
 
 soundsf $?
 
