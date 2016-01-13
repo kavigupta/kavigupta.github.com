@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module ImageManip where
 
 import System.Directory
@@ -11,12 +12,24 @@ import qualified Data.Map as M
 import qualified Data.Set as S
 
 import Coor
+import StarIdentification
 
 import Codec.Picture
 import Codec.Picture.Types
+import Codec.Picture.Canvas
 
 projectRoot :: FilePath
 projectRoot = "../"
+
+originalInset :: (Int, Int, Int, Int)
+originalInset = (900, 1200, 400, 400)
+
+maybeInset :: Image PixelRGB8 -> Image PixelRGB8
+#ifdef ENTIRE_IMAGE
+maybeInset = id
+#else
+maybeInset = crop originalInset
+#endif
 
 raws :: IO [Image PixelRGB8]
 raws = do
@@ -28,7 +41,7 @@ raws = do
     maybeImages <- forM jpgs readPng
     images <- case sequence maybeImages of
         Left err -> putStrLn err >> exitFailure
-        Right imgs -> return (map toRGB8 imgs)
+        Right imgs -> return (map (maybeInset . toRGB8) imgs)
     let uniqueWidth = nub $ map imageWidth images
     let uniqueHeight = nub $ map imageHeight images
     when (length uniqueWidth /= 1 || length uniqueHeight /= 1) $
@@ -110,3 +123,14 @@ visualizeStars stars img
         ]
     addToMap :: PixelRGB8 -> S.Set (Coor Int) -> M.Map (Coor Int) PixelRGB8 -> M.Map (Coor Int) PixelRGB8
     addToMap pixel = foldr (.) id . map (flip M.insert pixel) . S.toList
+
+visualizeAlignments :: [(Star, Star)] -> Image PixelRGB8 -> Image PixelRGB8 -> Image PixelRGB8
+visualizeAlignments pairedStars imga imgb
+        = canvasToImage . lineDrawer $ avg
+    where
+    avg  = case imageToCanvas $ average [imga, imgb] of
+        Left err -> error err
+        Right x -> x
+    lineDrawer :: Canvas PixelRGB8 -> Canvas PixelRGB8
+    lineDrawer = foldr (.) id $ map linePainter pairedStars
+    linePainter (Star (x1:$:y1) _, Star (x2:$:y2) _) = drawLine (round x1) (round y1) (round x2) (round y2) (PixelRGB8 0xFF 0 0)

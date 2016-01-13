@@ -5,6 +5,8 @@ import qualified Data.Set as S
 import Control.Arrow
 import Data.Monoid
 
+import Data.Word
+
 import Control.Monad.ST.Safe
 
 import BitMatrix
@@ -15,10 +17,12 @@ import Codec.Picture
 
 data Star = Star { location :: Coor Double, brightness :: Double } deriving (Eq, Show)
 
-data IdentifiedStars = IdentifiedStars (M.Map (Coor Int) Star)
+data IdentifiedStars = IdentifiedStars {width :: Int, height :: Int, contents :: M.Map (Coor Int) Star} deriving Show
 
 identifyStars :: [S.Set (Coor Int)] -> Image PixelRGB8 -> IdentifiedStars
-identifyStars clusters img = IdentifiedStars $ foldr (.) id (zipWith M.insert starCentInt stars) (M.fromList [])
+identifyStars clusters img
+        = IdentifiedStars (imageWidth img) (imageHeight img)
+            $ foldr (.) id (zipWith M.insert starCentInt stars) (M.fromList [])
     where
     stars = map (star img) clusters
     starCentInt = map (fmap round . location) stars
@@ -26,11 +30,11 @@ identifyStars clusters img = IdentifiedStars $ foldr (.) id (zipWith M.insert st
 star :: Image PixelRGB8 -> S.Set (Coor Int) -> Star
 star img coorset = Star {location=averageloc, brightness=bright}
     where
-    brightlocs = map (lightness . extract img &&& fmap fromIntegral) . S.toList $ coorset
+    brightlocs = map ((/ 256) . fromIntegral . lightness . extract img &&& fmap fromIntegral) . S.toList $ coorset
     bright =  sum (map fst brightlocs)
     averageloc = (1 / bright) *$ mconcat (map (uncurry (*$)) brightlocs)
 
-allClusters :: (Fractional a, Ord a) => a -> Image PixelRGB8 -> [S.Set (Coor Int)]
+allClusters :: Word8 -> Image PixelRGB8 -> [S.Set (Coor Int)]
 allClusters thresh img
         = runST $ do
             used <- newBitMatrix (imageWidth img) (imageHeight img)
@@ -57,11 +61,11 @@ allClusters thresh img
                 setAll used True $ S.toList cluster
                 partialIdentify rest used clusters'
 
-whiterThan :: (Fractional a, Ord a) => a -> PixelRGB8 -> Bool
+whiterThan :: Word8 -> PixelRGB8 -> Bool
 whiterThan thresh pixel = lightness pixel > thresh
 
-lightness :: (Fractional a, Ord a) => PixelRGB8 -> a
-lightness (PixelRGB8 r g b) = (fromIntegral r + fromIntegral g + fromIntegral b) / (3 * 256)
+lightness :: PixelRGB8 -> Word8
+lightness (PixelRGB8 r g b) = r `div` 3 + g `div` 3 + b `div` 3
 
 getCluster :: (Pixel a) => (a -> Bool) -> Image a -> Coor Int -> S.Set (Coor Int)
 getCluster filt img loc0
