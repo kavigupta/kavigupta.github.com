@@ -1,0 +1,86 @@
+	Thu Jan 14 13:52 2016 Time and Allocation Profiling Report  (Final)
+
+	   Main +RTS -p -RTS
+
+	total time  =        0.01 secs   (15 ticks @ 1000 us, 1 processor)
+	total alloc = 231,690,056 bytes  (excludes profiling overheads)
+
+COST CENTRE          MODULE                 %time %alloc
+
+withImageDecoder.get Codec.Picture           73.3   97.8
+MAIN                 MAIN                    13.3    1.0
+pngComputeCrc        Codec.Picture.Png.Type   6.7    1.1
+pngCrcTable          Codec.Picture.Png.Type   6.7    0.0
+
+
+                                                                                                    individual     inherited
+COST CENTRE                                        MODULE                         no.     entries  %time %alloc   %time %alloc
+
+MAIN                                               MAIN                           134           0   13.3    1.0   100.0  100.0
+ demo_main                                         Main                           319           0    0.0    0.0     0.0    0.0
+  raws                                             ImageManip                     320           0    0.0    0.0     0.0    0.0
+   readPng                                         Codec.Picture                  321           0    0.0    0.0     0.0    0.0
+    withImageDecoder                               Codec.Picture                  322           0    0.0    0.0     0.0    0.0
+     withImageDecoder.doit                         Codec.Picture                  323           0    0.0    0.0     0.0    0.0
+      withImageDecoder.get                         Codec.Picture                  324           0    0.0    0.0     0.0    0.0
+ CAF                                               Main                           267           0    0.0    0.0    80.0   99.0
+  demo_main                                        Main                           269           1    0.0    0.0    80.0   99.0
+   raws                                            ImageManip                     271           0    0.0    0.0    80.0   99.0
+    readPng                                        Codec.Picture                  275           0    0.0    0.0    80.0   99.0
+     withImageDecoder                              Codec.Picture                  276          10    0.0    0.0    80.0   99.0
+      withImageDecoder.get                         Codec.Picture                  278          10    0.0    0.0     0.0    0.0
+      withImageDecoder.doit                        Codec.Picture                  277          10    0.0    0.0    80.0   99.0
+       decodePng                                   Codec.Picture.Png              281           0    0.0    0.0     6.7    1.2
+        decodePngWithMetadata                      Codec.Picture.Png              282           1    0.0    0.0     6.7    1.2
+         runGetStrict                              Codec.Picture.InternalHelper   283           1    0.0    0.0     6.7    1.2
+          runGet                                   Codec.Picture.InternalHelper   284           1    0.0    0.0     6.7    1.2
+           parseRawPngImage                        Codec.Picture.Png.Type         287           0    0.0    0.0     6.7    1.2
+            get                                    Codec.Picture.Png.Type         290           0    0.0    0.0     6.7    1.2
+             get                                   Codec.Picture.Png.Type         294           0    0.0    0.0     6.7    1.2
+              get                                  Codec.Picture.Png.Type         297           0    0.0    0.0     6.7    1.2
+               parseChunks                         Codec.Picture.Png.Type         300           0    0.0    0.0     6.7    1.2
+                get                                Codec.Picture.Png.Type         302           0    0.0    0.0     6.7    1.2
+                 chunkType                         Codec.Picture.Png.Type         317           6    0.0    0.0     0.0    0.0
+                 get.computedCrc                   Codec.Picture.Png.Type         303           7    0.0    0.0     6.7    1.2
+                  pngComputeCrc                    Codec.Picture.Png.Type         305           0    6.7    1.1     6.7    1.2
+                   pngComputeCrc.updateCrc.u32Val  Codec.Picture.Png.Type         308        7370    0.0    0.0     0.0    0.0
+                   pngComputeCrc.updateCrc         Codec.Picture.Png.Type         307        7370    0.0    0.0     0.0    0.1
+                    pngComputeCrc.updateCrc.lutVal Codec.Picture.Png.Type         310           0    0.0    0.1     0.0    0.1
+                   pngComputeCrc.updateCrc.lutVal  Codec.Picture.Png.Type         306        7370    0.0    0.0     0.0    0.0
+               get.\                               Codec.Picture.Png.Type         298           1    0.0    0.0     0.0    0.0
+              imageTypeOfCode                      Codec.Picture.Png.Type         295           1    0.0    0.0     0.0    0.0
+       withImageDecoder.get                        Codec.Picture                  279           0   73.3   97.8    73.3   97.8
+    raws.jpgs                                      ImageManip                     273           1    0.0    0.0     0.0    0.0
+  main                                             Main                           268           1    0.0    0.0     0.0    0.0
+ CAF                                               ImageManip                     266           0    0.0    0.0     0.0    0.0
+  projectRoot                                      ImageManip                     272           1    0.0    0.0     0.0    0.0
+  raws                                             ImageManip                     270           1    0.0    0.0     0.0    0.0
+ CAF                                               Codec.Picture                  256           0    0.0    0.0     0.0    0.0
+  readPng                                          Codec.Picture                  274           1    0.0    0.0     0.0    0.0
+ CAF                                               Codec.Picture.Png              253           0    0.0    0.0     0.0    0.0
+  decodePng                                        Codec.Picture.Png              280           1    0.0    0.0     0.0    0.0
+ CAF                                               Codec.Picture.Png.Type         234           0    0.0    0.0     6.7    0.0
+  iENDSignature                                    Codec.Picture.Png.Type         318           1    0.0    0.0     0.0    0.0
+  pngCrcTable                                      Codec.Picture.Png.Type         313           1    6.7    0.0     6.7    0.0
+   pngCrcTable.magicConstant                       Codec.Picture.Png.Type         316           1    0.0    0.0     0.0    0.0
+   pngCrcTable.updateCrcConstant                   Codec.Picture.Png.Type         315        2048    0.0    0.0     0.0    0.0
+   pngCrcTable.zero                                Codec.Picture.Png.Type         314           1    0.0    0.0     0.0    0.0
+  pngComputeCrc.updateCrc                          Codec.Picture.Png.Type         311           0    0.0    0.0     0.0    0.0
+   pngComputeCrc.updateCrc.lutVal                  Codec.Picture.Png.Type         312           0    0.0    0.0     0.0    0.0
+  pngComputeCrc                                    Codec.Picture.Png.Type         304           1    0.0    0.0     0.0    0.0
+  get                                              Codec.Picture.Png.Type         301           1    0.0    0.0     0.0    0.0
+  parseChunks                                      Codec.Picture.Png.Type         299           1    0.0    0.0     0.0    0.0
+  get                                              Codec.Picture.Png.Type         296           1    0.0    0.0     0.0    0.0
+  get                                              Codec.Picture.Png.Type         293           1    0.0    0.0     0.0    0.0
+  signature                                        Codec.Picture.Png.Type         292           1    0.0    0.0     0.0    0.0
+  iHDRSignature                                    Codec.Picture.Png.Type         291           1    0.0    0.0     0.0    0.0
+  get                                              Codec.Picture.Png.Type         289           1    0.0    0.0     0.0    0.0
+  pngSignature                                     Codec.Picture.Png.Type         288           1    0.0    0.0     0.0    0.0
+  parseRawPngImage                                 Codec.Picture.Png.Type         286           1    0.0    0.0     0.0    0.0
+  get                                              Codec.Picture.Png.Type         285           1    0.0    0.0     0.0    0.0
+ CAF                                               GHC.IO.Encoding                189           0    0.0    0.0     0.0    0.0
+ CAF                                               GHC.IO.Handle.FD               187           0    0.0    0.0     0.0    0.0
+ CAF                                               GHC.Conc.Signal                174           0    0.0    0.0     0.0    0.0
+ CAF                                               GHC.IO.FD                      171           0    0.0    0.0     0.0    0.0
+ CAF                                               GHC.TopHandler                 165           0    0.0    0.0     0.0    0.0
+ CAF                                               GHC.IO.Encoding.Iconv          157           0    0.0    0.0     0.0    0.0
