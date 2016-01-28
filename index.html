@@ -3,14 +3,8 @@ layout: default
 title: Home
 ---
 
-<span class = "major_link"><a href = "{{ site.baseurl }} about"> About </a> | <a href = "{{ site.baseurl }} archive"> Archive </a></span>
-<br>
-<br>
-
-
 <div class="posts">
-  {% for post in paginator.posts %}
-  <article class="post">
+  {% for post in site.posts %}
     <h1 class="post-title">
       <a href="{{ site.baseurl }}{{ post.url }}">
         {{ post.title }}
@@ -20,9 +14,9 @@ title: Home
     <time datetime="{{ post.date | date_to_xmlschema }}" class="post-date">{{ post.date | date_to_string }}</time>
 
     {{ post.content }}
-  </article>
+    <div class="pagination">
+        <a href = "{{ site.baseurl }} archive"> Archive </a>
+    </div>
+    <hr>
   {% endfor %}
-</div>
-<div class="pagination">
-    <a href = "{{ site.baseurl }} archive"> Archive </a>
 </div>

@@ -31,3 +31,4 @@ github:
   repo:              https://github.com/kavigupta/kavigupta.github.com
 
 url:                 https://kavigupta.github.io
+excerpt_separator:   <!--end excerpt-->
