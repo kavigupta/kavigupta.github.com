@@ -23,9 +23,17 @@ Between \\(E\\) and any set \\(x\\), we have the function \\(ab_x = \{\}\\), whi
 
 <img src="/resources/2016-01-28/absurd.svg.png"/>
 
-Now, we can add the functions from the one-element sets. We know that there is no function to the empty set, since all functions need to have an output for every input. The functions from the one element sets to the other sets are all the constant function \\(s_x\\) mapping the only element of the domain to the specified element \\(x\\).
+Now, we can add the functions from the one-element sets \\(A\\) and \\(B\\). We know that there is no function to the empty set, since all functions need to have an output for every input. The functions from the one element sets to the other sets are all the constant function \\(s_x\\) mapping the only element of the domain to the specified element \\(x\\).
 
 <img src="/resources/2016-01-28/single.svg.png"/>
+
+The next step, of course, is finding the functions from \\(U\\). First, the functions to the one-element sets. These are the functions \\(const_x\\), which map both elements of \\(U\\) to \\(x\\).
+
+<img src="/resources/2016-01-28/const.svg.png"/>
+
+Additionally, there are the functions from \\(U \rightarrow U\\). There are exactly two: the function that preserves identity: \\(id\\) and the function that swaps \\(a\\) and \\(b\\): \\(swap\\).
+
+<img src="/resources/2016-01-28/all.svg.png"/>
 
 ## Abstractions in Mathematics
 
