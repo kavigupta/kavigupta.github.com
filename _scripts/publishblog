@@ -21,6 +21,7 @@ system("mkdir resources")
 system ("cp -r _resources/* resources")
 system('./SimplePreprocessor/spp -s "_posts"')
 try:
+    system('find resources -name *.svg -exec inkscape -z {} -e {}.png \;')
     system ('_scripts/indexresources.py')
 except Exception:
     pass
