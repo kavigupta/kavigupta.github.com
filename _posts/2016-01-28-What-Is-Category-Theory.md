@@ -17,9 +17,7 @@ Let's look at subsets of the set \\(\\{a, b\\}\\). We have the possibilities, wh
 
 <img src="/resources/2016-01-28/sets.svg.png"/>
 
-We can then look at the functions between the sets; here expressed as a set of tuples, \\(f = \\{(x, fx)\\}\\) where there is one element for every element of \\(x\\).
-
-Between \\(E\\) and any set \\(x\\), we have the function \\(ab_x = \{\}\\), which needs no mappings. (This is called the `absurd` mapping because if you have to use this function, you are in an absurd situation, a function with no potential arguments).
+Between \\(E\\) and any set \\(x\\), we have the function \\(ab_x\\), which needs no mappings. (This is called the `absurd` mapping because if you have to use this function, you are in an absurd situation, a function with no potential arguments).
 
 <img src="/resources/2016-01-28/absurd.svg.png"/>
 
@@ -34,6 +32,40 @@ The next step, of course, is finding the functions from \\(U\\). First, the func
 Additionally, there are the functions from \\(U \rightarrow U\\). There are exactly two: the function that preserves identity: \\(id\\) and the function that swaps \\(a\\) and \\(b\\): \\(swap\\).
 
 <img src="/resources/2016-01-28/all.svg.png"/>
+
+## Let's forget elements
+
+So, we managed to enumerate a bunch of sets and functions between them. For convenience, I'm going to rename all of them to have unique names:
+
+<img src="/resources/2016-01-28/renamed.svg.png"/>
+
+Note the new naming conventions, the arrows from each set to itself are denoted by \\(id\\), and the functions from set \\(E\\) to \\(F\\) that were previously designated \\(s_x\\) are now designated as the functions \\(x_{EF}\\) to ensure that no two functions have the same name.
+
+Now, we're going to do our first transformational move: we're going to forget the fact that sets contain elements.
+
+<img src="/resources/2016-01-28/renamed.svg.png"/>
+
+Now that we just have a bunch of dots, the labels for the functions seem a little arbitrary. To simplify things, let's select some functions from which we can get the rest as compositions. Basically, given how simple this system is, we will need to have exactly one function going in and out of every set, along with the swap function, which can't be defined in terms of constant functions.
+
+<img src="/resources/2016-01-28/compositions.svg.png"/>
+
+In fact, the only functions we need are \\((a, f, f^{-1}, g, h, s)\\). The rest are compositions. To make this system complete, we need the rules that \\(h \circ g = id\\) and \\(s \circ s = id\\).
+
+Anyway, now we don't need to know what is in the sets at all. Given our amazing composition laws, we can completely describe the network simply in terms of our function arrows!
+
+## The category of Sets
+
+OK, so now we have a bunch of dots and arrows between the dots. We now have a category! Basically, category theory is the study of different patterns of these arrows. For an example of the difference between the two fields, look at \\(E\\). In set theory, the defining factor of \\(E\\) is that it contains no elements. In category theory, its defining factor is that it contains exactly one arrow to every other set. In fact, it has a special name: the initial object. \\(A\\) and \\(B\\) are considered special in set theory because they have one element; in category theory, they are considered special because they have exactly one arrow pointing to them from every other set.
+
+## What it's all about
+
+So, category theory is just the study of functions? Well, not exactly. Consider the following directed graph (i.e., a bunch of points with some arrows connecting the points):
+
+<img src="/resources/2016-01-28/graph.svg.png"/>
+
+Look familiar? In fact, if you take the paths (i.e., the various ways of getting from point to point) with the laws given above, we end up with the same picture.
+
+Fundamentally, this is what Category Theory is, at its basis, about. Any category can be viewed as a graph.
 
 ## Abstractions in Mathematics
 
