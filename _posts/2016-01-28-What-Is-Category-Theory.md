@@ -65,7 +65,21 @@ So, category theory is just the study of functions? Well, not exactly. Consider 
 
 Look familiar? In fact, if you take the paths (i.e., the various ways of getting from point to point) with the laws given above, we end up with the same picture.
 
-Fundamentally, this is what Category Theory is, at its basis, about. Any category can be viewed as a graph.
+Fundamentally, this is what categories are. Any category is basically equivalent to the paths on some graph. (Actually, there is a way to formalize this in terms of functors, a more advanced concept).
+
+And the power of category theory is that this structure applies to a lot of things.
+
+A lot of categories are basically sets with some limitations on what can be functions between them. For example, Vector Spaces are basically just sets where the only arrows are linear transformation, not just functions.
+
+Other categories are a little more conceptual. e.g., a category that looks like this:
+
+<img src="/resources/2016-01-28/tree.svg.png"/>
+
+In this category, there are an infinite number of things, with \\(n\\) in the \\(n\\)th row, with arrows connecting each thing to two other things. This category is obviously nothing like that of sets.
+
+## The really fun stuff.
+
+
 
 ## Abstractions in Mathematics
 
