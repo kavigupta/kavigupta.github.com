@@ -5,7 +5,7 @@ comments: True
 ---
 
 \\(\newcommand{\mr}{\mathrm}\\)
-So, I was reading [_Category Theory for Scientists_](http://math.mit.edu/~dspivak/teaching/sp13/) recently and kept getting the question: What _is_ category theory? Well, until I hit chapter 3-4, I didn't really have an answer. But now I do, and I realize that to just understand what it is doesn't really require understanding how it works.
+So, I was reading [_Category Theory for Scientists_](http://math.mit.edu/~dspivak/teaching/sp13/) recently and kept having people ask me: What _is_ category theory? Well, until I hit chapter 3-4, I didn't really have an answer. But now I do, and I realize that to just understand what it is doesn't really require understanding how it works.
 
 ## Sets and functions
 
@@ -43,7 +43,7 @@ Note the new naming conventions, the arrows from each set to itself are denoted 
 
 Now, we're going to do our first transformational move: we're going to forget the fact that sets contain elements.
 
-<img src="/resources/2016-01-28/renamed.svg.png"/>
+<img src="/resources/2016-01-28/dots.svg.png"/>
 
 Now that we just have a bunch of dots, the labels for the functions seem a little arbitrary. To simplify things, let's select some functions from which we can get the rest as compositions. Basically, given how simple this system is, we will need to have exactly one function going in and out of every set, along with the swap function, which can't be defined in terms of constant functions.
 
@@ -59,7 +59,7 @@ OK, so now we have a bunch of dots and arrows between the dots. We now have a ca
 
 ## What it's all about
 
-So, category theory is just the study of functions? Well, not exactly. Consider the following directed graph (i.e., a bunch of points with some arrows connecting the points):
+So, category theory is just the study of functions? Well, not exactly. Consider the following directed graph (i.e., a bunch of points with some one-headed arrows connecting the points):
 
 <img src="/resources/2016-01-28/graph.svg.png"/>
 
@@ -81,4 +81,4 @@ In this category, there are an infinite number of things, with \\(n\\) in the \\
 
 The really fun part of category theory actually has to do with functions between categories called "functors". Then there is a category of categories where the arrows are the functors and the objects are the categories. And then they add like 20 levels of abstraction until your head hurts.
 
-But at its base, category theory is just the study of graphs, the way that set theory is the study of lists. Nothing too intimidating, and it *does* generalize a *lot* of theorems about things.
+But at its base, category theory is just the study of paths on graphs, the way that set theory is the study of unique elements of lists. Nothing too intimidating, and it *does* generalize a *lot* of theorems about things.
