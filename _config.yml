@@ -5,7 +5,8 @@ permalink:           pretty
 relative_permalinks: true
 
 # Setup
-title:               That depends on what the definition of "=" is
+title:               On Error Resume Prior
+tagline:             If at first you don't succeed...
 paginate:            1
 baseurl:             ""
 markdown:            kramdown
