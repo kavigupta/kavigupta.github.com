@@ -55,6 +55,6 @@ if state == 'commit':
     system('git add .')
     system('git add -u')
     system('git status')
-    call('git', 'commit', '-m', commit.replace("\"", "")
+    call('git', 'commit', '-m', argv[1].replace("\"", "")
             + ' (Saving actual state of my computer so git diff works;'
             + ' cannot push because that breaks the website.)')
