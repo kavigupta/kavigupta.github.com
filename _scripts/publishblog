@@ -3,6 +3,7 @@
 from sys import argv
 from os import system
 from subprocess import check_call
+from time import sleep
 
 print (argv)
 
@@ -12,37 +13,45 @@ def call(*args):
     except Exception as e:
         print (str(e))
 
-if argv[1] == 'serve':
-    commit = False
-    print ("No commit")
-else:
-    commit = argv[1]
+state = argv[1]
+
+if state not in {'serve', 'commit', 'build'}:
+    print(state, "is not a valid command")
+    exit(1)
+
 system("mkdir resources")
 system ("cp -r _resources/* resources")
 system('./SimplePreprocessor/spp -s "_posts"')
-try:
-    system('find resources -name *.svg -exec inkscape -z {} -e {}.png \;')
-    system ('_scripts/indexresources.py')
-except Exception:
-    pass
-if commit:
+
+system('find resources -name *.svg -exec inkscape -z {} -e {}.png \;')
+system ('_scripts/indexresources.py')
+if state == "commit":
     system('jekyll build')
     system('git add .')
     system('git add -u')
-    call('git', 'commit', '-m', commit)
+    call('git', 'commit', '-m', argv[2])
     system('git push origin master')
-else:
+elif state == 'serve':
     system('jekyll serve')
+else: # state == 'build':
+    system("timeout 20s jekyll serve &")
+    sleep(5)
+    print("opening")
+    for lcladdr in argv[2:]:
+        addr = "http://localhost:4000%s" % lcladdr
+        system('gnome-open %s' % addr)
+        system("wkhtmltopdf %s temp.pdf" % addr)
+    system("gnome-open temp.pdf >/dev/null 2>/dev/null")
 
 system('./SimplePreprocessor/spp -s "_posts" -c')
 
 try:
     system ('_scripts/indexresources.py clean')
-    system ("rm -r resources")
+    system ('rm -r resources')
 except Exception as e:
     print (e)
 
-if commit:
+if state == 'commit':
     system('git add .')
     system('git add -u')
     system('git status')
