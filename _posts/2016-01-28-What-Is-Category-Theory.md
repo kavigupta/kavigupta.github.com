@@ -17,6 +17,8 @@ Let's look at subsets of the set \\(\\{a, b\\}\\). We have the possibilities, wh
 
 <img src="/resources/2016-01-28/sets.svg.png"/>
 
+<!--end excerpt-->
+
 Between \\(E\\) and any set \\(x\\), we have the function \\(ab_x\\), which needs no mappings. (This is called the `absurd` mapping because if you have to use this function, you are in an absurd situation, a function with no potential arguments).
 
 <img src="/resources/2016-01-28/absurd.svg.png"/>
