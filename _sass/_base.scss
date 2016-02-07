@@ -34,8 +34,8 @@ html {
 }
 
 body {
-  color: #909090;
-  background-color: #000;
+  color: #515151;
+  background-color: #fff;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
@@ -89,27 +89,4 @@ th {
 tbody tr:nth-child(odd) td,
 tbody tr:nth-child(odd) th {
   background-color: #f9f9f9;
-}
-
-#container {
-    height: 400px;
-    width: 400px;
-    position: relative;
-}
-
-#image {
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-#text {
-    z-index: 100;
-    position: absolute;
-    color: white;
-    font-size: 24px;
-    font-style: italic;
-    left: 250px;
-    top: 350px;
-    font-family: sans-serif;
 }
