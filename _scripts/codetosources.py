@@ -74,7 +74,7 @@ class LanguageList:
                     f.write(text)
 
 srcdir = "../src"
-post = sys.argv[1]
+post = open(".spp-current-file", 'r').read()
 postname = splitext(basename(post))[0]
 
 def create_if_exists(path):
