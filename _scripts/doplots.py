@@ -27,16 +27,15 @@ try:
         xlim(-1, 1)
         ylim(-1, 1)
 
-        def fnplots(*fn):
-            for f in fn:
+        def fnplots(*fnc):
+            for f, c in fnc:
                 xmin, xmax = gca().get_xlim()
                 ymin, ymax = gca().get_ylim()
                 x = np.arange(xmin, xmax, (xmax-xmin)/100)
                 y = np.vectorize(f)(x)
-                plot(x, y)
-
-        for line in lines:
-            exec(line)
+                plot(x, y, c)
+        code = '\n'.join(lines) + "\n"
+        exec(code)
         
         savefig("../resources/" + path)
 
@@ -50,7 +49,7 @@ try:
                 writeplot()
                 lines = []
                 inplot = False
-                print('<img src="resources/' + path + '"/>')
+                print('<img src="/resources/' + path + '"/>')
             else:
                 lines.append(line)
             continue
