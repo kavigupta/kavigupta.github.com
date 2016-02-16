@@ -23,7 +23,7 @@ system("mkdir resources")
 system ("cp -r _resources/* resources")
 system('./SimplePreprocessor/spp -s "_posts"')
 
-system('find resources -name *.svg -exec inkscape -z {} -e {}.png \;')
+system('find resources -name *.svg -exec python3 _scripts/svgtopng.py {} \;')
 system ('_scripts/indexresources.py')
 if state == "commit":
     system('jekyll build')
