@@ -38,9 +38,19 @@ strong {
   color: #303030;
 }
 
-ul, ol, dl {
+ol, dl {
   margin-top: 0;
   margin-bottom: 1rem;
+}
+
+ul {
+    margin: 0 auto;
+    text-align: center;
+}
+
+li {
+    display: inline-block;
+    vertical-align: top;
 }
 
 dt {

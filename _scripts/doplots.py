@@ -24,6 +24,7 @@ try:
     end = "{end plot}"
 
     def writeplot():
+        axis('equal')
         xlim(-1, 1)
         ylim(-1, 1)
 
@@ -36,7 +37,6 @@ try:
                 plot(x, y, c)
         code = '\n'.join(lines) + "\n"
         exec(code)
-        
         savefig("../resources/" + path)
 
         clf()
