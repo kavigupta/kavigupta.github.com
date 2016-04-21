@@ -1,3 +1,6 @@
+preprocess:
+    pass python3 ../_scripts/doplots.py
+    replace "<!--_-->" -> ""
 ---
 layout: post
 title: A Monadic Model for Set Theory, Part 1
@@ -45,18 +48,26 @@ The usefulness of funcads is in large part from the way in which they are isomor
 
 Relations of type \\(\mathbb R \succ \mathbb R\\), can be represented as graphs in the plane. For example, the example above can be represented as what looks like the union of the plots of two functions.
 
-<img src="/resources/2016-02-16/x.png"/>
+{dump plot: x.png}
+fnplots((lambda x:x, 'b'), (lambda x:-x, 'b'))
+{end plot}
 
 
 A less function-like example is the relation \\(\\{(x, y) \| x < y\\}\\).
 
-<img src="/resources/2016-02-16/lessthan.png"/>
+{dump plot: lessthan.png}
+x = np.linspace(-10, 10,num=1000)
+fill_between(x, x, 10)
+{end plot}
 
 In this case, we can define a funcad \\(x \mapsto \\{y \| x < y\\}\\).
 
 Another example is the relation \\(\\{(x, y) \| x^2 + y^2 = 1\\}\\)
 
-<img src="/resources/2016-02-16/circle.png"/>
+{dump plot: circle.png}
+circle=Circle((0, 0),0.5,color='b',fill=False)
+gca().add_artist(circle)
+{end plot}
 
 This relation can be represented by the relation
 
@@ -99,7 +110,10 @@ A total funcad is one that assigns at least one value to every input:
 
 An example of a total funcad is \\(<\\) (see above). Another example is the funcad \\(x \mapsto \\{y \| \min(\sin x, \cos x) \leq y \leq \max(\sin x, \cos x)\\}\\):
 
-<img src="/resources/2016-02-16/sincos.png"/>
+{dump plot: sincos.png}
+x = np.linspace(-10, 10,num=1000)
+fill_between(x, np.sin(x), np.cos(x))
+{end plot}
 
 As you can see, to every \\(x\\) value there is associated at least one \\(y\\) value. This is a particularly pathological example because it doesn't fall into any of the other categories.
 
@@ -117,19 +131,34 @@ Additionally, every regular function \\(X \to Y\\) is a functional and total fun
 
 An example of a functional funcad is \\(x \mapsto \left\\{\begin{array}{rl}\\{\sin{4x}\\}&\mbox{if } x \geq 0\\\\ \\{\\} &\mbox{otherwise}\end{array}\right.\\) 
 
-<img src="/resources/2016-02-16/sqrt.png"/>
+{dump plot: sqrt.png}
+x = np.linspace(0,10,num=1000)
+plot(x, np.sin(4*x))
+{end plot}
 
 ### Surjective funcads
 
 An onto funcad is one that "hits" each value \\(y\\). For example, \\(x = \pm \frac 1 2\\):
 
-<img src="/resources/2016-02-16/vertical.png"/>
+{dump plot: vertical.png}
+x = np.linspace(-10, 10,num=1000)
+def const(y):
+    return np.vectorize(lambda u: y)
+
+plot(const(0.5)(x), x, 'b')
+plot(const(-0.5)(x), x, 'b')
+{end plot}
 
 ### Injective funcads
 
 An injective funcad is one that has at most one value \\(y\\) for each value \\(x\\). For example, \\(y = \pm x, x > 0\\)
 
-<img src="/resources/2016-02-16/sideways_abs.png"/>
+{dump plot: sideways_abs.png}
+x = np.linspace(0, 10,num=1000)
+
+plot(x, x, 'b')
+plot(x, -x, 'b')
+{end plot}
 
 ## Inverse funcads
 
@@ -145,15 +174,47 @@ Some funcads (blue), and their inverses (red), are shown below.
 
 ### Square
 
-<img src="/resources/2016-02-16/square_sqrt.png"/>
+{dump plot: square_sqrt.png}
+x = np.linspace(-10, 10,num=1000)
+x2 = np.linspace(0, 10,num=1000)
+
+plot(x, x ** 2, 'b')
+plot(x2, np.sqrt(x2), 'r')
+plot(x2, -np.sqrt(x2), 'r')
+{end plot}
 
 ### Abs
 
-<img src="/resources/2016-02-16/abs_invabs.png"/>
+{dump plot: abs_invabs.png}
+x = np.linspace(-10, 10,num=1000)
+x2 = np.linspace(0, 10,num=1000)
+
+plot(x, np.abs(x), 'r')
+plot(x2, x2, 'b')
+plot(x2, -x2, 'b')
+{end plot}
 
 ### Some Random Relation
 
-<img src="/resources/2016-02-16/srr.png"/>
+{dump plot: srr.png}
+x = np.linspace(-10, 10,num=1000)
+x2 = np.linspace(0, 10,num=1000)
+
+def const(y):
+    return np.vectorize(lambda u: y)
+
+p5 = const(.5)(x)
+p75 = const(.75)(x)
+
+plot(x, p5, 'b')
+plot(p75, x, 'b')
+gca().add_artist(Circle((0, 0.5),0.25,color='b',fill=True))
+
+plot(p5, x, 'r')
+plot(x, p75, 'r')
+gca().add_artist(Circle((0.5, 0),0.25,color='r',fill=True))
+
+{end plot}
 
 ## Classification of Inverses
 
@@ -161,13 +222,32 @@ So, if we have a total funcad, what can we say about its inverse?
 
 Well, here's a total funcad and its inverse.
 
-<img src="/resources/2016-02-16/total_inv.png"/>
+{dump plot: total_inv.png}
+
+x = np.linspace(-10, 10,num=1000)
+
+plot(x, np.vectorize(lambda u: 0.5)(x), 'b')
+plot(x, np.vectorize(lambda u: -0.5)(x), 'b')
+
+
+plot(np.vectorize(lambda u: 0.5)(x), x, 'r')
+plot(np.vectorize(lambda u: -0.5)(x), x, 'r')
+
+{end plot}
 
 As you can see, the funcad's inverse is surjective. Similarly, a surjective funcad's inverse will be injective.
 
 Similarly, it becomes fairly simple to prove that the inverse of any functional funcad will be injective. Here is an example:
 
-<img src="/resources/2016-02-16/func_inv.png"/>
+{dump plot: func_inv.png}
+
+x = np.linspace(-0.5, 10,num=1000)
+y = np.sin(10 * x)
+
+plot(x, y, 'b')
+plot(y, x, 'r')
+
+{end plot}
 
 ## To be continued
 
