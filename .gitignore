@@ -2,3 +2,5 @@ _site
 _cache
 .sass-cache
 temp.pdf
+.ipynb_checkpoints
+**/__pycache__
