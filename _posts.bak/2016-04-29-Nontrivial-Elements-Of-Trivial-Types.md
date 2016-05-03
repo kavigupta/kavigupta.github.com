@@ -1,9 +1,14 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "haskellcomment" -> "haskell"
+    replace "<!--_-->" -> ""
 ---
 layout: post
 title: Nontrivial Elements of Trivial Types
 comments: True
 ---
 
+dump: haskell as hs
 
 <!--
 ```haskell
@@ -35,7 +40,7 @@ data Void
 
 This type is defined by being non-constructible. However, we can try to construct a value such that
 
-```haskell
+```haskellcomment
 void :: Void
 void =
 ```
