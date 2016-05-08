@@ -1,14 +1,9 @@
-preprocess:
-    pass ../_scripts/codetosources.py
-    replace "haskellcomment" -> "haskell"
-    replace "<!--_-->" -> ""
 ---
 layout: post
 title: Nontrivial Elements of Trivial Types
 comments: True
 ---
 
-dump: haskell as hs
 
 <!--
 ```haskell
@@ -29,6 +24,7 @@ In this case, valid values include cars with VINs and LPNs, or Bikes, which have
 
 However, some data types can seem far less useful.
 
+<!--end excerpt-->
 
 ## Elements of the Void type
 
@@ -40,7 +36,7 @@ data Void
 
 This type is defined by being non-constructible. However, we can try to construct a value such that
 
-```haskellcomment
+```haskell
 void :: Void
 void =
 ```
