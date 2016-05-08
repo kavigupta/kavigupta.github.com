@@ -1,9 +1,14 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "haskellcomment" -> "haskell"
+    replace "<!--_-->" -> ""
 ---
 layout: post
 title: Monoids, Bioids, and Beyond
 comments: True
 ---
 
+dump: haskell as hs
 
 <!--
 ```haskell
@@ -35,8 +40,6 @@ monoidLaw2 x = m_id ++ x == x
 monoidLaw3 :: (Monoid a, Eq a) => a -> a -> a -> Bool
 monoidLaw3 x y z = (x ++ y) ++ z == x ++ (y ++ z)
 ```
-
-<!--end excerpt-->
 
 ### Morphisms
 
