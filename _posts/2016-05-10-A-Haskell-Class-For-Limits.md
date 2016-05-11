@@ -1,9 +1,14 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "haskellcomment" -> "haskell"
+    replace "<!--_-->" -> ""
 ---
 layout: post
 title: Haskell Classes for Limits
 comments: True
 ---
 
+dump: haskell as hs
 
 <!--
 ```haskell
@@ -89,7 +94,7 @@ class Span s where
 
 We can in fact make this formality official: anything that is a span is also a cone of a sort:
 
-```haskell
+```haskellcomment
 instance (Span s) => Cone2 (s a b) a b where
     phi2_a = fst
     phi2_b = snd
@@ -97,25 +102,25 @@ instance (Span s) => Cone2 (s a b) a b where
 
 Of course, satisfying the laws is not as easy. The third part to the law
 
-```haskell
+```haskellcomment
 absat = all (== phi2_b) $ map (. phi2_a) ab
 ```
 
 simplifies to
 
-```haskell
+```haskellcomment
 absat = all (== snd) $ map (. fst) ab
 ```
 
 which simplifies to
 
-```haskell
+```haskellcomment
 ab_f . fst == snd
 ```
 
 being true for any function from `A` to `B` in the original diagram. We can quickly disprove the existance of such a function by plugging in `(x, y)` and `(x, y')`, where `y /= y'`:
 
-```haskell
+```haskellcomment
 ab_f . fst $ (x, y) == snd (x, y) && ab_f . fst $ (x, y') == snd (x, y')
 ab_f x == y && ab_f x == y'
 ```
