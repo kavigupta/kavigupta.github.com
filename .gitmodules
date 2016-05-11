@@ -1,3 +1,6 @@
 [submodule "SimplePreprocessor"]
 	path = SimplePreprocessor
 	url = https://github.com/kavigupta/SimplePreprocessor
+[submodule "modules/dictp"]
+	path = modules/dictp
+	url = https://github.com/kavigupta/dictp.git
