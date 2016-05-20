@@ -32,3 +32,4 @@ github:
 
 url:                 https://kavigupta.github.io
 excerpt_separator:   <!--end excerpt-->
+future: true
