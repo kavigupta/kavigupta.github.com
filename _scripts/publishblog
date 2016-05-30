@@ -24,6 +24,7 @@ system ("cp -r _resources/* resources")
 system('./SimplePreprocessor/spp -s "_posts"')
 
 system('find resources -name *.svg -exec python3 _scripts/svgtopng.py {} \;')
+system('find resources -name *.tex -exec python3 _scripts/textopng.py {} \;')
 system ('_scripts/indexresources.py')
 if state == "commit":
     system('jekyll build')
