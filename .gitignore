@@ -4,3 +4,5 @@ _cache
 temp.pdf
 .ipynb_checkpoints
 **/__pycache__
+**/*.hi
+**/*.o
