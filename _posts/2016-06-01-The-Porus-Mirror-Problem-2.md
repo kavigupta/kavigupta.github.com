@@ -10,6 +10,8 @@ From last time, we know the quantity of light that escaped at each location and 
 
 <img src="/resources/2016-06-01/propagation.png" />
 
+<!--end excerpt-->
+
 The basic idea is to find for any given \\(\alpha, r\\) the set of possible \\(\phi, \theta\\) values. In any case, it is easiest to eliminate the \\(\phi\\) variable via rotation.
 
 <img src="/resources/2016-06-01/propagation-phi.png" />

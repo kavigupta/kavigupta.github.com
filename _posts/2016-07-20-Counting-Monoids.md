@@ -22,6 +22,8 @@ We write a monoid as a tuple \\((M, e, * )\\). Some example monoids (written in 
 ([a], [], (++))
 ```
 
+<!--end excerpt-->
+
 ## Counting Pseudomonoids
 
 We define a pseudomonoid as a pair \\((e, * )\\) that doesn't necessarily follow any laws:

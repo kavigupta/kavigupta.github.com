@@ -14,6 +14,8 @@ I'm pretty sure I came up with this problem on my own, but I'm not sure if its a
 
 We wish to calculate at each point along the surface of the tube what is the total quantity of light emitted in each direction, from which we can easily calculate the light pattern this system will cast on any shape outside.
 
+<!--end excerpt-->
+
 ## The general idea behind the solution
 
 Each beam of light will bounce around withn the tube some number of times. If we formally consider that a zero-energy corpuscle is reflected by a transparent part of the tube, then we have an infinite number of bounces. Since we do not care about time, we can ignore its effects and parameterize our equations discretely in terms of bounces.
