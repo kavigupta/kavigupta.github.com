@@ -3,6 +3,7 @@ import sys
 from os.path import exists, basename, getmtime
 from os import makedirs, system
 from shutil import copyfile
+import hashlib
 
 tex = sys.argv[1]
 jobname = tex[:-len(".tex")]
@@ -12,17 +13,20 @@ bpdf = basejob + ".pdf"
 blog = basejob + ".log"
 baux = basejob + ".aux"
 
-pngcache = "_cache/" + basename(png)
+md5 = hashlib.md5()
 
-if not exists("_cache"):
-    makedirs("_cache")
+with open(tex, "rb") as f:
+    md5.update(f.read())
 
-print(getmtime(tex))
+pngcache = "_cache/%s.png" % md5.hexdigest()
 
-if not exists(pngcache) or getmtime(pngcache) < getmtime(tex):
+if not exists(pngcache):
     system("pdflatex " + tex)
     system("convert -density 300 {bpdf} -quality 90 {png}".format(**locals()))
     copyfile(png, pngcache)
     system("rm {bpdf} {baux} {blog}".format(**locals()))
+else:
+    copyfile(pngcache, png)
+
 
 print("ABC " + tex)
