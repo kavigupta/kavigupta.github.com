@@ -1,9 +1,16 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "```srt" -> "```perl"
+    include
+    replace "<!--_-->" -> "<!--_-->"
 ---
 layout: post
 title: Stupid Regex Tricks
 comments: True
 ---
 
+dump: python as py to ../resources/2015-12-31/srt.py
+dump: srt as srt to ../resources/2015-12-31/sample{block_number}.srt
 
 ## Regexes, the duct tape of CS
 
@@ -150,7 +157,7 @@ Implementing this isn't that complicated; an interpret, along with the code samp
 
 Let's specify an input format: a string of 1s and 0s, and an output format, a string of 1s.
 
-```perl
+```srt
 repeat
     s/\b([01]+)0\b/\1,\1/
     s/\b([01]+)1\b/\g<1>0,1/
@@ -166,7 +173,7 @@ This function replaces any odd binary number with "that number,1" and any even b
 
 Input/Output, strings of 0s and 1s.
 
-```perl
+```srt
 s/(.+)/\1,/
 repeat
     s/([01]*)0,/\g<1>1/
@@ -180,7 +187,7 @@ This particular regex works by using a comma to represent a "carry". It starts t
 
 OK, so this puts together the last two examples. It takes expressions of the from "100110101 + 1010111" and outputs the binary sum of the two numbers.
 
-```perl
+```srt
 s/([01]+)[^01]+([01]+)/\1,\2/
 repeat
     s/\b([01]+)0\b/\1,\1/
@@ -223,7 +230,7 @@ Initially, I was using unary internally, but that's a complete pain to type and 
 
 Internally, it will store the remaining program on the first line, the remaining input on the second, it's working stack on the third (comma separated unary, with target cell starting with a `;`), and the program output on the fourth.
 
-```perl
+```srt
 include: "../_resources/2015-12-31/sample3.srt"
 ```
 
