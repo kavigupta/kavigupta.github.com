@@ -14,7 +14,7 @@ So this isn't just a procrastination game for doodling when you're bored (and ha
 
 ## Numbers
 
-For math, the first thing we need are numbers. I'm just going to draw some pictures which are *defined* to be the numbers. We don't worry too much about whether they are "really" numbers or not in the way that we don't worry about whether "102" or "CII" is a better way to explain the concept of "how many cents in a dollar plus how many hands a person has"ness.
+For math, the first thing we need are numbers. I'm just going to draw some pictures which are *defined* to be the numbers. We don't worry too much about whether they are "really" numbers or not in the way that we don't worry about whether "102" or "CII" is a better way to explain the concept of "how many cents in a dollar plus how many hands a person has"ness.[^1]
 
 So this is 0:
 
@@ -62,7 +62,7 @@ You get the picture.
 
 IMAGE: plus-5-3-red3
 
-And now we have the result, 8. Now, you can probably see how the addition works: it "adds" two numbers in the way that if you have 3 things and you have 5 things, and you put them next to each other, you have 8 things. OK, so maybe *powerful* wasn't exactly the best way of putting it. But addition's not all we can do.
+And now we have the result, 8. Now, you can probably see how the addition works: it "adds" two numbers in the way that if you have 3 things and you have 5 things, and you put them next to each other, you have 8 things. So that's not the most intelligent way to add. But addition's not all we can do.
 
 ## Multiplication
 
@@ -93,3 +93,15 @@ IMAGE: mult-2-2-2-2
 If you go through the process, you can see that the result is in fact \\(2^4 = 16\\). We can create a bubble and move the 2s out:
 
 IMAGE: mult-2-2-2-2-abs
+
+Notice that this is 4 followed by 2. Interestingly, we are treating the number on the left as a machine, which is burst to provide the pattern for multiplying the number on its right by itself. However, if we generalize the pattern into a bubble, we need to draw two bubbles to burst the two numbers into. It ends up looking like this:
+
+IMAGE: exp-2-4
+
+## Conclusion
+
+So now you know how to do math using the circle-tree system. We can use certain bubbles as "machines" that allow us to perform certain actions. We can also use certain other bubbles as numbers. Even those bubbles are, at the end of the day, numbers, to repeat a bubble some number of times.
+
+Basically, the circle-tree gives us a way to show how to calculate things. And we can use this as a way to reason about calculation itself.
+
+[^1]: Although, off the record, for doing math CII is a *terrible* way of representing 102.
