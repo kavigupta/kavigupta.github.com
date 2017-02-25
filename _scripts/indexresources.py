@@ -45,12 +45,10 @@ def indexPage(direct, files):
         index.write(page)
 
 def cleanPage(direct):
-    print("rmfrom", direct)
     if os.path.isfile(os.path.join(direct, "index.html")):
         os.remove(os.path.join(direct, "index.html"))
 
 def indexResources(direct):
-    print(direct)
     files = os.listdir(direct)
     list.sort(files)
     files = list(filter(lambda f: f != "index.html" and f != "hidden", files))
@@ -59,9 +57,7 @@ def indexResources(direct):
     else:
         indexPage(direct, files)
     files = list(map (lambda f: os.path.join(direct, f), files))
-    print(files)
     for f in filter(os.path.isdir, files):
-        print ("File", f)
         indexResources(f)
 
 indexResources("resources")

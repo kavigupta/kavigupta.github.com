@@ -27,6 +27,3 @@ if not exists(pngcache):
     system("rm {bpdf} {baux} {blog}".format(**locals()))
 else:
     copyfile(pngcache, png)
-
-
-print("ABC " + tex)
