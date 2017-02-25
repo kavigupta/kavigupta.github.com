@@ -20,6 +20,8 @@ So this is 0:
 
 IMAGE: 0
 
+<!--end excerpt-->
+
 And this is 1:
 
 IMAGE: 1

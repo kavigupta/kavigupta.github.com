@@ -19,6 +19,8 @@ A dot of any color is a circtree. Here are some examples[^2]:
 
 IMAGE: vars
 
+<!--end excerpt-->
+
 ## 2. Bubbles
 
 A circtree that's placed in a bubble is still a circtree. Note that you multiple bubbles around a circtree, since each time you bubble it, it's still a circtree.
