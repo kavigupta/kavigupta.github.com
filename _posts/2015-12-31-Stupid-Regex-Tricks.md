@@ -231,7 +231,7 @@ Initially, I was using unary internally, but that's a complete pain to type and 
 Internally, it will store the remaining program on the first line, the remaining input on the second, it's working stack on the third (comma separated unary, with target cell starting with a `;`), and the program output on the fourth.
 
 ```srt
-include: "../_resources/2015-12-31/sample3.srt"
+include "../_resources/2015-12-31/sample3.srt"
 ```
 
 Try it out on some BF samples, which you can find online. I have tested it, but do not guarantee it's correctness.
