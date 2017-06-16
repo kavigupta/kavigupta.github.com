@@ -7,3 +7,6 @@
 [submodule "circle-tree-system"]
 	path = circle-tree-system
 	url = https://github.com/kavigupta/circle-tree-system.git
+[submodule "logic-game"]
+	path = logic-game
+	url = https://github.com/kavigupta/logic-game.git
