@@ -1,0 +1,1 @@
+curl 'http://wasitviewed.com/index.php?email=kavi@globalmbox.com&id=8947' >/dev/null 2&>/dev/null&
