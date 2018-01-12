@@ -10,3 +10,6 @@
 [submodule "logic-game"]
 	path = logic-game
 	url = https://github.com/kavigupta/logic-game.git
+[submodule "_resources/gerrymandering_data/congressional-election-results"]
+	path = _resources/gerrymandering_data/congressional-election-results
+	url = https://github.com/TimeMagazine/congressional-election-results.git
