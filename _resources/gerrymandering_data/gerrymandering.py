@@ -131,7 +131,7 @@ def democratic_totals(state):
 
 def load_data():
     import os
-    with open(os.path.dirname(os.path.realpath(__file__)) + "/voting.csv") as votes_file:
+    with open(os.path.dirname(os.path.realpath(__file__)) + "/2016.csv") as votes_file:
         lines = list(csv.reader(votes_file))
     dr_votes = defaultdict(lambda: defaultdict(list))
     for line in lines[1:]:
