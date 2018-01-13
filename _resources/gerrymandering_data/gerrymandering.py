@@ -8,6 +8,7 @@ import matplotlib.patches as patches
 import matplotlib
 from scipy.stats import linregress
 from os import mkdir
+import os
 
 matplotlib.rc('font', family='serif')
 matplotlib.rc('figure', dpi=200)
@@ -129,8 +130,7 @@ def democratic_totals(state):
     d_total, r_total = total_votes(state)
     return d_total / (d_total + r_total)
 
-def load_data():
-    import os
+def load_2016_data():
     with open(os.path.dirname(os.path.realpath(__file__)) + "/2016.csv") as votes_file:
         lines = list(csv.reader(votes_file))
     dr_votes = defaultdict(lambda: defaultdict(list))
@@ -138,6 +138,32 @@ def load_data():
         _, candidate, _, vote_total, district, state = line
         if candidate[0] in "RD":
             dr_votes[state][district].append((candidate[0], vote_total.replace(",", "")))
+    return dr_votes
+
+def load_pre2016_data(date):
+    with open(os.path.dirname(os.path.realpath(__file__)) + "/congressional-election-results/data/results_%s.csv" % date) as csv_file:
+        lines = np.array(list(csv.reader(csv_file)))
+    votes_float = defaultdict(lambda: defaultdict(list))
+    for id, year, name, state, district, votes, parties in lines:
+        if district == "S":
+            continue
+        if votes == "Unopposed":
+            votes = "NA"
+        if "Democrat" in parties and "Republican" in parties:
+            for party_abbr in "DR":
+                votes_float[state][district].append((party_abbr, str(int(votes) // 2)))
+        elif "Democrat" in parties:
+            votes_float[state][district].append(("D", votes))
+        elif "Republican" in parties:
+            votes_float[state][district].append(("R", votes))
+    return votes_float
+
+def load_data():
+    by_year = {year : fill_in_unopposed(load_pre2016_data(year)) for year in range(2004, 2015, 2)}
+    by_year[2016] = fill_in_unopposed(load_2016_data())
+    return by_year
+
+def fill_in_unopposed(dr_votes):
     dr_votes_float = {"US" : {}}
     for state, mapping in dr_votes.items():
         dr_votes_float[state] = process_state(mapping)
@@ -157,7 +183,7 @@ def state_abbreviations(state_names):
 
 def get_columns(*fns):
     return np.array([[fn(state) for fn in fns]
-                for _, state in sorted(DR_VOTES.items())])
+                for _, state in sorted(DR_VOTES[2016].items())])
 
 def scatterplot(xfn, yfn, path=None, ms=[1], y_axes=[0],
                 draw_linear_regressor=False, new_figure=True, include_colormap=True):
@@ -208,4 +234,4 @@ def scatterplot(xfn, yfn, path=None, ms=[1], y_axes=[0],
         plt.savefig(path)
 
 DR_VOTES = load_data()
-STATE_ABBR = list(state_abbreviations(DR_VOTES))
+STATE_ABBR = list(state_abbreviations(DR_VOTES[2016]))
