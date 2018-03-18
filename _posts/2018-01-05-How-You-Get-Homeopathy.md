@@ -1,6 +1,3 @@
-preprocess:
-    replace "IMAGE: ([^;\n]+);?(.*)" -> "<center><img src=\"/resources/2018-01-05/\\1.png\" \\2 /></center>"
-    replace "<!--a*-->" -> ""
 ---
 layout: post
 title: How You Get Homeopathy
@@ -25,13 +22,13 @@ Well, this is a math and CS blog mostly, not a skeptical rant blog, so I'll walk
 
 Let's take a disease that starts out ok, then gets worse rapidly, then gets better slowly (like a cold). We can model it as such:
 
-IMAGE: cold_truth_bad
+<center><img src="/resources/2018-01-05/cold_truth_bad.png"  /></center>
 
 Obviously this is simplified but hopefully it matches your intuition about how many diseases work.
 
 Let's now take a chronic disease that changes more or less randomly with time. Specifically, it is a blurred version of a series of independent standard normal samples.
 
-IMAGE: chronic_truth_bad
+<center><img src="/resources/2018-01-05/chronic_truth_bad.png"  /></center>
 
 Now that we have a few disease models, lets look at when you might seek treatment.
 
@@ -39,12 +36,12 @@ Now that we have a few disease models, lets look at when you might seek treatmen
 
 Generally, you seek treatment only when your disease gets bad. You usually won't start treatment on a cold if you're doing OK and you won't start treating your seasonal allergies unless you're having a bad day. Let's say that you seek treatment when your disease is greater than 0.5 badness units. On the charts we saw before, we now have the following ranges:
 
-IMAGE: cold_truth_bad_treat
-IMAGE: chronic_truth_bad_treat
+<center><img src="/resources/2018-01-05/cold_truth_bad_treat.png"  /></center>
+<center><img src="/resources/2018-01-05/chronic_truth_bad_treat.png"  /></center>
 
 If we get treatment during one of these times and then check back with how your condition is in 0.2 time units (for example), you get improvements as such:
 
-IMAGE: improvement_natural
+<center><img src="/resources/2018-01-05/improvement_natural.png"  /></center>
 
 Note that the mean of both of these distributions is higher than 0. In the case of the cold, this effect is called natural progress of the disease, and it refers to how the disease will get better with or without treatment from its worst point, which occurs towards the middle. In the case of a chronic disease this effect is called mean reversion. If your disease randomly has good or bad days, the disease is equally likely to go to any state after a bad day. Since most states are better than a bad day, the disease will generally get better after a bad day.
 
@@ -52,11 +49,11 @@ Note that the mean of both of these distributions is higher than 0. In the case 
 
 Let's say you find a chemical that makes a disease worse (let's call it chemical W). For simplicty's sake, let's say that 1 unit of W leads to 1 unit of worsening of the condition, with some noise. Taking a dosage response curve, we get the mean improvement numbers as such:
 
-IMAGE: improvement_treatment
+<center><img src="/resources/2018-01-05/improvement_treatment.png"  /></center>
 
 Looking more closely at the cold graph (since both show the same general effect), we can see both the principles of homeopathy!
 
-IMAGE: improvement_treatment_annotated
+<center><img src="/resources/2018-01-05/improvement_treatment_annotated.png"  /></center>
 
 Of course, this analysis assumes that you'd expect no improvement. In the case of a cold, that seems like a silly expectation. Of course colds cure themselves, right? But in the case of chronic conditions (to take a relatively benign example, seasonal allergies) this isn't necessarily the assumption people have, they think that their disease is equally likely to get better or worse the next day implicitly. Even in the case of a cold, if you're doing a study without a control its easy to see the improvement in the effect for your treatment and assume that its working without thinking through the statistical biases at play.
 
