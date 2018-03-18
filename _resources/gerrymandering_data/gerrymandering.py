@@ -1,5 +1,5 @@
 import csv
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 import numpy as np
 import us
 import matplotlib.colors as mcolors
@@ -9,6 +9,8 @@ import matplotlib
 from scipy.stats import linregress
 from os import mkdir
 import os
+
+NamedData = namedtuple('NamedData', ['data', 'name'])
 
 matplotlib.rc('font', family='serif')
 matplotlib.rc('figure', dpi=200)
@@ -145,6 +147,7 @@ def load_pre2016_data(date):
         lines = np.array(list(csv.reader(csv_file)))
     votes_float = defaultdict(lambda: defaultdict(list))
     for id, year, name, state, district, votes, parties in lines:
+        state = state.lower()
         if district == "S":
             continue
         if votes == "Unopposed":
@@ -173,6 +176,7 @@ def fill_in_unopposed(dr_votes):
 
 def state_abbreviations(state_names):
     for txt in sorted(state_names):
+        print(txt)
         txt = txt.replace("-", " ")
         if txt == "US":
             yield "US"
@@ -181,20 +185,29 @@ def state_abbreviations(state_names):
             assert state != us.states.lookup("")
             yield state.abbr
 
-def get_columns(*fns):
+def get_columns(year, *fns):
     return np.array([[fn(state) for fn in fns]
-                for _, state in sorted(DR_VOTES[2016].items())])
+                for _, state in sorted(DR_VOTES[year].items())])
 
-def scatterplot(xfn, yfn, path=None, ms=[1], y_axes=[0],
+def get_all_years(fn, years=(2004, 2006, 2008, 2010, 2012, 2014, 2016)):
+    return np.array([[fn(state) for _, state in sorted(DR_VOTES[year].items())] for year in years]).T
+
+def scatterplot(year, xfn, yfn, path=None, ms=[1], y_axes=[0],
                 draw_linear_regressor=False, new_figure=True, include_colormap=True):
     if new_figure:
         plt.figure(figsize=(20, 20))
-    xs = get_columns(xfn)[:,0] * 100
-    ys = get_columns(yfn)[:,0] * 100
+    if callable(xfn):
+        xs = get_columns(year, xfn)[:,0] * 100
+    else:
+        xs = xfn.data
+    if callable(yfn):
+        ys = get_columns(year, yfn)[:,0] * 100
+    else:
+        ys = yfn.data
     nonnan = list(np.where(1 - np.isnan(xs + ys))[0])
     xs, ys = xs[nonnan], ys[nonnan]
-    totals = get_columns(number_votes)
-    democratic_perc = get_columns(democratic_totals)[:,0]
+    totals = get_columns(year, number_votes)
+    democratic_perc = get_columns(year, democratic_totals)[:,0]
     plt.scatter(xs, ys, s=totals / np.mean(totals) * 500,
                 c=democratic_perc[nonnan] * 100, cmap=POLITICS_COLORBAR, alpha=0.75, vmin=25, vmax=75)
     if include_colormap:

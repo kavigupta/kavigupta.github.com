@@ -16,13 +16,13 @@ district_map("img/blue_state.png",
 plt.figure(figsize=(20, 10))
 for v, vfn in enumerate((efficiency_gap, efficiency_percentage_gap)):
     plt.subplot(121 + v)
-    scatterplot(democratic_totals, vfn, ms=[], y_axes=[0, 100],
+    scatterplot(2016, democratic_totals, vfn, ms=[], y_axes=[0, 100],
                 draw_linear_regressor=True, new_figure=False, include_colormap=False)
 plt.savefig("img/party_affil_vs_effics.png")
 
-scatterplot(efficiency_gap, efficiency_percentage_gap, "img/effic_vs_effic_perc.png")
-scatterplot(efficiency_percentage_gap, effectiveness_gap, "img/effic_perc_vs_effect")
-scatterplot(weighted_effectiveness_gap, effectiveness_gap, "img/effect_vs_weighted_effect.png")
+scatterplot(2016, efficiency_gap, efficiency_percentage_gap, "img/effic_vs_effic_perc.png")
+scatterplot(2016, efficiency_percentage_gap, effectiveness_gap, "img/effic_perc_vs_effect")
+scatterplot(2016, weighted_effectiveness_gap, effectiveness_gap, "img/effect_vs_weighted_effect.png")
 
 plt.figure(figsize=(10, 10))
 nvotes = np.arange(0, 1001)
