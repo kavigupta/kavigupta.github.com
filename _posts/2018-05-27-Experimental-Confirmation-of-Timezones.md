@@ -8,6 +8,8 @@ I was listening to an episode of [Oh No, Ross and Carrie!](https://en.wikipedia.
 
 However, let's say someone denied this. How would you prove it, with the minimum amount of trust?
 
+<!-- end excerpt -->
+
 ## Can we do this while trusting nobody?
 
 Let's say that our experimenter only trusts their own senses. Can they prove that the day/night dichotomy exists? Well, one way they could do this would be to confirm that their watch is correct, then fly to the other side of the world, then confirm that their watch was off by 12 hours from the day/night cycle. However, this isn't exactly right, it's possible that someone could mess with your watch to cause it to run slightly fast or slow and cause it to be different when you alived as when you left.
