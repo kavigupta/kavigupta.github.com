@@ -1,0 +1,16 @@
+I"K<p>OK, so to continue the Dictp saga, some syntactic sugar.</p>
+
+<h2 id="references-to-local-variables">References to local variables.</h2>
+
+<p>The parser can be enhanced by rewriting anything that isn’t a built-in command or a string with a lookup to <code>__local__</code>.</p>
+
+<p>E.g.,</p>
+
+<ul>
+  <li><code>a</code> \(\mapsto\) <code>__local__['a']</code></li>
+  <li><code>0 = 1</code> \(\mapsto\) <code>__local__['0'] = __local__['1']</code></li>
+  <li><code>0?</code> \(\mapsto\) <code>__local__['0']?</code></li>
+  <li><code>'0'</code> \(\mapsto\) <code>'0'</code></li>
+</ul>
+
+:ET

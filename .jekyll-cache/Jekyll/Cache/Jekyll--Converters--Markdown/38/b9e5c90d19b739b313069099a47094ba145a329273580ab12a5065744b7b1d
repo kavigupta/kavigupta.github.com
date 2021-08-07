@@ -1,0 +1,257 @@
+I"�0<!--
+```haskell
+{-# LANGUAGE ScopedTypeVariables, AllowAmbiguousTypes, FlexibleInstances, MultiParamTypeClasses, FunctionalDependencies, UndecidableInstances, FlexibleContexts #-}
+import Prelude hiding (fst, snd)
+import Data.Void
+```
+-->
+
+<p>OK, so the real reason I covered Products and Coproducts <a href="/2016/05/08/Haskell-Classes-For-Products-And-Coproducts/">last time</a> last time was to work toward a discussion of limits, which are a concept I have never fully understood in Category Theory.</p>
+
+<h2 id="diagram">Diagram</h2>
+
+<p>As before, we have to define a few preliminaries before we can define a limit. The first thing we can define is a diagram, or a functor from another category to the current one. In Haskell, we can’t escape the current category of <strong>Hask</strong>, so we instead define a diagram as a series of types and associated functions. For example, we can define a diagram from the category \(\mathbf 2\) containing two elements and no morphisms apart from the identities as a pair of undetermined types.</p>
+
+<p>A diagram from the category \(\mathbf 2*\), a category containing two elements and an arrow in each direction (along with the identities), (this implies that the two arrows compose in both directions to the identitity):</p>
+
+<p><img src="/resources/2016-05-10/two_star.svg.png" /></p>
+
+<!--end excerpt-->
+
+<p>In this case, we have two types <code>A</code> and <code>B</code> as well as two functions of types <code>A -&gt; B</code> and <code>B -&gt; A</code>.</p>
+
+<p>In any case, we can define a diagram of two types as:</p>
+
+<pre><code class="language-haskell">data Diagram1 a = Diagram1 [a -&gt; a]
+data Diagram2 a b = Diagram2 [a -&gt; a] [a -&gt; b] [b -&gt; a] [b -&gt; b]
+data Diagram3 a b c = Diagram3 [a -&gt; a] [a -&gt; b] [a -&gt; c] [b -&gt; a] [b -&gt; b] [b -&gt; c] [c -&gt; a] [c -&gt; b] [c -&gt; c]
+
+twoStarCons :: (a -&gt; b) -&gt; (b -&gt; a) -&gt; Diagram2 a b
+twoStarCons f g = Diagram2 [id] [f] [g] [id]
+</code></pre>
+
+<h2 id="cones">Cones</h2>
+
+<p>In any case, we can define a cone on a diagram as a set of functions from one element to the image of this diagram. A cone onto a diagram selecting three elements, \(A, B, C\) with six morphisms can be represented as such.</p>
+
+<p><img src="/resources/2016-05-10/cone.svg.png" /></p>
+
+<p>If you imagine \(N\) being above \(A, B, C\) note how the diagram has a roughly conical shape. In fact, for any diagram, you can put all the items in a rough circle and have arrows go along the base, with a whole bunch of triangles along the sides. In Haskell, a cone is represented just by the arrows from \(N\) (traditionally named <code>phi</code>) as such:</p>
+
+<pre><code class="language-haskell">class Cone1 n a | n -&gt; a where
+    phi1 :: n -&gt; a
+
+class Cone2 n a b | n -&gt; a, n -&gt; b where
+    phi2_a :: n -&gt; a
+    phi2_b :: n -&gt; b
+
+class Cone3 n a b c | n -&gt; a, n -&gt; b, n -&gt; c where
+    phi3_a :: n -&gt; a
+    phi3_b :: n -&gt; b
+    phi3_c :: n -&gt; c
+</code></pre>
+
+<p>The cone laws come from the fact that each of the sideways “faces,” i.e., the triangles with two sides being morphisms from \(N\) must commute. One interesting implication is that the only morphism you can have from any object in the diagram to itself can be the identity, otherwise, the “triangle” with both sides being the same doesn’t commute.</p>
+
+<pre><code class="language-haskell">cone1Law :: (Cone1 n a, Eq (a -&gt; a)) =&gt; Diagram1 a -&gt; Bool
+cone1Law (Diagram1 a) = all (== id) a
+
+cone2Law :: forall n a b. (Cone2 n a b, Eq a, Eq b, Eq (a -&gt; a), Eq (b -&gt; b)) =&gt; Diagram2 a b -&gt; n -&gt; Bool
+cone2Law (Diagram2 aa ab ba bb) n = and [aasat, bbsat, absat, basat]
+    where
+    f === g = f n == g n
+    aasat = all (== id) aa
+    bbsat = all (== id) bb
+    absat = all (=== phi2_b) $ map (. phi2_a) ab
+    basat = all (=== phi2_a) $ map (. phi2_b) ba
+
+-- You get the picture.
+
+</code></pre>
+
+<h2 id="spans-and-cones">Spans and Cones</h2>
+
+<p>If you squint a little at the definition of a cone, you can probably see the similarity to a span:</p>
+
+<pre><code class="language-haskell">class Span s where
+    fst :: s a b -&gt; a
+    snd :: s a b -&gt; b
+</code></pre>
+
+<p>We can in fact make this formality official: anything that is a span is also a cone of a sort:</p>
+
+<pre><code class="language-haskell">instance (Span s) =&gt; Cone2 (s a b) a b where
+    phi2_a = fst
+    phi2_b = snd
+</code></pre>
+
+<p>Of course, satisfying the laws is not as easy. The third part to the law</p>
+
+<pre><code class="language-haskell">absat = all (== phi2_b) $ map (. phi2_a) ab
+</code></pre>
+
+<p>simplifies to</p>
+
+<pre><code class="language-haskell">absat = all (== snd) $ map (. fst) ab
+</code></pre>
+
+<p>which simplifies to</p>
+
+<pre><code class="language-haskell">ab_f . fst == snd
+</code></pre>
+
+<p>being true for any function from <code>A</code> to <code>B</code> in the original diagram. We can quickly disprove the existance of such a function by plugging in <code>(x, y)</code> and <code>(x, y')</code>, where <code>y /= y'</code>:</p>
+
+<pre><code class="language-haskell">ab_f . fst $ (x, y) == snd (x, y) &amp;&amp; ab_f . fst $ (x, y') == snd (x, y')
+ab_f x == y &amp;&amp; ab_f x == y'
+</code></pre>
+
+<p>This is obviously nonsense, which means that there can’t two <code>y</code> and therefore <code>B</code> is isomorphic to <code>()</code> or <code>Void</code>. A similar argument can be made to show that <code>A</code> must be isomorphic to <code>()</code> or <code>Void</code>. Therefore, for nontrivial products, we must have no functions from <code>A -&gt; B</code> or back: in other words we have to use <code>2</code>.</p>
+
+<h2 id="more-interesting-cones">More interesting cones</h2>
+
+<p>In any case, let’s look at cones of 2*’s diagram, which we know has to be two isomorphic types. A quick definition of isomorphisms is below:</p>
+
+<pre><code class="language-haskell">class Iso a b where
+    cast :: a -&gt; b
+    cocast :: b -&gt; a
+
+isoLaw1 :: (Iso a b, Eq a, Eq b) =&gt; a -&gt; b -&gt; Bool
+isoLaw1 x y = cast x == y &amp;&amp; cocast y == x
+</code></pre>
+
+<p>In any case, we can define a 2* class as follows:</p>
+
+<pre><code class="language-haskell">class (Iso a b) =&gt; Twostar a b where
+
+twoStar :: (Twostar a b) =&gt; Diagram2 a b
+twoStar = twoStarCons cast cocast
+</code></pre>
+
+<p>And let’s define a standard isomorphism, let’s say \(a + a = 2a\):</p>
+
+<pre><code class="language-haskell">instance Iso (Either a a) (a, Bool) where
+    cast (Left x) = (x, True)
+    cast (Right x) = (x, False)
+    cocast (x, True) = Left x
+    cocast (x, False) = Right x
+</code></pre>
+
+<p>We can now try to create a cone onto this specific case of the diagram. Let’s say we want to map from <code>a -&gt; 2a</code> and <code>a -&gt; a + a</code>. Normally, there would be four ways: <code>\a -&gt; ((a, True), Left a)</code>, <code>\a -&gt; ((a, False), Left a)</code>, <code>\a -&gt; ((a, True), Right a)</code>, <code>\a -&gt; ((a, False), Right a)</code>. However, because of the cone law, we have to pick corresponding elements. In other words, we only have two possible implementations:</p>
+
+<pre><code class="language-haskell">newtype EithMay2Star a = EM2S a
+newtype EithMay2Star' a = EM2S' a
+instance Cone2 (EithMay2Star a) (Either a a) (a, Bool) where
+    phi2_a (EM2S n) = Left n
+    phi2_b (EM2S n) = (n, True)
+
+instance Cone2 (EithMay2Star' a) (Either a a) (a, Bool) where
+    phi2_a (EM2S' n) = Right n
+    phi2_b (EM2S' n) = (n, False)
+</code></pre>
+
+<h2 id="limits">Limits</h2>
+
+<p>In any case, the point of this wasn’t to explain cones, it was to explain limits.</p>
+
+<p>Basically, limits are to cones as proucts are to spans. We say that any other cone can somehow be “factored through” our cone. Here is the limit equivalent of the above cone diagram:</p>
+
+<p><img src="/resources/2016-05-10/limit.svg.png" /></p>
+
+<p>We can represent this as the Haskell class</p>
+
+<pre><code class="language-haskell">class (Cone1 n a) =&gt; Limit1 n a where
+    cFactor1 :: (Cone1 n' a) =&gt; n' -&gt; n
+
+class (Cone2 n a b) =&gt; Limit2 n a b where
+    cFactor2 :: (Cone2 n' a b) =&gt; n' -&gt; n
+
+class (Cone3 n a b c) =&gt; Limit3 n a b c where
+    cFactor3 :: (Cone3 n' a b c) =&gt; n' -&gt; n
+</code></pre>
+
+<p>The sad part is that Haskell’s type system is not advanced enough for us to be able to dewfine all of these as one thing. Anyway, let’s try to think up a limit for 2*.</p>
+
+<p>So, we are given some <code>n'</code>, which is the vertex of some cone, so we know that we have an element of <code>a</code> and <code>b</code>. We somehow need to store these and be able to extract them in the implementation of our cone. This sounds like a product. However, we know that in general products won’t do, so we shouldn’t be able to construct one by any means other than <code>cFactor</code>. There’s no real way of enforcing this, so we’ll just make it an abstract data type and never export the constructor.</p>
+
+<pre><code class="language-haskell">data Limit2Star a b = L2S a b
+
+instance Cone2 (Limit2Star a b) a b where
+    phi2_a (L2S x _) = x
+    phi2_b (L2S _ y) = y
+
+instance Limit2 (Limit2Star a b) a b where
+    cFactor2 other = L2S (phi2_a other) (phi2_b other)
+</code></pre>
+
+<p>And since we can only construct using <code>cFactor2</code>, we know that it’s values are always consistent with the underlying diagram.</p>
+
+<h2 id="pullbacks">Pullbacks</h2>
+
+<p>OK, so limits are generalized products. But why are they useful? Well, let’s take a walk into the wonderful world that is size 3 diagrams, and look at a fairly simple one: the pullback. It is defined as follows:</p>
+
+<p><img src="/resources/2016-05-10/pullback.svg.png" /></p>
+
+<p>We can represent this as a diagram as follows:</p>
+
+<pre><code class="language-haskell">pullbackCons :: (a -&gt; c) -&gt; (b -&gt; c) -&gt; Diagram3 a b c
+pullbackCons f g = Diagram3 [id] [] [f] [] [id] [g] [] [] [id]
+</code></pre>
+
+<p>Looking at a cone over the pullback diagram,</p>
+
+<p><img src="/resources/2016-05-10/pullback_cone.svg.png" /></p>
+
+<p>we can notice that any cone over this image is entirely determined by what it sends to <code>A</code> and <code>B</code>, what it sends to <code>C</code> is entirely determined by the natural condition. In fact we have one fewer degree of freedom, since we have \( f \circ u = g \circ v\). Putting all this together we can create a class:</p>
+
+<pre><code class="language-haskell">data Label x = L
+
+class PullbackCone n a b c | n -&gt; a, n -&gt; b, n -&gt; c where
+    -- unfortunately have to have a label because otherwise
+        -- Haskell doesn't know what we're talking about
+    ac :: Label n -&gt; a -&gt; c
+    bc :: Label n -&gt; b -&gt; c
+    na :: n -&gt; a
+    nb :: n -&gt; b
+    cons :: (a -&gt; c) -&gt; (b -&gt; c) -&gt; (n -&gt; a) -&gt; (n -&gt; b) -&gt; n
+
+nc, nc' :: forall n a b c. (PullbackCone n a b c) =&gt; n -&gt; c
+nc = ac (L :: Label n) . na
+nc' = bc (L :: Label n) . nb
+
+pullbackLaw :: (PullbackCone n a b c, Eq c) =&gt; n -&gt; Bool
+pullbackLaw n = nc n == nc' n
+</code></pre>
+
+<p>We can implement a standard cone as follows:</p>
+
+<pre><code class="language-haskell">instance (PullbackCone n a b c) =&gt; Cone3 n a b c where
+    phi3_a = na
+    phi3_b = nb
+    phi3_c = nc
+</code></pre>
+
+<p>And instantiate a pullback diagram as follows:</p>
+
+<pre><code class="language-haskell">pullback :: (PullbackCone n a b c) =&gt; Label n -&gt; Diagram3 a b c
+pullback label = pullbackCons (ac label) (bc label)
+</code></pre>
+
+<p>We can even define a limit on a pullback as follows:</p>
+
+<pre><code class="language-haskell">instance (PullbackCone n a b c) =&gt; Limit3 n a b c where
+    cFactor3 other = cons ac bc na nb
+</code></pre>
+
+<p>In other words, if you can define a pullback cone, you can define a limit!</p>
+
+<p>In any case, the really useful thing about pullbacks is their law: \( f \circ u = g \circ v\). \(u\) is given as <code>na</code>, but it is in fact equivalent to \(f^{-1} \circ g \circ v\) when \(f^{-1}\) is defined.</p>
+
+<p>In any case, I hope the code examples made cones at least a little easier to understand.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I’m not sure the last one made all that much sense in the context of limits, but I’m not sure entirely myself what they add here.</p>
+
+<p>Also, I’m realizing more and more the limitations of Haskell’s type system when it comes to more complex scenarios.</p>
+:ET

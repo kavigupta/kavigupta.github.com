@@ -1,0 +1,81 @@
+I"�<p>OK, so to continue the Dictp saga, some syntactic sugar.</p>
+
+<h2 id="references-to-local-variables">References to local variables.</h2>
+
+<p>The parser can be enhanced by rewriting anything that isn’t a built-in command or a string with a lookup to <code>__local__</code>.</p>
+
+<p>E.g.,</p>
+
+<ul>
+  <li><code>a</code> \(\mapsto\) <code>__local__['a']</code></li>
+  <li><code>0 = 1</code> \(\mapsto\) <code>__local__['0'] = __local__['1']</code></li>
+  <li><code>0?</code> \(\mapsto\) <code>__local__['0']?</code></li>
+  <li><code>'0'</code> \(\mapsto\) <code>'0'</code></li>
+</ul>
+
+<!--end excerpt-->
+
+<p>The factorial I gave in the previous article now looks like:</p>
+
+<pre><code class="language-python">factorial = __empty__
+factorial['__program__']
+    = '__if__ \
+            [==[n]["0"]] \
+            ["\"1\""] \
+            ["* \
+                [n] \
+                [factorial \
+                    [-[n][\"1\"]]]"]'
+factorial['__env__'] = __local__
+factorial = __call__[factorial]
+four = __empty__
+four['n'] = '4'
+to_print = __empty__
+to_print['__toprint__'] = factorial[four]
+print[to_print]
+# ^ Should print 24, given that "print" is defined
+</code></pre>
+
+<h2 id="literal-dictionary-syntax">Literal dictionary syntax</h2>
+
+<p>Dictionaries can be defined like they are in python; using <code>{a : b, c : d}</code> syntax. The keys do not have to be quoted but the values do. We can also extend this so that within brackets, braces are unecessary; <code>[{a : b, c : d}]</code> is the same as <code>[a : b, c : d]</code></p>
+
+<p>Rewriting factorial:</p>
+
+<pre><code class="language-python">factorial = {
+    __program__ : '__if__ \
+            [==[n]["0"]] \
+            ["\"1\""] \
+            ["* \
+                [n] \
+                [factorial \
+                    [-[n][\"1\"]]]"]',
+    __env__ : __local__
+}
+factorial = __call__[factorial]
+print[__toprint__ : factorial[n : '4']]
+</code></pre>
+
+<h2 id="literal-program-syntax">Literal program syntax</h2>
+
+<p>Normally, when you define code, you want the parent frame to be the frame in which it is defined (lexical scoping). This is accomplished by the use of literal quoting: <code>&lt;CODE&gt;</code> \(\mapsto\) <code>__call__[{__program__ : 'CODE', __env__ : __local__}]</code>. To enable full use of this, let’s say that <code>__if__</code> can take a function rather than a program for its latter 2 values.</p>
+
+<p>Rewriting again:</p>
+
+<pre><code class="language-python">factorial = &lt;
+    __if__
+            [==[n]['0']]
+            [&lt;'1'&gt;]
+            [&lt;*
+                [n]
+                [factorial
+                    [-[n]['1']]]&gt;]
+&gt;
+print[__toprint__ : factorial[n : '4']]
+</code></pre>
+
+<p>Note that the <code>&lt;&gt;</code>s basically define a lambda expression, except that the arguments are implicit and can therefore be
+completely dynamic.</p>
+
+<p>OK, so we now have a working language in which everything is a dictionary. Next time I come back to Dictp, I’ll discuss implementation.</p>
+:ET

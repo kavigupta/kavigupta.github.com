@@ -1,0 +1,10 @@
+I"y<h2 id="declaration-follows-use">Declaration Follows Use</h2>
+
+<p>In C, a pointer to int has type <code>int*</code>, but really, this isn’t the right way of looking at it. For example, the following declaration:</p>
+
+<pre><code class="language-C">int* x, y;
+</code></pre>
+
+<p>creates <code>x</code> of type <code>int*</code> and <code>y</code> of type <code>int</code>.</p>
+
+:ET

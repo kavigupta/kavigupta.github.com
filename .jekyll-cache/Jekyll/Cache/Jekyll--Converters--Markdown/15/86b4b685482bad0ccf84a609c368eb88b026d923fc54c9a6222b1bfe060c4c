@@ -1,0 +1,17 @@
+I" <p>\(\newcommand{\fcd}{\leadsto}\)</p>
+
+<h2 id="solving-an-equation">Solving an Equation</h2>
+
+<p>A lot of elementary algebra involves solving equations. Generally, mathematicians seek solutions to equations of the form</p>
+
+<p>\[f(x) = b\]</p>
+
+<p>The solution that most mathematicians come up with to this problem is to define left and right inverses: The left inverse of a function \(f\) is a function \(g\) such that \(g \circ f = \mathrm {id}\). This inverse applies to any function that is one-to-one. There is also a right inverse, a function \(g\) such that \(f \circ g = \mathrm {id}\) For example, the left inverse of the function</p>
+
+<p>\[x \mapsto \sqrt x :: \mathbb R^+ \rightarrow \mathbb R\]</p>
+
+<p>is the function</p>
+
+<p>\[x \mapsto x^2 :: \mathbb R \rightarrow \mathbb R^+\]</p>
+
+:ET

@@ -1,0 +1,18 @@
+I"b<p>\(\renewcommand{\ep}{\varepsilon}\)
+\(\renewcommand{\d}{\mathrm d}\)</p>
+
+<p>In high school Calculus, solving differential equations often involves something like the following:</p>
+
+<p>\[\frac{\d y}{\d x} = \frac{y}{x}\]</p>
+
+<p>\[\frac{\d y}{y} = \frac{\d x}{x}\]</p>
+
+<p>\[\int \frac{\d y}{y} = \int \frac{\d x}{x}\]</p>
+
+<p>\[\log y = c + \log x\]</p>
+
+<p>\[y = kx\]</p>
+
+<p>Now, I don’t know about anyone else, but this abuse of notation really bothered me at first. Everyone knows that \(\d x\) isn’t an actual number by itself, but we seem to use it all the time as an independent variable.</p>
+
+:ET

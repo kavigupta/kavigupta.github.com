@@ -1,0 +1,30 @@
+I"�<p>OK, so what is this <em>Infsabot</em>? Infsabot is a game I designed for people to write programs to play. Basically, it’s like chess, except where each piece acts independently of each other.</p>
+
+<h2 id="the-game">The Game</h2>
+
+<p>There is a square board where each square is either empty or contains material. The game pieces, robots, require material to stay alive and perform tasks. At each turn, every robot reports which of the following it wants to do:</p>
+
+<ul>
+  <li>Noop: The robot does nothing</li>
+  <li>Die: The robot dies</li>
+  <li>Dig: The robot digs to try to extract material</li>
+  <li>Move: The robot can move in one of the four compass directions</li>
+  <li>Fire: The robot can fire a quick-moving projectile (e.g., travel time = 0) in a compass direction</li>
+  <li>Message: The robot can send a quick-moving message in a compass direction</li>
+  <li>Spawn: The robot can create a new robot with its own initial material and appearance</li>
+</ul>
+
+<p>To decide what to do, a robot has access to two things:</p>
+
+<ul>
+  <li>A picture of the positions around it, to a given distance
+    <ul>
+      <li>Whether or not the spot contains material</li>
+      <li>Whether or not the spot contains a robot, and it’s appearance (<em>not</em> it’s team)</li>
+    </ul>
+  </li>
+  <li>A snapshot of its own hard drive, which is a massive relational database between Strings and Strings</li>
+  <li>A list of all messages received</li>
+</ul>
+
+:ET

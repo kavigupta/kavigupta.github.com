@@ -1,0 +1,13 @@
+I"�<h2 id="what-is-p">What is <strong>P</strong>?</h2>
+
+<p>This seems like a silly question. This question seems easily answered by the surprisingly comprehensible explanation on <a href="https://en.wikipedia.org/wiki/P_(complexity)">P’s Wikipedia page</a>:</p>
+
+<blockquote>
+  <p>It contains all decision problems that can be solved by a deterministic Turing machine using a polynomial amount of computation time</p>
+</blockquote>
+
+<p>OK, so it’s the set of all decision problems (yes-or-no questions) that are \(O(n^k)\) for some integer \(k\). For example, sorting, which is \(\Theta(n \log n)\) is <strong>P</strong>, since it’s also \(O(n^2)\).</p>
+
+<p>But let’s go for an alternate definition. Let’s take a C-like language and get rid of a bunch of features: subroutine calls, while loops, goto, for loops with anything other than <code>i &lt; n</code> in the second field (where <code>n</code> is the length of the input), and modifying the for loop variable within the loop. Effectively, this language’s only loping construct is <code>for(int varname = 0; varname &lt; n; varname++) {/* Code that never modifies varname */}</code>. Let’s call this language <code>C-FOR</code>.</p>
+
+:ET

@@ -1,0 +1,111 @@
+I"X<h2 id="what-is-p">What is <strong>P</strong>?</h2>
+
+<p>This seems like a silly question. This question seems easily answered by the surprisingly comprehensible explanation on <a href="https://en.wikipedia.org/wiki/P_(complexity)">P’s Wikipedia page</a>:</p>
+
+<blockquote>
+  <p>It contains all decision problems that can be solved by a deterministic Turing machine using a polynomial amount of computation time</p>
+</blockquote>
+
+<p>OK, so it’s the set of all decision problems (yes-or-no questions) that are \(O(n^k)\) for some integer \(k\). For example, sorting, which is \(\Theta(n \log n)\) is <strong>P</strong>, since it’s also \(O(n^2)\).</p>
+
+<p>But let’s go for an alternate definition. Let’s take a C-like language and get rid of a bunch of features: subroutine calls, while loops, goto, for loops with anything other than <code>i &lt; n</code> in the second field (where <code>n</code> is the length of the input), and modifying the for loop variable within the loop. Effectively, this language’s only loping construct is <code>for(int varname = 0; varname &lt; n; varname++) {/* Code that never modifies varname */}</code>. Let’s call this language <code>C-FOR</code>.</p>
+
+<!--end excerpt-->
+
+<p>Clearly, every program written in this language terminates (there’s no way to construct an infinite loop). Also, we know that every program in this language runs in polynomial time since we can only nest loops a finite amount of times, and that maximum nesting depth determines how long the program takes to execute. Finally, we know that every program in <strong>P</strong> can be written in this language as we can keep track of the state of the program (including variables and the current line being executed), and just run it for \(p(n) \in O(n^k)\) steps using \(k\) nested loops. Thus, the set of algorithms writable in C-FOR is precisely the set of polynomial-time algorithms.</p>
+
+<p>Sometimes, writing a program in C-FOR will inevitably result in hideous programs that end up using the loops just to run some unrelated calculation for a certain amount of time. However, most commonly-written programs in <strong>P</strong> are naturally written in nested-for-loop form. For example, here’s a verifier for 3SAT written in C-FOR:</p>
+
+<pre><code>/* 3sat-verify.h */
+#include &lt;stdbool.h&gt;
+typedef unsigned variable_t;
+typedef struct { variable_t name; bool not_negated; } literal_t;
+typedef struct { literal_t first, second, third; } clause_t;
+typedef struct { unsigned num_vars, num_clauses; clause_t clauses[]; } instance_3sat_t;
+bool verify_3SAT(instance_3sat_t *inst, bool *soln);
+/* 3sat-verify.c */
+#include "3sat-verify.h"
+
+bool verify_3SAT(instance_3sat_t *inst, bool *soln) {
+    for (int i = 0; i &lt; inst-&gt;num_clauses; i++) {
+        clause_t c = inst-&gt;clauses[i];
+        bool clause_satisfiable = c.first.not_negated == soln[c.first.name];
+        clause_satisfiable |= c.second.not_negated == soln[c.second.name];
+        clause_satisfiable |= c.third.not_negated == soln[c.third.name];
+        if (!clause_satisfiable) {
+            return false;
+        }
+    }
+    return true;
+}
+</code></pre>
+
+<h2 id="what-is-np">What is <strong>NP</strong>?</h2>
+
+<p>I never really liked the name NP. It stands for “nondeterministic-polynomial time” which sounds like the set of problems that run in polynomial time on a machine that can sometimes act randomly. In fact, this is a completely different complexity class (named <strong>BPP</strong>). <strong>NP</strong> is defined as the set of all decision problems with some fixed verifier in <strong>P</strong> and a proof for every “yes” answer that the verifier can check. For example, 3SAT is in <strong>NP</strong> because we can verify a result in polynomial time (see above).</p>
+
+<p>This is a fairly intuitive definition, but what does it have to do with the “nondeterministic” part of “nondeterministic-polynomial”?</p>
+
+<p>Well, a nondeterministic Turing machine is defined as one that can guess correctly at every step. Equivalently, it can try multiple things in parallel at every step and discard incorrect branches. We can add this capability to our language to create the language <code>C-FOR-FORK</code>. We add two primitives:</p>
+
+<ol>
+  <li><code>bool try_both(void);</code>, which returns both <code>true</code> and <code>false</code> in separate threads.</li>
+  <li><code>bool wait_all(bool ret)</code>, which does a large OR over all possible values for <code>ret</code> collected in various processes.</li>
+</ol>
+
+<p>As it turns out, you can actually implement these commands in C, as such:</p>
+
+<pre><code>
+#include &lt;sys/wait.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include "try-both.h"
+
+bool is_parent = true;
+
+bool try_both(void) {
+    bool result = !!fork();
+    is_parent &amp;= result;
+    return result;
+}
+
+bool wait_all(bool ret) {
+    int subprocess_return_code;
+    while(wait(&amp;subprocess_return_code) != -1) {
+        ret |= subprocess_return_code;
+    }
+    if (!is_parent) {
+        exit(ret);
+    }
+    return ret;
+}
+</code></pre>
+
+<p>In any case, we can now write any <strong>NP</strong> problem in C-FOR-FORK. As a proof, we present a solution to the NP-Complete problem, 3SAT:</p>
+
+<pre><code>
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+#include "3sat-verify.h"
+#include "try-both.h"
+
+bool solve_3SAT(instance_3sat_t *inst) {
+    bool *soln = malloc(inst-&gt;num_vars * sizeof(bool));
+    for (int i = 0; i &lt; inst-&gt;num_vars; i++) {
+        soln[i] = try_both();
+    }
+    // Technically, we aren't allowed to call the verify_3SAT subroutine,
+    //      but I did that rather than copy-pasting the code here for
+    //      brevity. If this bothers you, you should be able to confirm
+    //      that copy-pasting the code here doesn't change anything
+    bool works = verify_3SAT(inst, soln);
+    return wait_all(works);
+}
+</code></pre>
+
+<p>This pattern can be used for any <strong>NP</strong> problem (or you could just reduce that one to 3SAT and use the above implementation).</p>
+
+<p>Thus, we have it: <strong>NP</strong> is the set of all problems solvable in a language with only bounded iteration, but also the ability to fork arbitrarily and join at the end.</p>
+
+<p>If you want to look at the code examples and see a 3SAT solver in action, one is implemented <a href="/resources/2017-05-26/">here</a>. (Don’t run it on too large an instance, it might crash your computer.)</p>
+:ET

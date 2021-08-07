@@ -1,0 +1,133 @@
+I"�$<p>So I’ve been trying to go through <a href="http://math.mit.edu/~dspivak/teaching/sp13/"><em>Category Theory for Scientists</em></a> by writing the functions as code. So I obviously decided to use Haskell. Unfortunately, I ran into a wall: Haskell is actually pretty bad at representing categories.</p>
+
+<h2 id="haskell-is-a-category">Haskell is <em>a</em> Category</h2>
+
+<p>Now, at first this was incredibly surprising. Frankly, I had started learning about category theory because of its association with Haskell. Unfortunately, I didn’t realize that Haskell isn’t category theory, it’s a category.</p>
+
+<p>For instance, look at this definition of a category in math:</p>
+
+<!--end excerpt-->
+
+<blockquote>
+  <p>A category is composed of</p>
+  <ol>
+    <li>A set of objects \(O\)</li>
+    <li>A set of morphisms \(M a b\) for any two objects \(a\) and \(b\).</li>
+    <li>A morphism \(\text{id} :: M o o\) for every object \(o :: O\)</li>
+    <li>A composition function \(\circ :: M b c \times M a b -&gt; M b c\)
+and follows the laws:</li>
+    <li>\(\text{id} \circ f = f \circ \text{id} = f\)</li>
+    <li>\((f\circ g)\circ h = f \circ (g \circ h)\)</li>
+  </ol>
+</blockquote>
+
+<p>Kinda a complicated description, but it boils down to the idea of arrows (2) between objects (1) where any two arrows can be combined head to tail (4) and there is a special arrow from every object to itself (3). Also, arrow combination head to tail is associative (6) and has as an identity that special arrow (5). It’s basically a <a href="http://kavigupta.github.io/2016/05/07/Monoids-Bioids-And-Beyond/">generalized monoid</a>. Or if you prefer, a more general form for functions.</p>
+
+<p>Here’s the Haskell definition of a <code>Category</code>.</p>
+
+<pre><code class="language-haskell">class Category m where
+    id :: forall o. m o o
+    (.) :: forall a b c. m b c -&gt; m a b -&gt; m a c
+</code></pre>
+
+<p>What? That’s like 2 things. What happened to the other 4?</p>
+
+<p>Well, 5 and 6 are proofs. They can’t be represented in Haskell any more than the proof that <code>a + b = b + a</code>. Haskell just isn’t a proof language. But I can get over that. I generally like to write the laws anyway even if they are unenforcable:</p>
+
+<pre><code class="language-haskell">law1 :: (Category m, Eq (m a b)) =&gt; m a b -&gt; Bool
+law1 f = f . id == f &amp;&amp; id . f == f
+law2 :: (Category m, Eq (m a d)) =&gt; m a b -&gt; m b c -&gt; m c d -&gt; Bool
+law2 f g h = (f . g) . h == f . (g . h)
+</code></pre>
+
+<p>But what about 1 and 2? We can see our morphism set generator function, creatively named <code>m</code>. Unfortunately, <code>m</code> isn’t a function, it’s a type constructor. And we don’t even have an <code>O</code>.</p>
+
+<p>Well, the answer to this question is why Haskell is unsuitable. <code>m</code> is a constructor, which means it maps Haskell types to Haskell types: e.g., it is of “kind” (the type of a type) <code>* -&gt; * -&gt; *</code>. This means that <code>O</code> is fixed: it has to be the set of Haskell types.</p>
+
+<p>So, that means that <code>Category m</code> defines a category over the set of Haskell types.</p>
+
+<p>And therefore, Haskell is a category. And so it can’t be used to represent all the categories.</p>
+
+<h2 id="dependent-types">Dependent Types</h2>
+
+<p>A Dependent type is a type that is related to some value. In essence, it is the combination of values at the type and value level. This is all a bit abstract, so imagine that this was valid Haskell:</p>
+
+<pre><code class="language-haskell">data Nat = Z | S Nat
+
+data Vector :: (n :: Nat) -&gt; (a :: Type) -&gt; Vector n a :: Type
+data Vector = Nil :: Vector Z a
+    | Cons :: a -&gt; Vector n a -&gt; Vector (S n) a
+</code></pre>
+
+<p>In this case, we can have functions with the following type signatures:</p>
+
+<pre><code class="language-haskell">(+) :: Nat -&gt; Nat -&gt; Nat
+(++) :: Vector x a -&gt; Vector y a -&gt; Vector (x + y) a
+</code></pre>
+
+<p>Notice how the type signature encodes the idea that appended lists should have appended lengths.</p>
+
+<p>Now in reality, Haskell <a href="https://www.schoolofhaskell.com/user/konn/prove-your-haskell-for-great-safety/dependent-types-in-haskell">does have dependent types</a>. But their syntax is ugly and they are limited in their capacity. Also, it would be nice to have a way to require proofs of our properties.</p>
+
+<h2 id="the-coq-proof-assistant">The Coq proof assistant.</h2>
+
+<p>A language that supports these features is Coq. It’s an interesting language that combines Prolog’s declarative style with Haskell’s functional style and concept of types. However, Coq also has complex dependent types as well as proofs in classes. For example, a category in Coq can be represented as follows.</p>
+
+<p>First, we declare a class named <code>Category</code> of two parameters, a type <code>O</code> and a higher kinded type <code>M</code>.</p>
+
+<pre><code class="language-python">Class Category {O : Type} {M : O -&gt; O -&gt; Type}
+</code></pre>
+
+<p>Notice that unlike Haskell’s higher-kinded types, <code>M</code> is restricted; rather than being <code>* -&gt; * -&gt; *</code>, it has type <code>O -&gt; O -&gt; *</code> (<code>Type</code> is rather similar to <code>*</code>). Also notice that <code>O</code> is used as a type of a type in <code>M</code>: in Coq, there are an infinite number of types: types, kinds, types of kinds, types of types of kinds, etc., which are all represented by <code>Type</code> to avoid unecessary verbosity. In reality. <code>O</code> doesn’t have to be a kind, it can be <code>nat</code> or something: types can include values.</p>
+
+<p>We then specify the methods</p>
+
+<pre><code class="language-python">        (id : forall x : O, M x x)
+        (comp : forall a b c : O, M b c -&gt; M a b -&gt; M a c)
+            : Prop
+</code></pre>
+
+<p>note the similarity between these declarations and the Haskell equivalents. Note that Coq doesn’t allow naming functions with symbols so we can’t define <code>comp</code> as <code>.</code>, but we can define a new “syntax” in a much more flexible manner later. Also note that <code>a, b, c</code> rather than just being implicitly members of <code>Type</code> like they are in Haskell, are in fact members of the restricted type <code>O</code>.</p>
+
+<p>Also, the <code>Prop</code> at the end means that a class is Coq is in fact a proposition, or law. The next section is a list of laws.</p>
+
+<pre><code class="language-python">    := Build_Category {
+        comp_assoc : forall (a b c d : O) (x : M a b) (y : M b c) (z : M c d), (comp a c d z (comp a b c y x) =  comp a b d (comp b c d z y) x);
+        id_left : forall (a b : O) (f : M a b), comp a b b (id b) f = f;
+        id_right : forall (a b : O) (f : M a b), comp a a b f (id a) = f
+    }.
+</code></pre>
+
+<p>It starts with the name of the set of laws. Theoretically, we could have multiple alternative sets of laws, any of which would work. In this case, there is only one.</p>
+
+<p>In any case, we have the same three laws. However, there is one important distance. In Haskell, for example, <code>id 2</code> makes sense because of implicit typing. However the equivalent Coq notation would be <code>id Int 2</code>, we need to pass in the type to the function to specify which <code>id</code> we mean: in essence <code>id</code> is a function from objects to morphisms, as represented by <code>forall x, M x x</code> which is equivalent to <code>(x : O) -&gt; M x x</code>. This leads to a little more visual cruft in the laws. However, the fact that you <em>can</em> represent laws as such is probably more important.</p>
+
+<p>In Haskell, we implement the standard category as follows:</p>
+
+<pre><code class="language-haskell">instance Category (-&gt;) where
+    id x = x
+    (f . g) x = f (g x)
+</code></pre>
+
+<p>Of course, we never actually prove any of the laws. In Coq, we don’t get away so easily. First, we have to define function composition with explicit types (Coq can be implicit too if you’re willing to give up some flexibility):</p>
+
+<pre><code class="language-python">Definition comp_fn (A B C : Type) (f : arrow B C) (g : arrow A B) : arrow A C
+    := compose f g.
+</code></pre>
+
+<p>And then we can instance the category class:</p>
+
+<pre><code class="language-python">Instance FunCat : Category (fun (X : Type) (x : X) =&gt; x) comp_fn.
+    split.
+        trivial.
+        trivial.
+        trivial.
+Qed.
+</code></pre>
+
+<p>We use the <code>FunCat</code> constructor with the arguments of the identity function, here implemented as a lambda from two variables, <code>X : Type</code> and <code>(x : X)</code> to the result <code>x</code>, and our earlier defined <code>comp_fn</code>. (We could have used <code>comp_fn</code> inline, but it would have been a little too complicated).</p>
+
+<p>We then need to prove all the laws. First, we split the “goal” of proving all three into the three “subgoals”. Since all the laws basically reduce to <code>x = x</code> with a little simplification, all of them can be solved by the <code>trivial</code> strategy.</p>
+
+<p>And there you have it, a proof that types and functions form a category, as well as a more general framework that works in other situations! The code can be found <a href="https://github.com/kavigupta/ct4s-examples">here</a>.</p>
+:ET

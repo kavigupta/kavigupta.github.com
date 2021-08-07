@@ -1,0 +1,85 @@
+I"w<p>I was listening to an episode of <a href="https://en.wikipedia.org/wiki/Oh_No,_Ross_And_Carrie!">Oh No, Ross and Carrie!</a> about Flat Earth and it struck me that if you believe the world is conspiring against you, it’s practically quite difficult to prove almost anything. Now one thing that most Flat Earthers do seem to accept is that when its day in one part of the planet, it’s night in another part.</p>
+
+<p>However, let’s say someone denied this. How would you prove it, with the minimum amount of trust?</p>
+
+<!-- end excerpt -->
+
+<h2 id="can-we-do-this-while-trusting-nobody">Can we do this while trusting nobody?</h2>
+
+<p>Let’s say that our experimenter only trusts their own senses. Can they prove that the day/night dichotomy exists? Well, one way they could do this would be to confirm that their watch is correct, then fly to the other side of the world, then confirm that their watch was off by 12 hours from the day/night cycle. However, this isn’t exactly right, it’s possible that someone could mess with your watch to cause it to run slightly fast or slow and cause it to be different when you alived as when you left.</p>
+
+<p>With a fast enough plane, you might be able to confirm that day had turned to night in less than 12 hours, without the need to rely on a possibly manipulable watch. However, the very act of stepping on a plane might allow nefarious agents to manipulate your subjective experience of time, thus fooling you into thinking time zones exist. (Yes, this is a massively unproductive view of the world, but let’s try to work around it.)</p>
+
+<p>Given these limitations, it’s clear that our prover needs a collaborator they can trust.</p>
+
+<h2 id="basic-protocol-with-a-trusted-collaborator">Basic protocol with a trusted collaborator</h2>
+
+<p>We now have two experimenters, who each trust each other and want to prove the existence of time zones: Alice and Bob. Consider the following protocol: Bob travels across the world while Alice stays behind. Alice and Bob then communicate with each other and confirm that one sees day and the other night.</p>
+
+<p>This works right? Well, almost. The issue is that there’s no protection against a simulation attack: what if Alice speaks to a simulated version of Bob while Bob speaks to a simulated version of Alice, with the two conversations actually taking place 12 hours apart from each other?</p>
+
+<p>Alice and Bob’s position is starting to look undisprovable. But is it?</p>
+
+<h2 id="shared-password">Shared Password</h2>
+
+<p>Let’s say that before leaving, Alice and Bob come up with a shared password, \(p\), randomly. Then, the protocol is as such:</p>
+
+<ul>
+  <li>Alice and Bob: agree on password \(p\)</li>
+  <li>Alice: goes to other side of the world and confirms that its day</li>
+  <li>Alice: sends \(p\) to Bob</li>
+  <li>Bob: confirms that its night and that the received message is in fact \(p\)</li>
+</ul>
+
+<p>But wait, the adversary could trap the password after Alice has sent it but before Bob has received it, thus delaying it 12 hours and allowing the protocol to go through, even if the world in fact has no time zones. The issue is that there’s no response from Bob. Bob just sending back the password doesn’t help, since the adversary could do that!</p>
+
+<h2 id="different-passwords">Different Passwords</h2>
+
+<p>OK, so now we have two different passwords \(p_a\) and \(p_b\). The protocol is now as follows:</p>
+
+<ul>
+  <li>Alice and Bob: create passwords \(p_a\), \(p_b\) and share them with each other</li>
+  <li>Alice: goes to other side of world and confirms that its day</li>
+  <li>Alice: sends \(p_a\) to Bob</li>
+  <li>Bob: confirms that its night and that the received message is \(p_a\)</li>
+  <li>Bob: sends \(p_b\) to Alice</li>
+  <li>Alice: confirms that it is still the same day and the received message is \(p_a\)</li>
+</ul>
+
+<p>Now, Alice knows for sure that the world in fact has multiple time zones.</p>
+
+<p>However, Alice and Bob might say that the adversary has the ability to read and edit their memories and thus steal their passwords. OK, this objection must make their claim undisprovable, right? In this case the answer is yes, because the adversary could always just convince them that the world had timezones by making arbitrary modifications to their memories.</p>
+
+<p>However, if we give the adversary only read access to their memories, their position turns out not to be undisprovable!</p>
+
+<h2 id="secure-time-synchronization">Secure Time Synchronization</h2>
+
+<p>The issue that Alice and Bob are running into is that they can’t pre-agree on the passwords, because then they know the passwords ahead of time and thus the adversary knows the passwords ahead of time. However, they might be able to “post-agree” on the passwords, as such:</p>
+
+<ul>
+  <li>Alice and Bob: start on opposite sides of the world</li>
+  <li>Alice: Confirms that its day</li>
+  <li>Alice: Generates and sends \(p_a\) to Bob</li>
+  <li>Bob: Confirms that its night</li>
+  <li>Bob: Generates and sends \(p_b\) to Alice</li>
+  <li>Alice: Confirms that it is still the same day</li>
+  <li>Alice: meets with Bob</li>
+  <li>Alice and Bob: check that all passwords transmitted were correct</li>
+</ul>
+
+<p>If this protocol goes through without Alice and Bob having any issues, then they know that it can be day and night at the same time in different parts of the world. The procedure works!</p>
+
+<h2 id="assumptions-and-proof">Assumptions and Proof</h2>
+
+<p>OK, so if we wanted to prove that the above scheme works, we would need a few assumptions. First, we assume Alice and Bob are trustworthy. Second, we need to assume that Alice can confirm that some entity is Bob in a face-to-face conversation and vice versa (so that the Alice and Bob at the end are guaranteed to be the real Alice and Bob). Third, we need to assume that Alice and Bob can tell when night falls, that is, the adversary can’t somehow convince them that two points in time are on the same day when it was in fact night in between those points. Finally, the adversary cannot have time travel and cannot predict either Alice or Bob’s random number generators.</p>
+
+<p>In this case, we can prove that Bob confirming that it is night where he is happened after Alice generated \(p_a\) and thus during some day D where Alice was, and before Bob generated and thus before Alice received \(p_b\) and thus before some point on the same day D. Since we assume days are continuous, this proves that Bob observed night during a time when Alice observed day, and thus this procedure is secure.</p>
+
+<p>You can weaken the assumption that two specific trustworthy people are needed by repeating this procedure for every pair of people in some set of N people. Then the scheme proves that time zones exist assuming that 2/N of the people are trustworthy, at the cost of having to repeat the scheme \(O(N^2)\) times</p>
+
+<h2 id="implications">Implications</h2>
+
+<p>N/A.</p>
+
+<p>Less facetiously, I guess my general takeaway is that “your claim is undisprovable” shouldn’t be used as a synonym for “you’re making ridiculous, conspiratorial, assumptions”. Because even when someone is being paranoid, there might be a way to disprove their hypothesis, with enough effort.</p>
+:ET

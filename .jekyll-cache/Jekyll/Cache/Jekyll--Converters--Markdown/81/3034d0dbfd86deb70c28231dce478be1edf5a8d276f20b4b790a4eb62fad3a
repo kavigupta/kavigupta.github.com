@@ -1,0 +1,213 @@
+I"�%<!--
+```haskell
+{-# LANGUAGE RankNTypes #-}
+import Prelude hiding (undefined, error, succ)
+```
+-->
+<p>We know that types can be used to encode how to make useful data structures.</p>
+
+<p>For example, a vehicle can be encoded as:</p>
+
+<pre><code class="language-haskell">data Vehicle = Car { vin :: Integer, licensePlate :: String }
+        | Bike
+</code></pre>
+
+<p>In this case, valid values include cars with VINs and LPNs, or Bikes, which have neither of these data points.</p>
+
+<p>However, some data types can seem far less useful.</p>
+
+<!--end excerpt-->
+
+<h2 id="elements-of-the-void-type">Elements of the Void type</h2>
+
+<p>The void type is defined as</p>
+
+<pre><code class="language-haskell">data Void
+</code></pre>
+
+<p>This type is defined by being non-constructible. However, we can try to construct a value such that</p>
+
+<pre><code class="language-haskell">void :: Void
+void =
+</code></pre>
+
+<p>So, how do we fill that in? We can construct a value of type <code>Void</code> by using <code>void</code>.</p>
+
+<pre><code class="language-haskell">void :: Void
+void = void
+</code></pre>
+
+<p>In Haskell, we can define this in two ways:</p>
+
+<pre><code class="language-haskell">void2, void3 :: Void
+void2 = undefined
+void3 = error "any string here"
+</code></pre>
+
+<p>In fact, Haskell defines in the standard prelude,</p>
+
+<pre><code class="language-haskell">undefined = undefined
+error _ = undefined
+</code></pre>
+
+<p>Which makes the definitions for <code>void</code> and <code>void2</code> equivalent.</p>
+
+<h2 id="what-is-undefined">What is <code>undefined</code>?</h2>
+
+<p>The definition of <code>undefined</code> is kind of the functional equivalent of <code>x = x + 1</code>: it has a mathematical meaning that is inconsistent with its programming meaning. However, mathematical meaning:</p>
+
+<p>\(x = x\)</p>
+
+<p>actually does apply to the Hindley Milner process, which will end up with this equation. What this means is that <code>undefined</code> can be of any type:</p>
+
+<pre><code class="language-haskell">undefined :: forall a. a
+</code></pre>
+
+<p>Interestingly, such a definition is impossible to make illegal in a Turing-Complete language like Haskell. It corresponds to any function that runs infinitely. In fact, predicting whether a function can return the value <code>undefined</code> is equivalent to the impossible <a href="https://en.wikipedia.org/wiki/Halting_problem">Halting Problem</a>.</p>
+
+<h2 id="the-properties-of-undefined">The properties of <code>undefined</code></h2>
+
+<p><code>undefined</code> has a few interesting properties. For example, any time <code>undefined</code> is evaluated or pattern-matched against, it makes the entire expression <code>undefined</code>. However, because Haskell is lazy, it can still be used. For example, these evaluate to undefined:</p>
+
+<pre><code class="language-haskell">un0 = undefined + 2
+un1 = sin undefined
+un2 = let f x = x * 2 in f undefined
+un3 = head [undefined, 2, 3, 4]
+un4 = undefined == 2 -- (==) is just a function
+</code></pre>
+
+<p>Note that the last statement is particularly important: we can’t actually define <code>undefined</code> within Haskell, since any test on <code>undefined</code> produces <code>undefined</code>.</p>
+
+<p>The following evaluate to a value that is undefined-less.</p>
+
+<pre><code class="language-haskell">const_ignores_arguments = const 2 undefined
+head_only_requires_head = head [2, undefined, undefined]
+len_of_value = length [undefined, undefined]
+variable_binding_doesn't_discriminate = let f x = 2 in f undefined
+</code></pre>
+
+<p>The following examples contain <code>undefined</code> (e.g., if you try to print them, they will error out), but are not <code>undefined</code> in and of themselves – there is a possible function that discriminates between the value and <code>undefined</code>. (A tuple of such functions is given to the right.)</p>
+
+<pre><code class="language-haskell">undefined_can_be_in_a_list = [undefined] -- (length, tail, \[x] -&gt; 2)
+a_tuple_of_undefined = (,) undefined undefined -- (\(x,x) -&gt; 2)
+list_containing_undefined = tail [2, undefined, 2, 4] -- (length, !! 1)
+wrapper_type = return undefined :: Maybe a -- (\(Just x) -&gt; 2)
+evaluation_to_undefined_is_local = map (*2) [undefined, undefined] -- (length, tail . tail)
+</code></pre>
+
+<h2 id="the-self-wrapping-data-type">The self-wrapping data type</h2>
+
+<pre><code class="language-haskell">data Wrap = W Wrap
+</code></pre>
+
+<p>We have the potential values of</p>
+
+<ol>
+  <li><code>undefined</code> (of course)</li>
+  <li><code>W undefined</code></li>
+  <li><code>W (W undefined)</code></li>
+  <li><code>W (W (W undefined))</code></li>
+  <li>…</li>
+  <li><code>let x = W x in x</code></li>
+</ol>
+
+<p>These are all distinct because we can define functions as so:</p>
+
+<pre><code class="language-haskell">data Nat = Z | S Nat
+f :: Nat -&gt; Wrap -&gt; ()
+f Z _ = ()
+f (S n) (W x) = f n x
+</code></pre>
+
+<p><code>f Z u</code> will return <code>()</code> for any <code>u</code> (because it doesn’t actually examine it’s argument). Any other second argument will lead to the evaluation of the inner <code>undefined</code> and will result in <code>undefined</code>.</p>
+
+<p><code>f (S Z) u</code> will return <code>()</code> for <code>W undefined</code>, <code>W (W undefined)</code>, etc.</p>
+
+<p><code>f (S (S Z)) u</code> will return <code>()</code> for <code>W (W undefined)</code>, <code>W (W (undefined))</code>, etc.</p>
+
+<p>So in general, all of these are wrappers around <code>undefined</code> with a given number of wrappers, except for the last. However, if we unwrap this value, we get the same value. In other words,</p>
+
+<pre><code class="language-haskell">--last_value = W (W (W (W (W (W (W (W (W (W (W (W (W ...))))))))))))
+last_value :: Wrap
+last_value = W last_value
+</code></pre>
+
+<p>It would at first seem as if <code>f n last_value</code> is <code>()</code> for any non-undefined-containing <code>n</code>. However, <code>Nat</code> is itself a fairly interesting type.</p>
+
+<h2 id="the-natural-numbers-to-a-bad-approximation">The Natural Numbers (to a bad approximation)</h2>
+
+<p>From the Peano axioms, we know that a set of natural numbers can be represented as <code>(zero, successor) :: (Nat, Nat -&gt; Nat)</code></p>
+
+<pre><code class="language-haskell">class Peano a where
+    zero :: a
+    succ :: a -&gt; a
+
+peano_struct :: (Peano a) =&gt; (a, a -&gt; a)
+peano_struct = (zero, succ)
+</code></pre>
+
+<p>The remaining Peano axioms are properties which are difficult to express in Haskell’s type system.</p>
+
+<p>In any case, the upshot is that the values of <code>(Peano a) =&gt; a</code> should be of the form:</p>
+
+<pre><code class="language-haskell">one, two, three, four, five :: (Peano a) =&gt; a
+one = succ zero
+two = succ one -- = succ (succ zero)
+three = succ two -- = succ (succ (succ zero))
+four = succ three -- = succ (succ (succ succ (zero)))
+five = succ four -- = succ (succ (succ (succ succ (zero))))
+</code></pre>
+
+<p>And, for any arbitrary implementation of the <code>Peano</code> class, we should only have these values. However, Haskell can’t actually enforce this restriction, leaving us with the values:</p>
+
+<pre><code class="language-haskell">alt_zero, alt_one, alt_two, alt_three :: (Peano a) =&gt; a
+alt_zero = undefined
+alt_one = succ alt_zero -- = succ undefined
+alt_two = succ alt_one -- = succ (succ undefined)
+alt_three = succ alt_two -- = succ (succ (succ undefined))
+</code></pre>
+
+<p>Which correspond more or less to our wrapper values. However, these don’t solve our puzzle of the <code>f n last_value</code> which evaluates to undefined while <code>n</code> is undefined-free.</p>
+
+<p>However, we have one more value</p>
+
+<pre><code class="language-haskell">omega :: (Peano a) =&gt; a
+omega = succ omega
+</code></pre>
+
+<p>This corresponds to the equation \(x = x + 1\), which in the theory of ordinals has the solution \(\omega\), or the first trans-infinite ordinal.</p>
+
+<p>This value structurally resembles <code>last_value :: Wrap</code>, which means that when <code>f</code> is called, it will step through the two of them in sync, never returning, and thus it is equivalent to <code>undefined</code>.</p>
+
+<p>The trivial connection between <code>Peano</code> and <code>Nat</code> is given below.</p>
+
+<pre><code class="language-haskell">instance (Peano Nat) where
+    zero = Z
+    succ = S
+</code></pre>
+
+<h2 id="the-values-of-the-peano-integers">The values of the Peano Integers.</h2>
+
+<p>In Haskell, <code>Nat</code> is a very inefficient type, using unary. A more efficient type is <code>Integer</code>, which uses binary.</p>
+
+<pre><code class="language-haskell">instance (Peano Integer) where
+    zero = 0
+    succ = (+1)
+</code></pre>
+
+<p>Of course, the primary issue with using the <code>Integer</code> type to represent a natural number is that it can have negative values.</p>
+
+<p>More relevantly, because <code>(+1)</code> maps <code>undefined</code>s to <code>undefined</code>s, we don’t have any of our <code>alt_</code> values.</p>
+
+<p>Finally, the definition of <code>omega</code> specified to <code>Integer</code> values implies the following declaration:</p>
+
+<pre><code class="language-haskell">omega_int :: Integer
+omega_int = omega_int + 1
+</code></pre>
+
+<p>Which ends up being equivalent to <code>undefined</code> as well, since again <code>(+1)</code> is not a constructor that can allow for the creation of a structure.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I hope that introduction to nonstandard elements was interesting. In case you want to test out these code samples (all of which are runnable), you can find the source code <a href="/src/2016-04-29-Nontrivial-Elements-Of-Trivial-Types.hs">here</a>.</p>
+:ET

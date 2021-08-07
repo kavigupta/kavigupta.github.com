@@ -1,0 +1,54 @@
+I"œ<p>OK, so a break from theory and CS, and to applications. How do we produce reasonably realistic landscapes using differential equations?</p>
+
+<h2 id="mountains-and-valleys">Mountains and Valleys</h2>
+
+<p>To simulate mountains and valleys, we can use a fairly simple algorithm that adds a random amount to a region, then recursively calls itself on each quadrant of the region. Afterwards, an image generally looks something like:</p>
+
+<p><img src="/resources/2016-04-25/basic_randomized.png" /></p>
+
+<p>We can apply a Gaussian blur to the image to get a reasonably realistic depiction of mountains and valleys.</p>
+
+<p><img src="/resources/2016-04-25/basic_gaussed.png" /></p>
+
+<p>We can define the elevation as a function \(E(x, y, t)\). Representing this as a landscape:</p>
+
+<p><img src="/resources/2016-04-25/basic_gaussed_3d.png" /></p>
+
+<!--end excerpt-->
+
+<h2 id="water">Water</h2>
+
+<p>We can define the water level as a function \(W(x, y, t)\) representing the depth of water above land at that point.</p>
+
+<p>We will assume for now that the amount of water is much smaller than the level of land. Therefore, we can represent the water flow over a single pixel as:</p>
+
+<p>\[v(x, y, t) = k_1 \nabla E (x, y, t)\]</p>
+
+<p>And we can define the water level as:</p>
+
+<p>\[W(x, y, t + 1) = [W(x+1, y, t) - W(x-1, y, t), W(x, y+1, t) - W(x, y-1, t)] \cdot v(x, y, t)\]</p>
+
+<p>Or more compactly,</p>
+
+<p>\[\Delta_t W = k_1 [\Delta_x W, \Delta_y W] \cdot \nabla E\]</p>
+
+<p>Adding in rain (a function \(R(x, y, t)\)), we get:</p>
+
+<p>\[\Delta_t W = k_1 \nabla W \cdot \nabla E + R\]</p>
+
+<p>And we can define, using erosion,</p>
+
+<p>\[\Delta_t E = k_2\|v\| W \]</p>
+
+<h2 id="erosion">Erosion</h2>
+
+<p>A few changes had to be made to make the model workable. For example, the water had to stop flowing at minima. And then I had to edit the configuration.</p>
+
+<p>The erosion model worked out pretty well, I think. Hereâ€™s a picture of the final result:</p>
+
+<p><img src="/resources/2016-04-25/basic_carved_3d.png" /></p>
+
+<p>(This ended up being a bigger project than I had suspected. See <a href="https://github.com/kavigupta/Terrain-Generator">the repo</a> for the full source code).</p>
+
+<!-- -->
+:ET

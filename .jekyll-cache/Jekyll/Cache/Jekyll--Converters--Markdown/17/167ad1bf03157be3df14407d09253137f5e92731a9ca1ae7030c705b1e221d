@@ -1,0 +1,140 @@
+I"l<h2 id="declaration-follows-use">Declaration Follows Use</h2>
+
+<p>In C, a pointer to int has type <code>int*</code>, but really, this isn’t the right way of looking at it. For example, the following declaration:</p>
+
+<pre><code class="language-C">int* x, y;
+</code></pre>
+
+<p>creates <code>x</code> of type <code>int*</code> and <code>y</code> of type <code>int</code>.</p>
+
+<!--end excerpt-->
+<p>In reality, the correct formatting is</p>
+
+<pre><code class="language-C">int *x, y;
+</code></pre>
+
+<p>Which is read not “x is a pointer to int” but rather <code>*x</code> and <code>y</code> are ints. Similarly, when creating an array of 20 ints named <code>x</code> we say:</p>
+
+<pre><code class="language-C">int x[20];
+</code></pre>
+
+<p>Which is read <code>x[i]</code> is an int for <code>0 &lt;= i &lt; 20</code>. The egregious example of DFU is function pointer declarations. For example, a declaration to a function pointer of a function from int to int is:</p>
+
+<pre><code class="language-C">int (*f)(int);
+</code></pre>
+
+<p>which is read that <code>(*f)(int)</code> is of type <code>int</code>, meaning that <code>*f</code> is of type <code>int -&gt; int</code>.</p>
+
+<h2 id="complex-declarations">Complex Declarations</h2>
+
+<p>The basic problem with DFU is that it doesn’t scale. The website <a href="http://cdecl.org/">cdecl.org</a> demonstrates some of the most egregious examples of this ridiculousness.</p>
+
+<p>It cites, for example,</p>
+
+<pre><code class="language-C">char (*(*x())[5])()
+</code></pre>
+
+<p>as “declare x as function returning pointer to array 5 of pointer to function returning char”</p>
+
+<p>These declarations require a sort of backwards thinking to understand. You need to work your way out from the inside: the first thing is the <code>x()</code>, which says that <code>x</code> is a function, which can be dereferenced (the <code>*</code> to the left of the <code>x</code>), and so on, and so on.</p>
+
+<h2 id="inconsistencies">Inconsistencies</h2>
+
+<p>So, C-Style pointer declarations are a bit annoying to use, but that is just the way they are, right? You just have to think the way C does and then everything starts working out, right?</p>
+
+<p>Wrong.</p>
+
+<p>For example, <code>int *x;</code> declares <code>*x</code> as an int, and <code>*x = 2</code> assigns <code>*x</code> to 2, so <code>int *x = 2</code> should declare <code>*x</code> as an int and assign it to <code>2</code>?</p>
+
+<p>Actually, no. <code>int *x = 2</code> actually assigns <code>x</code> to <code>2</code>, which hopefully will be a compiler error, but for those who ignore warnings, will silently set <code>*x</code> to an integer at the third byte of memory. On certain systems, this might not segfault, but rather lead to overwriting some important part of memory, hopefully leading to a crash rather than just weird behavior.</p>
+
+<h2 id="declaration-follows-initialization">Declaration Follows Initialization</h2>
+
+<p>The general idea of DFI (which is a name I think I may have invented, given Google’s insistence that the three words don’t ever appear in that order) is that a type should be an atomic unit, separate from the function name. Additionally, it should follow how to get a value of that type.</p>
+
+<p>A lot of the original C syntax seems to exist to allow for simpler parsing since types and variables have to coexist on the same side of the <code>=</code>, therefore I think that Pascal style postfix types are preferable. I will use <code>#</code> to allow for an easier differentiation from other symbols in C.</p>
+
+<p>This will probably make more sense with examples:</p>
+
+<h2 id="pointers">Pointers</h2>
+
+<p>How do you get a pointer? By taking the address of an lvalue, of course! So, if <code>x</code> is the address of an int, it should have type <code>&amp;int</code>. An example is as follows:</p>
+
+<pre><code class="language-C">x # int;
+x = 2;
+y # &amp;int;
+y = &amp;x;
+</code></pre>
+
+<h2 id="arrays">Arrays</h2>
+
+<p>How do you get an array? By array initialization notation! So, if <code>x</code> is an array of int, it should have type <code>{int}</code>. To encode a length, we can use the format <code>{int, 20}</code>. To declare the array <code>{1,2,3,4,5}</code>, we can use the following code block:</p>
+
+<pre><code class="language-C">x # {int, 5};
+x = {1,2,3,4,5};
+</code></pre>
+
+<h2 id="functions">Functions</h2>
+
+<p>OK, so we can’t actually create function expressions in C (and this syntax change isn’t really the right place to introduce lambdas to C). But in most other languages, e.g., Java, C#, or Haskell, an arrow is used between parameters and values. Using the C# <code>=&gt;</code> might be better than the Java/Haskell <code>-&gt;</code> because <code>-&gt;</code> is already used for member lookup on references in C. Therefore, <code>sin</code> and <code>atan2</code> can be aliased as follows:</p>
+
+<pre><code class="language-C">f # double =&gt; double;
+f = sin;
+
+g # (double, double) =&gt; double;
+g = atan2;
+</code></pre>
+
+<h3 id="the-equivalent-type-to-t-f">The equivalent type to <code>T (*f)();</code></h3>
+
+<p>This is a problem that our system has, the old system has functions that can take any number and type of arguments, as well as functions with defined types for only the first few elements, and then varargs (e.g., <code>printf</code>).</p>
+
+<p>We will use the term <code>*</code> to represent these, due to its standard use as a glob.</p>
+
+<p>The equivalent of</p>
+
+<pre><code class="language-C">void (*f)();
+void (*g)(int x, ...)
+</code></pre>
+
+<p>is then</p>
+
+<pre><code class="language-C">f # * =&gt; void;
+g # (int, *) =&gt; void;
+</code></pre>
+
+<h2 id="modifiers">Modifiers</h2>
+
+<p>C types aren’t just about names, pointers, arrays, and functions. They can also have modifiers, such as <code>const</code>, <code>restrict</code>, or <code>register</code>.</p>
+
+<p>These are simply placed before a type.</p>
+
+<h2 id="precedence">Precedence</h2>
+
+<p>Since arrays are basically surrounded in parentheses, they don’t create an ambiguity. Because <code>=&gt;</code> is an infix operator, and infix operators generally have lower precedence than prefix operators, we should have <code>&amp; A =&gt; B</code> \(\equiv\) <code>(&amp;A) =&gt; B</code>.</p>
+
+<p>Since C has no currying, there’s no obvious way to disambiguate <code>A =&gt; B =&gt; C</code>. Applying the equivalence <code>A =&gt; (B =&gt; C)</code> isn’t particularly relevant since C functions generally don’t return a function, and the equivalence <code>(A =&gt; B) =&gt; C</code> violates an existing convention on grouping of arrows.</p>
+
+<p>Therefore, <code>A =&gt; B =&gt; C</code> with no parentheses should be a syntax error.</p>
+
+<p>Modifiers have lower precedence than <code>&amp;</code> but greater precedence than <code>=&gt;</code>.</p>
+
+<p>Therefore, <code>printf</code> is declared as</p>
+
+<pre><code class="language-C">printf # (const restrict &amp;char, *) =&gt; void;
+</code></pre>
+
+<h2 id="putting-it-all-together">Putting it all together.</h2>
+
+<p>Let’s take the absolutely awful function declaration (which I believe is actually not even valid C because of the <code>char* const</code>):</p>
+
+<pre><code class="language-C">char *(*x(int*, const char*, char* const))[5]();
+</code></pre>
+
+<p>and convert to our beautiful format:</p>
+
+<pre><code class="language-C">x # (&amp;int, &amp;(const char), const &amp;char, &amp;char) =&gt; &amp;{* =&gt; &amp;char, 5};
+</code></pre>
+
+<p>OK, so a bit longer, but hopefully a lot more comprehensible!</p>
+:ET

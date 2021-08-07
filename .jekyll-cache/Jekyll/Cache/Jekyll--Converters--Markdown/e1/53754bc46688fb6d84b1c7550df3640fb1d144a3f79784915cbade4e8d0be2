@@ -1,0 +1,17 @@
+I"M<p>OK, so a break from theory and CS, and to applications. How do we produce reasonably realistic landscapes using differential equations?</p>
+
+<h2 id="mountains-and-valleys">Mountains and Valleys</h2>
+
+<p>To simulate mountains and valleys, we can use a fairly simple algorithm that adds a random amount to a region, then recursively calls itself on each quadrant of the region. Afterwards, an image generally looks something like:</p>
+
+<p><img src="/resources/2016-04-25/basic_randomized.png" /></p>
+
+<p>We can apply a Gaussian blur to the image to get a reasonably realistic depiction of mountains and valleys.</p>
+
+<p><img src="/resources/2016-04-25/basic_gaussed.png" /></p>
+
+<p>We can define the elevation as a function \(E(x, y, t)\). Representing this as a landscape:</p>
+
+<p><img src="/resources/2016-04-25/basic_gaussed_3d.png" /></p>
+
+:ET

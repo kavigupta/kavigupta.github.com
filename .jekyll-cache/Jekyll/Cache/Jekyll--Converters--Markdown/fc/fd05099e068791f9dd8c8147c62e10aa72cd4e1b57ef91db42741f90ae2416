@@ -1,0 +1,297 @@
+I"d2<h2 id="regexes-the-duct-tape-of-cs">Regexes, the duct tape of CS</h2>
+
+<p>Regexes are truly amazing. If you haven’t heard of them, they are a quick way to find (and sometimes replace) some body of text with another body of text. The syntax, while it has its critics, is generally pretty intuitive; for example a zip code might be represented as</p>
+
+<pre><code class="language-perl">[0-9]{5}(\s*-\s*[0-9]{4})?
+</code></pre>
+
+<p>which is read as “a five digit code optionally followed by a spaced dash and a four digit code”. Some whitespace and named groups might help the reading (use <code>COMMENTS</code> mode when parsing)</p>
+
+<pre><code class="language-perl">(?P&lt;main_code&gt;
+    [0-9]{5}
+)
+( # optional extension
+    \s*-\s*     # padded dash
+    (?P&lt;optional_extension&gt;
+        [0-9]{4}
+    )
+)?
+</code></pre>
+
+<!--end excerpt-->
+
+<p>Note the <code>?P&lt;names&gt;</code>, which allow you to refer to those parts of the match in a replace string; for example:</p>
+
+<pre><code class="language-perl">Your main code is "\g&lt;main_code&gt;" and your optional extension is "\g&lt;optional_extension&gt;"
+</code></pre>
+
+<p>Of course, you can completely abuse regex. Here’s one I wrote a few years ago to parse JFugue blocks (I replaced around 1000 lines of code with this!)</p>
+
+<pre><code class="language-java">String regex = "((?P&lt;par&gt;\\+)?|(?P&lt;seq&gt;_)?)(((?P&lt;notenumber&gt;"
+				+ BRACKETED_STRING_REGEX
+				+ ")|((?P&lt;notetype&gt;"
+				+ NOTE_TYPE_REGEX
+				+ ")(?P&lt;octave&gt;"
+				+ INTEGER_REGEX
+				+ ")?)(?P&lt;chordType&gt;"
+				+ CHORDS_REGEX
+				+ ")?((\\^(?P&lt;inversionNote&gt;"
+				+ NOTE_TYPE_REGEX
+				+ "[\\d]*))|(\\^\\[(?P&lt;inversionValue&gt;[\\d]+)\\])|(?P&lt;inversionCount&gt;[\\^]+))?)|(?P&lt;isRest&gt;R))(?P&lt;test&gt;(?P&lt;startTie&gt;-)?((/(?P&lt;numericDuration&gt;("
+				+ BRACKETED_STRING_REGEX
+				+ ")|("
+				+ DECIMAL_REGEX
+				+ ")))|((?P&lt;charDuration&gt;[WHQISTXO\\.]+)?(?P&lt;triplet&gt;\\*((?P&lt;tripletnum&gt;[\\d]+):(?P&lt;tripletden&gt;[\\d]+))?)?))(?P&lt;endTie&gt;-)?)(A(?P&lt;attackVelocity&gt;("
+				+ BRACKETED_STRING_REGEX + ")|(" + INTEGER_REGEX
+				+ ")))?(D(?P&lt;decayVelocity&gt;(" + BRACKETED_STRING_REGEX
+				+ ")|(" + INTEGER_REGEX + ")))?";
+</code></pre>
+
+<p>De-java-ing, we get the final regex:</p>
+
+<pre><code class="language-perl">(
+    (?P&lt;par&gt;\+)?
+    |
+    (?P&lt;seq&gt;_)?
+)
+(
+    (
+        (?P&lt;notenumber&gt;
+        \[[^\[]+\])
+        |
+        (
+            (?P&lt;notetype&gt;[ABCDEFG][BN#]*)
+            (?P&lt;octave&gt;[\d]+)?
+        )
+        (?P&lt;chordType&gt;DOM7&lt;5&lt;9|DOM7&gt;5&gt;9|DOM7&gt;5&lt;9|DOM7&lt;5&gt;9|MINMAJ7|DOM7&lt;5|DOM7&gt;5|MAJ7&lt;5|MAJ7&gt;5|MIN11|DOM11|DOM13|MIN13|MAJ13|DOM7|MAJ7|MIN7|SUS4|SUS2|MAJ6|MIN6|DOM9|MAJ9|MIN9|DIM7|ADD9|DAVE|MAJ|MIN|AUG|DIM)?
+        (
+            (\^(?P&lt;inversionNote&gt;[ABCDEFG][BN#]*[\d]*))
+            |
+            (\^\[(?P&lt;inversionValue&gt;[\d]+)\])
+            |
+            (?P&lt;inversionCount&gt;[\^]+)
+        )?
+    )
+    |
+    (?P&lt;isRest&gt;R)
+)
+(?P&lt;test&gt;
+    (?P&lt;startTie&gt;-)?
+    (
+        (
+            /
+            (?P&lt;numericDuration&gt;
+                (\[[^\[]+\])
+                |
+                ([\d\.]+)
+            )
+        )
+        |
+        (
+            (?P&lt;charDuration&gt;[WHQISTXO\.]+)?
+            (?P&lt;triplet&gt;
+                \*
+                (
+                    (?P&lt;tripletnum&gt;[\d]+)
+                    :
+                    (?P&lt;tripletden&gt;[\d]+)
+                )?
+            )?
+        )
+    )
+    (?P&lt;endTie&gt;-)?
+)
+(
+    A
+    (?P&lt;attackVelocity&gt;
+        (\[[^\[]+\])
+        |
+        ([\d]+)
+    )
+)?
+(
+    D
+    (?P&lt;decayVelocity&gt;
+        (\[[^\[]+\])
+        |
+        ([\d]+)
+    )
+)?
+</code></pre>
+
+<p>While I’m pretty <code>proud|ashamed</code> of that last one, it has nothing on <a href="http://www.ex-parrot.com/pdw/Mail-RFC822-Address.html">the email regex</a>.</p>
+
+<h2 id="repeatedly-applied-regexes">Repeatedly applied regexes</h2>
+
+<p>While regexes are of admittedly low utility beyond simple find and replace, repeatedly applied regexes are much more powerful.</p>
+
+<p>Let’s define a stupid regex tricks (SRT) format as follows:</p>
+
+<ul>
+  <li>A simple replace is in the format <code>s/regex/replacement/</code> (syntax from Perl). When executed, it simply replaces its regex with its replacement. If you want an actual <code>/</code>, use <code>//</code></li>
+  <li>A compound replace is a series of simple replacements. It is considered a match if any of the statements matches.</li>
+  <li>A repeat statement is the word <code>repeat</code> followed an indented compound replace. It continues until its body is not a match</li>
+  <li>Anything following a # is considered a comment if it at the beginning of the file or preceded by a space</li>
+</ul>
+
+<p>Implementing this isn’t that complicated; an interpret, along with the code samples below, is provided <a href="/resources/2015-12-31">here</a>.</p>
+
+<h2 id="convert-binary-to-unary">Convert Binary to Unary</h2>
+
+<p>Let’s specify an input format: a string of 1s and 0s, and an output format, a string of 1s.</p>
+
+<pre><code class="language-perl">repeat
+    s/\b([01]+)0\b/\1,\1/
+    s/\b([01]+)1\b/\g&lt;1&gt;0,1/
+s/,//
+</code></pre>
+
+<p>Note the use of <code>\1</code> as shorthand for the first capturing group and that <code>\g&lt;1&gt;0</code> is a way of writing <code>\1</code> followed by <code>0</code> without it being interpreted as <code>\g&lt;10&gt;</code></p>
+
+<p>This function replaces any odd binary number with “that number,1” and any even binary number with “that number/2, that number/2”</p>
+
+<h2 id="add-one-to-a-binary-number">Add one to a binary number</h2>
+
+<p>Input/Output, strings of 0s and 1s.</p>
+
+<pre><code class="language-perl">s/(.+)/\1,/
+repeat
+    s/([01]*)0,/\g&lt;1&gt;1/
+    s/([01]*)1,/\1,0/
+    s/^,/1/
+</code></pre>
+
+<p>This particular regex works by using a comma to represent a “carry”. It starts the carry off at the end, and then moves backwards in the number. If it finds a 0, it replaces it with a 1 and is done. If it finds a 1, it replaces it with a 0 and moves the carry left. If the carry gets to the front of the number, it appends a 1 to the start of the number.</p>
+
+<h2 id="add-two-binary-numbers">Add two binary numbers</h2>
+
+<p>OK, so this puts together the last two examples. It takes expressions of the from “100110101 + 1010111” and outputs the binary sum of the two numbers.</p>
+
+<pre><code class="language-perl">s/([01]+)[^01]+([01]+)/\1,\2/
+repeat
+    s/\b([01]+)0\b/\1,\1/
+    s/\b([01]+)1\b/\g&lt;1&gt;0,1/
+s/,//
+s/1/;/
+repeat
+    s/[^;]*;/\0,/
+    repeat
+        s/([01]*)0,/\g&lt;1&gt;1/
+        s/([01]*)1,/\1,0/
+        s/^,/1/
+</code></pre>
+
+<p>It converts both of the numbers to unary, then painstakingly counts up each one in binary! Not the most efficient add, but it’s done entirely using text substitution.</p>
+
+<p>A more efficient add is left as an exercise; it should not be difficult, just tedious.</p>
+
+<h2 id="bf-interpreter">BF interpreter.</h2>
+
+<p>BF is a popular esoteric programming language (whose name might break some content filters, so I’ll continue to call it BF). It has a single tape of memory (we can think of this as a list of bytes) and seven total commands:</p>
+
+<ul>
+  <li><code>+</code>: increment the current byte</li>
+  <li><code>-</code>: decrement the current byte</li>
+  <li><code>&gt;</code>: move the current pointer to the right</li>
+  <li><code>&lt;</code>: move the current pointer to the left</li>
+  <li><code>.</code>: print the current byte</li>
+  <li><code>,</code>: read the current byte from input</li>
+  <li><code>[</code> and <code>]</code>: a while loop on the value of the current pointer</li>
+</ul>
+
+<p>The interesting thing about BF is that it is completely Turing-complete. That is, it can solve any math problem that any other programming language can solve. Therefore, if we can interpret BF, we can prove that SRT is Turing-complete as well.</p>
+
+<p>At first glance, the last command seems insurmountably difficult. We all know that regular expressions can’t parse non-regular grammars, famously <a href="http://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454">XML</a>.</p>
+
+<p>However, recursively applied regex can in fact be used for this task. Entering a while loop can be accomplished by setting the initial <code>[</code> to a <code>{</code> and exiting it can be accomplished by setting the initial <code>{</code> back. In this way, we know that the last <code>{</code> is the position to jump to when exiting.</p>
+
+<p>To preserve sanity, I am not going to include the 512 line boilerplate on both ends to convert ASCII into an appropriate internal format, I’m going to leave that an exercise. Also, since there is no way for SRT to accept input, a crucial part of BF, it will take two lines as input: a valid BF program with no comments (any characters other than those given above) and the input to the BF program (comma separated binary) and output the result of the BF program.</p>
+
+<p>Initially, I was using unary internally, but that’s a complete pain to type and takes forever to process. Also, it’s only a 3 line overhead.</p>
+
+<p>Internally, it will store the remaining program on the first line, the remaining input on the second, it’s working stack on the third (comma separated unary, with target cell starting with a <code>;</code>), and the program output on the fourth.</p>
+
+<pre><code class="language-perl"># sanitize BF code
+repeat
+    s/^(.*)[^+\-.,&lt;&gt;\[\]\n]+/\1/
+# add empty second line if none exists
+s/^([^\n]*(?!\n))$/\1\n/
+# make sure that there are at most two lines
+s/^.*\n.*\n(\n|.)*$/Error: Input should have at most two lines/
+# make sure the second line is comma-separated binary
+s/.*\n.*[^01,]/Error: The second line should be in comma separated binary/
+# sanitize second line (before @ everything is sanitized)
+s/\n(.+)(?&lt;!,)/\n\1,/
+s/\n/\n@/
+repeat
+    s/@$//
+    s/(.|\n)*@([01]{8}[01]+),(.|\n)*/Error: bytes must be at most 11111111/
+    s/@([01]{8}),/\1,@/
+    s/@([01]*),/@0\1,/
+# make sure that the number of [ == the number of ]
+s/\[/{/
+s/\]/}/
+repeat
+    s/\{(.+)\}/[\1]/
+    s/\}(.+)\{/]\1[/
+s/^(\n|.)*\{(\n|.)*$/Error: unmatched [/
+s/^(\n|.)*\}(\n|.)*$/Error: unmatched ]/
+# add lines for data and output. Add cursor @ to front.
+s/([^\n]*)\n([^\n]*)\n?/@\1\n\2\n;00000000,\n/
+repeat
+    # handle + edge case
+    s/@\+(.*\n.*\n[^;]*;)11111111(,.*)/+@\g&lt;1&gt;00000000\2/
+    # handle + standard case
+    #   : represents current position of add
+    s/@\+(.*\n.*\n[^;]*;[01]+)/+@\1:/
+    repeat
+        s/(;[01]*)0:/\g&lt;1&gt;1/
+        # carry by moving : to the left
+        s/(;[01]*)1:/\g&lt;1&gt;:0/
+        # handle overflow by ignoring high bit
+        s/;:/;/
+    # handle - edge case
+    s/@-(.*\n.*\n[^;]*;)00000000(,.*)/-@\g&lt;1&gt;11111111\2/
+    # handle - standard case
+    s/@-(.*\n.*\n[^;]*;[01]+)(,.*)/-@\g&lt;1&gt;:\2/
+    repeat
+        s/(;[01]*)1:/\g&lt;1&gt;0/
+        s/(;[01]*)0:/\g&lt;1&gt;:1/
+        # handle overflow by ignoring high bit
+        s/;:/;/
+    # output current byte
+    s/@\.(.*\n.*\n[^;]*;)([^,]*)(.*\n.*)/.@\1\2\3,\2/
+    # error if no input when input expected
+    s/@,.*\n[^01,]*\n(\n|.)*/Error: input expected but none found/
+    # input current byte
+    s/@,(.*\n)([^,]*),?(.*\n[^;]*;)([^,]*),/,@\1\3\2,/
+    # shift right (edge case when at right)
+    s/@&gt;(.*\n.*\n)([^;]*);([01]*,)\n/&gt;@\1\2\3;00000000,\n/
+    # shift right (other cases).
+    # The (.+) at the end makes sure this doesn't cover same case as above
+    s/@&gt;(.*\n.*\n)([^;]*);([01]*,)(.+\n)/&gt;@\1\2\3;\4/
+    # shift left (edge case when at left)
+    s/(\n|.)*@&lt;.*\n.*\n;(\n|.)*/Error: Pointer attempted to be moved before 0/
+    # shift left in other cases (lazy .*? so that it moves the ; all the way to the left.)
+    s/@&lt;(.*\n.*\n.*?)([01]*,);/&lt;@\1;\2/
+    # '[' in the skip case; replace with ! and skip through
+    s/@\[(.*\n.*\n[^;]*;0+,)/!@\1/
+    repeat
+        # If current block is ] terminated, skip to end and replace opening ! with [
+        s/!([^!]*)@([^[\]!]*)\]/[\1\2]@/
+        # If there is a nested [ block, replace with a ! so it will too be processed.
+        # move the cursor inside the block
+        s/!([^!]*)@([^[\]!]+)\[/!\1\2!@/
+    # '[' in any other case; move the cursor to the right, replace current bracket with brace
+    s/@\[(.*\n.*\n[^;]*;[01]+,)/{@\1/
+    # encountered close bracket. move back to the last open brace
+    s/\{([^{]*)@\]/@[\1]/
+
+# get rid of everything but output
+s/.*\n.*\n.*\n//
+# get rid of leading , in output
+s/^,//
+</code></pre>
+
+<p>Try it out on some BF samples, which you can find online. I have tested it, but do not guarantee it’s correctness.</p>
+:ET

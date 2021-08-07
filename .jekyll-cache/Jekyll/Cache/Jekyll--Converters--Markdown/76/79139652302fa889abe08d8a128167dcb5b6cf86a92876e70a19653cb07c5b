@@ -1,0 +1,81 @@
+I"g<h2 id="the-porus-mirror-problem">The porus mirror problem</h2>
+
+<p>I’m pretty sure I came up with this problem on my own, but I’m not sure if its an existing problem under a different name. Anyway, the situation is as such:</p>
+
+<ol>
+  <li>We have a very short cylindrical tube. In fact, we’ll ignore the third dimension and just use a circle. For simplicity, we’re using units such that the radius is 1.</li>
+  <li>The tube is filled with a gas that emits <a href="https://en.wikipedia.org/wiki/Corpuscular_theory_of_light">corpuscles</a> in one large burst. We assume a large enough number that we can model them continuously. We additionally assume that the emmissions are uniform in location and direction.</li>
+  <li>The tube itself is semitransparent, with transparency determined by a function \(t: [0, 2\pi] \to [0, 1]\) of angle around the circle. Any light that does not pass through is reflected across the normal.</li>
+</ol>
+
+<p>We wish to calculate at each point along the surface of the tube what is the total quantity of light emitted in each direction, from which we can easily calculate the light pattern this system will cast on any shape outside.</p>
+
+<!--end excerpt-->
+
+<h2 id="the-general-idea-behind-the-solution">The general idea behind the solution</h2>
+
+<p>Each beam of light will bounce around withn the tube some number of times. If we formally consider that a zero-energy corpuscle is reflected by a transparent part of the tube, then we have an infinite number of bounces. Since we do not care about time, we can ignore its effects and parameterize our equations discretely in terms of bounces.</p>
+
+<p>In short, we define a family of functions \(L_n (\phi, \theta)\) that describe the intensity of the light at the \(n\)th bounce on the surface of the circle at location \(\theta\) with direction \(\phi\). The result is merely the sum of these functions over all natural numbers.</p>
+
+<h2 id="finding-l_0">Finding \(L_0\)</h2>
+
+<p>\(L_0(\phi, \theta)\) is our base case, the amount of light in any direction that initially hits at a given point. Finding this value directly appears to be a fairly complex geometric problem involving finding the length of the chord (since only origins along this line could produce light that would be in the correct direction).</p>
+
+<p><img src="/resources/2016-05-29/L0.png" /></p>
+
+<p>However, if we rotate into the \(\phi\) frame, we end up with the much simpler situation:</p>
+
+<p><img src="/resources/2016-05-29/L0-phi.png" /></p>
+
+<p>We can fairly simply see that the chord length is \(2 \cos \theta\) to the right of the \(x\)-axis and \(0\) to the left. To avoid an ugly peicewise definition, we can note that this is basically the result of zeroing out cosine when its negative and doublign it when it is positive, yielding the equation \(L_0 = |\cos\theta| + \cos\theta\). Rotating back, we have</p>
+
+<p>\[L_0 = | \cos (\theta - \phi) | + \cos (\theta - \phi) \]</p>
+
+<h2 id="finding-l_n-for-higher-n">Finding \(L_n\) for higher \(n\)</h2>
+
+<p>We can set up a similar situation as for \(L_0\) to find \(L_n\). Basically, it is entirely a result of the reflection from \(L_{n-1}\). The geometry is again fairly complicated, looking like this:</p>
+
+<p><img src="/resources/2016-05-29/Ln.png" /></p>
+
+<p>However, the equation ends up being quite simple. We know that the amount of light reflected from the previous bounce is</p>
+
+<p>\[L_n (\theta,\phi) = L_{n-1}(\theta’,\phi’) t(theta’) \]</p>
+
+<p>Rotating in a similar manner, we get:</p>
+
+<p><img src="/resources/2016-05-29/Ln-phi.png" /></p>
+
+<p>Using this diagram, we can see that the following relation holds.</p>
+
+<p>\[(\theta - \phi) + \frac{\pi - \phi’ + \phi}{2} + (\theta’ - \phi) = \pi\]</p>
+
+<p>We can therefore get the equation: \(2\theta’ -\phi’ = \pi + 3\phi - 2\theta\).</p>
+
+<p>To find \(\phi’\) we can rotate, this time into the \(\theta’\) frame.</p>
+
+<p><img src="/resources/2016-05-29/Ln-thetap.png" /></p>
+
+<p>From this, we can find that the three angles of the central triangle are:</p>
+
+<p>\[\frac{\pi - (\phi - \theta’)}{2}, \theta-\theta’, \phi’-\theta’\]
+\[\pi - (\phi - \theta’) + 2\theta - 2\theta’ + 2\phi’ - 2\theta’ = 2\pi\]
+\[2\phi’ - 3\theta’= \pi + \phi - 2\theta\]</p>
+
+<p>We can solve the linear system created by this equation and the above:</p>
+
+<p>\[\theta’ = \pi - 6\theta + 7\phi\]
+\[\phi’ = \pi - 10\theta + 11\phi\]</p>
+
+<p>Therefore, we have the relation:</p>
+
+<p>\[L_n(\theta, \phi) = L_{n-1}(\pi - 6\theta + 7\phi, \pi - 10\theta + 11\phi) (1 - t(\pi - 6\theta + 7\phi))\]</p>
+
+<h2 id="to-be-continued">To be continued</h2>
+
+<p>OK, so we now have a base case and a recursive case for \(L\) as a function of time. Next time, I’ll actually do some calculations and demonstrate how it looks on some porus mirrors.</p>
+
+<h3 id="correction">Correction</h3>
+
+<p>An earlier version of this article had inaccurate equations, they have been fixed.</p>
+:ET

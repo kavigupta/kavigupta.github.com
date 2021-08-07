@@ -1,0 +1,13 @@
+I"_<h2 id="the-pair-abstraction">The Pair Abstraction</h2>
+
+<p>Computers need some way to store information. More specifically, we want to be able to store multiple pieces of data in one place so that we can retrieve it later. For now, we’ll look at the simplest way of storing data, a pair.</p>
+
+<p>To express the concept of a “pair”, we need three machines.</p>
+
+<ol>
+  <li>A way to put two things together (construction, or “C” for short)</li>
+  <li>A way to get the first element (first, or “F” for short)</li>
+  <li>A way to get the second element (second, or “S” for short)</li>
+</ol>
+
+:ET

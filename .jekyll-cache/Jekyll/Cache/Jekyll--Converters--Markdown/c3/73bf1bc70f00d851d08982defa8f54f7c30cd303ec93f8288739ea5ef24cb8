@@ -1,0 +1,20 @@
+I"<h2 id="whats-a-monoid">What’s a Monoid?</h2>
+
+<p>A monoid is a set \(M\) with an identity element \(e : M\) and an operation \(* : M \to M \to M\), where we have the laws:</p>
+
+<ul>
+  <li>\(x * e = x\)</li>
+  <li>\(e * x = x\)</li>
+  <li>\(x * (y * z) = (x * y) * z\)</li>
+</ul>
+
+<p>We write a monoid as a tuple \((M, e, * )\). Some example monoids (written in pseudo-Haskell) are</p>
+
+<pre><code class="language-haskell">(Int, 0, (+))
+(Int, 1, (*))
+(Bool, True, (||))
+((), (), \x y -&gt; ())
+([a], [], (++))
+</code></pre>
+
+:ET

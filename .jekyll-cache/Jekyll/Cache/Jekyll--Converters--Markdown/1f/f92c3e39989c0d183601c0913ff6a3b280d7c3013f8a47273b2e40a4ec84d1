@@ -1,0 +1,19 @@
+I":<!--
+```haskell
+{-# LANGUAGE ScopedTypeVariables, AllowAmbiguousTypes, FlexibleInstances, MultiParamTypeClasses, FunctionalDependencies, UndecidableInstances, FlexibleContexts #-}
+import Prelude hiding (fst, snd)
+import Data.Void
+```
+-->
+
+<p>OK, so the real reason I covered Products and Coproducts <a href="/2016/05/08/Haskell-Classes-For-Products-And-Coproducts/">last time</a> last time was to work toward a discussion of limits, which are a concept I have never fully understood in Category Theory.</p>
+
+<h2 id="diagram">Diagram</h2>
+
+<p>As before, we have to define a few preliminaries before we can define a limit. The first thing we can define is a diagram, or a functor from another category to the current one. In Haskell, we can’t escape the current category of <strong>Hask</strong>, so we instead define a diagram as a series of types and associated functions. For example, we can define a diagram from the category \(\mathbf 2\) containing two elements and no morphisms apart from the identities as a pair of undetermined types.</p>
+
+<p>A diagram from the category \(\mathbf 2*\), a category containing two elements and an arrow in each direction (along with the identities), (this implies that the two arrows compose in both directions to the identitity):</p>
+
+<p><img src="/resources/2016-05-10/two_star.svg.png" /></p>
+
+:ET

@@ -1,0 +1,7 @@
+I"<p>Feynman famously said that to a mathematician, anything that was proven was trivial. This statement, while clearly a lighthearted dig at mathematics, it does have a striking ring of truth to it.</p>
+
+<h2 id="logical-implication">Logical Implication</h2>
+
+<p>In logic, there is the concept of implication. The idea is that if \(B\) is true whenever \(A\) is true we can say that \(A \implies B\). This makes sense for statements that depend on a variable. For example, we can say that \(x &gt; 2 \implies x &gt; 0\).</p>
+
+:ET

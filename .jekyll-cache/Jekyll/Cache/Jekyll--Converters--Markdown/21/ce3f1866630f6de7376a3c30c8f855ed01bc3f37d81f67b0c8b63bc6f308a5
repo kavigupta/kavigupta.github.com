@@ -1,0 +1,102 @@
+I"�<h2 id="mutable-closures">Mutable closures</h2>
+
+<p>A closure is a function with a parent frame that contains some data. If the parent frame can be modified, the function is said to be mutable.</p>
+
+<p>For example, take the following doctest:</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; c, d = make_counter(), make_counter()
+&gt;&gt;&gt; c()
+0
+&gt;&gt;&gt; c()
+1
+&gt;&gt;&gt; c()
+2
+&gt;&gt;&gt; [c(), d(), d(), d(), c()]
+[3, 0, 1, 2, 4]
+</code></pre>
+
+<p>The <code>c</code> is called multiple times and returns a different value every time; but its state isn’t global as there is the <code>d</code> function which also counts up but on its own tineline.</p>
+
+<p>The Python programming language allows for the creation of mutable closures in two different ways: one that is traditionally considered “functional” and one that is traditionally considered “object-oriented”. Let’s take a look at them now:</p>
+
+<!-- end excerpt -->
+
+<h2 id="nonlocal-functional-mutable-closures">Nonlocal: Functional mutable closures</h2>
+
+<p>The most obvious way to implement the <code>make_counter</code> function is as follows:</p>
+
+<pre><code class="language-python">def make_counter():
+    current_value = 0
+    def c():
+        nonlocal current_value
+        result = current_value
+        current_value += 1
+        return result
+    return c
+</code></pre>
+
+<p>The line <code>nonlocal current_value</code> ensures that the <code>current_value</code> variable assigned in the <code>c</code> frame refers to the value from the parent frame. Thus we have shared state (the <code>current_value</code> variable) which can be modified, the necessary components of a closure.</p>
+
+<h2 id="lists-object-oriented-mutable-closures">Lists: Object-oriented mutable closures</h2>
+
+<p>But do we really need anything that complicated? What if we did this?</p>
+
+<pre><code class="language-python">def make_counter():
+    return [6, 5, 4, 3, 2, 1, 0].pop
+</code></pre>
+
+<p>Every time we call the resulting function, we get 0, 1, 2, 3, 4, 5, and then 6. This isn’t quite right, as it doesn’t go on forever, but it’s definitely a mutable function, and we never used nonlocal. What’s going on here? Let’s unroll the function somewhat:</p>
+
+<pre><code class="language-python">def make_counter():
+    lst = [6, 5, 4, 3, 2, 1, 0]
+    def c():
+        return lst.pop()
+    return c
+</code></pre>
+
+<p>Here we have that we can modify <code>lst</code> from the parent frame without assigning to it, since the <em>contents</em> of <code>lst</code> rather than the variable itself is mutated. We can exactly duplicate the original <code>make_counter</code> function as such:</p>
+
+<pre><code class="language-python">def make_counter():
+    current_value = [0]
+    def c():
+        result = current_value[0]
+        current_value[0] += 1       # looks like an assignment
+        return result
+    return c
+</code></pre>
+
+<p>Now, this looks like there’s an assignment to <code>current_value</code> on the commented line, but in fact, <code>current_value[0] += 1</code> is equivalent to <code>current_value[0] = current_value[0].__iadd__(1)</code>, which is equivalent (for numbers) to <code>current_value[0] = current_value[0] + 1</code>, and that is equivalent to <code>current_value.__setitem__(0, current_value[0] + 1)</code>, which is not in fact an assignment.</p>
+
+<h2 id="complications-nonlocal-on-lists">Complications: Nonlocal on lists</h2>
+
+<p>Let’s say we write a few alternatives for <code>make_counter</code>:</p>
+
+<pre><code class="language-python">def make_counter_append():
+    current_value = [0]
+    def c():
+        result = current_value[-1]
+        current_value.append(current_value[-1] + 1)
+        return result
+    return c
+
+def make_counter_extend():
+    current_value = [0]
+    def c():
+        result = current_value[-1]
+        current_value.extend([current_value[-1] + 1])
+        return result
+    return c
+
+def make_counter_plus_equals():
+    current_value = [0]
+    def c():
+        result = current_value[-1]
+        current_value += [current_value[-1] + 1]
+        return result
+    return c
+</code></pre>
+
+<p>Interestingly, the first two work but the last does not. Why? Aren’t <code>a += b</code> and <code>a.extend(b)</code> equivalent? Actually, they’re <em>almost</em> equivalent. <code>a += b</code> is equivalent to <code>a = a.__iadd__(b)</code>, where <code>__iadd__</code> is a special function that you can choose to implement on your class. In the case of Python, <code>list.__iadd__</code> is equivalent to <code>list.extend</code> except that it returns a reference back to the same list.</p>
+
+<p>Therefore, if you want to use <code>a += b</code> where <code>a</code> is a list, you thus need either to make <code>a</code> nonlocal or use <code>a.extend(b)</code> instead.</p>
+:ET

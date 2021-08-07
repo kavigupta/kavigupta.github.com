@@ -1,0 +1,14 @@
+I"<p>So, a short break from \(\varepsilon—\delta\).</p>
+
+<p>Anyway, I’m going to look at Algebraic types in this section. Specifically, I am going to use Haskell types.</p>
+
+<p>The provided code is all actual Haskell, in fact, I’m going to have to de-import the standard libraries because some of this is actually defined there. You can find all the code <a href="/src/2015-11-23-Recursive-Types.hs">here</a></p>
+
+<!--
+```haskell
+{-# LANGUAGE FlexibleContexts, UndecidableInstances #-}
+
+import Prelude(Show, show, (++))
+```
+-->
+:ET

@@ -1,0 +1,13 @@
+I"�<h2 id="the-porus-mirror-problem">The porus mirror problem</h2>
+
+<p>I’m pretty sure I came up with this problem on my own, but I’m not sure if its an existing problem under a different name. Anyway, the situation is as such:</p>
+
+<ol>
+  <li>We have a very short cylindrical tube. In fact, we’ll ignore the third dimension and just use a circle. For simplicity, we’re using units such that the radius is 1.</li>
+  <li>The tube is filled with a gas that emits <a href="https://en.wikipedia.org/wiki/Corpuscular_theory_of_light">corpuscles</a> in one large burst. We assume a large enough number that we can model them continuously. We additionally assume that the emmissions are uniform in location and direction.</li>
+  <li>The tube itself is semitransparent, with transparency determined by a function \(t: [0, 2\pi] \to [0, 1]\) of angle around the circle. Any light that does not pass through is reflected across the normal.</li>
+</ol>
+
+<p>We wish to calculate at each point along the surface of the tube what is the total quantity of light emitted in each direction, from which we can easily calculate the light pattern this system will cast on any shape outside.</p>
+
+:ET
