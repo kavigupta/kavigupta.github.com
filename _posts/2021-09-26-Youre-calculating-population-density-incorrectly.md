@@ -1,3 +1,5 @@
+preprocess
+    replace "IMAGE: ([^;\n]+);?(.*)" -> "<center><img src=\"/resources/2021-09-26/\\1.png\" \\2 /></center>"
 ---
 layout: post
 title: You're calculating population density incorrectly
@@ -14,7 +16,7 @@ The issue is that this approach assumes that every part of your region of intere
 
 For example, consider the following two islands:
 
-<center><img src="/resources/2021-09-26/density.svg.png"  /></center>
+IMAGE: density.svg
 
 <!-- end excerpt -->
 
@@ -33,7 +35,7 @@ This seems like a strange question: of course what it is measuring is the mean n
 meter of ground. However, another way to think about this is to divide our region up into smaller subregions: for
 example let's say each island is 1500m on a side and divide them into 9 regions each of 500m by 500m.
 
-<center><img src="/resources/2021-09-26/subregions.svg.png"  /></center>
+IMAGE: subregions.svg
 
 To calculate normal density, we would take the average of every region weighted by the area, to get 622/km<sup>2</sup>
 in both of these cases. However, if we take the average of every region weighted by the *population*, we still get
@@ -54,11 +56,11 @@ overall density.
 
 And now for some maps! Depicted here are maps of the metric for radii of 250m, 1km, and 4km, based on 2020 census data.
 
-<center><img src="/resources/2021-09-26/250m.png"  /></center>
+IMAGE: 250m
 
-<center><img src="/resources/2021-09-26/1km.png"  /></center>
+IMAGE: 1km
 
-<center><img src="/resources/2021-09-26/4km.png"  /></center>
+IMAGE: 4km
 
 Note that NY is easily the densest state by any of these metrics, which makes sense since most people in NY live in very
 dense areas!
@@ -67,7 +69,7 @@ dense areas!
 
 We all know that density predicts electoral outcomes right? Well, here's what density vs Biden's share looks like using several different metrics, by county.
 
-<center><img src="/resources/2021-09-26/metric.png"  /></center>
+IMAGE: metric
 
 Note that the mean error is lower for the alternate density metric, but by 250m it starts rising again. This is probably
 due to the fact that the census data used to construct this is block level, so noise from the exact placement of the
@@ -75,18 +77,18 @@ blocks starts being relevant below 1km or so.
 
 We can also map out the predictions and see what's going on:
 
-<center><img src="/resources/2021-09-26/Std. Dens. prediction.png"  /></center>
+IMAGE: Std. Dens. prediction
 
-<center><img src="/resources/2021-09-26/Alt. Dens. 1km prediction.png"  /></center>
+IMAGE: Alt. Dens. 1km prediction
 
 You can see that there's far fewer blue counties by either of these metrics than Biden actually received, but the alternate density metric produces a better map as it can identify large counties that are nonetheless densely populated, especially in
 the Western US, where counties tend to be much larger.
 
 We can also see this on the residual maps:
 
-<center><img src="/resources/2021-09-26/Std. Dens. residual.png"  /></center>
+IMAGE: Std. Dens. residual
 
-<center><img src="/resources/2021-09-26/Alt. Dens. 1km residual.png"  /></center>
+IMAGE: Alt. Dens. 1km residual
 
 Both maps show obvious patterns where the plains, appalachia, utah, and florida are redder than expected by density,
 while native, hispanic, black, secular areas and the driftless area are bluer than expected. However, you can see that
