@@ -20,6 +20,8 @@ with open(svg, "rb") as f:
 pngcache = "_cache/%s.png" % md5.hexdigest()
 
 if not isfile(pngcache):
-    system("inkscape -z %s -e %s"%(svg, pngcache))
+    command = "inkscape -z %s -o %s"%(svg, pngcache)
+    print(command)
+    assert not system(command)
 
 copyfile(pngcache, png)
