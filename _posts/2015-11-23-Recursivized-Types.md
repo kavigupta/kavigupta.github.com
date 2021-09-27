@@ -1,9 +1,14 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "haskellcomment" -> "haskell"
+    replace "<!--_-->" -> ""
 ---
 layout: post
 title: Recursivized Types
 comments: True
 ---
 
+dump: haskell as hs
 
 So, a short break from \\(\varepsilon---\delta\\).
 
@@ -173,7 +178,7 @@ For example, the only possible value of `NullOf List` is `Null Nil` and the only
 
 You might notice a correspondence between the types `Maybe` and `Nat`:
 
-```haskell
+```haskellcomment
     data Maybe a = Nothing | Just a
     data Nat = Zero | Succ Nat
 ```
@@ -268,7 +273,7 @@ alternating' = Recurse (ConsPair True (Recurse (ConsPair False alternating')))
 
 Which is remarkably similar to our previous definitions:
 
-```haskell
+```haskellcomment
 trues = ConsStream True trues
 falses = ConsStream False falses
 alternating = ConsStream True (ConsStream False alternating)
@@ -286,25 +291,25 @@ So now we know (I'm using \\(\equiv\\) to mean that two types have the same stru
 
 But what is `List` equivalent to? We can look again at the definition of a list:
 
-```haskell
+```haskellcomment
 data List a = Nil | Cons a (List a)
 ```
 
 OK, so we need to have a type parameter representing the `a` and another to be eaten by `Recurse`.
 
-```haskell
+```haskellcomment
 data PreList a self = ???
 ```
 
 And we need to have some element `Nil`.
 
-```haskell
+```haskellcomment
 data PreList a self = PreNil | ???
 ```
 
 Now, we just need something to combine both the first and rest of the list
 
-```haskell
+```haskellcomment
 data PreList a self = PreNil | PreCons a self
 ```
 
