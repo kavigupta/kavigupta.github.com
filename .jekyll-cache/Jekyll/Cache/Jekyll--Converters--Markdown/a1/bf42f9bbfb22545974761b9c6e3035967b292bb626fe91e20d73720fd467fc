@@ -1,4 +1,4 @@
-I"~<p>The question “how do you calculate population density?” sounds like the kind of thing you’d see on a
+I"�<p>The question “how do you calculate population density?” sounds like the kind of thing you’d see on a
 third grade pop quiz. Obviously, you would calculate it in the same way you would calculate any other type of density: you take the feature of interest and its population, and divide by area.</p>
 
 <p>The issue is that this approach assumes that every part of the region of interest is equally valuable.</p>
@@ -84,11 +84,9 @@ the west tends to have large counties such as San Bernardino and Riverside count
 nearly as sparse  as the standard density metric would suggest.</p>
 
 <blockquote>
-  <p><em>One interesting sidenote: note that in both predictions the tipping point state’s margin is more democratic than the
-popular vote. That means that if the whole country moved right so that the popular vote was D+0, the democrats would win!
-That means that when you only take into account urban areas being more democratic, the EC/PV gap favors democrats, unlike
-in our current political
-reality where it favors Republicans. One direct implication of this is that <strong>the Electoral college actually favors urban areas over rural ones!</strong></em></p>
+  <p><em>One interesting sidenote: in both predictions, the tipping point state’s margin is more Democratic than the popular vote margin. This means that in a neutral, D/R+0 political environment, the Democrats would win!</em></p>
+
+  <p><em>Consequently, we can see that when only accounting for urban areas being more Democratic, the EC/PV gap would favor Democrats, unlike our current political reality, in which it favors Republicans. One direct implication of this is that <strong>the Electoral College actually favors urban areas over rural ones!</strong></em></p>
 </blockquote>
 
 <h2 id="conclusion">Conclusion</h2>
