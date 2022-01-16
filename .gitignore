@@ -6,3 +6,4 @@ temp.pdf
 **/__pycache__
 **/*.hi
 **/*.o
+.jekyll-cache

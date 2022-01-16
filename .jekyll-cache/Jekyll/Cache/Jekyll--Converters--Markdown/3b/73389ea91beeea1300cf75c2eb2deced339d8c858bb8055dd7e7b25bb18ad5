@@ -1,9 +1,0 @@
-I"�<p>So I’ve been trying to go through <a href="http://math.mit.edu/~dspivak/teaching/sp13/"><em>Category Theory for Scientists</em></a> by writing the functions as code. So I obviously decided to use Haskell. Unfortunately, I ran into a wall: Haskell is actually pretty bad at representing categories.</p>
-
-<h2 id="haskell-is-a-category">Haskell is <em>a</em> Category</h2>
-
-<p>Now, at first this was incredibly surprising. Frankly, I had started learning about category theory because of its association with Haskell. Unfortunately, I didn’t realize that Haskell isn’t category theory, it’s a category.</p>
-
-<p>For instance, look at this definition of a category in math:</p>
-
-:ET
