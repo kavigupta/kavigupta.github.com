@@ -1,7 +1,0 @@
-fig = plt.figure()
-fig.gca().plot([1, 2, 3], [4, 5, 6])
-plt.gca().set_xlabel("x label")
-plt.gca().set_ylabel("y label")
-set_size(fig, (1, 0.5))
-plt.savefig("bad.png", bbox_inches='tight')
-print(imread("bad.png").shape) # outputs (91, 109, 4)
