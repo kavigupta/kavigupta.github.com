@@ -31,7 +31,7 @@ if state == "commit":
     system('git add .')
     system('git add -u')
     call('git', 'commit', '-m', argv[2])
-    system('git push origin master')
+    assert system('git push origin master')
 elif state == 'serve':
     system('jekyll serve')
 else: # state == 'build':
