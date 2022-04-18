@@ -1,14 +1,9 @@
-preprocess:
-    pass ../_scripts/codetosources.py
-    replace "haskellcomment" -> "haskell"
-    replace "<!--_-->" -> ""
 ---
 layout: post
 title: Monoids, Bioids, and Beyond
 comments: True
 ---
 
-dump: haskell as hs
 
 <!--
 ```haskell
