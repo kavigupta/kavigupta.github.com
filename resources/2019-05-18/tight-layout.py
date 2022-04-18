@@ -1,6 +1,0 @@
-plt.figure(figsize=(5, 2.5))
-plt.plot([1, 2, 3], [4, 5, 6])
-plt.xlabel("x label")
-plt.ylabel("y label")
-plt.savefig("tight-layout.png", bbox_inches='tight')
-print(imread("tight-layout.png").shape) # outputs (259, 462, 4)
