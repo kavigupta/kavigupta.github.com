@@ -1,0 +1,28 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+
+\begin{document}
+
+\begin{tikzpicture}[scale=2,cap=round]
+
+    \colorlet{darkgreen}{green!50!black}
+
+    \draw (0,0) circle (1cm);
+    \draw (0,0) circle (3cm);
+
+    \filldraw[fill=red!20,draw=red] (0,0) -- (3mm,0pt) arc(0:44:3mm);
+    \draw (33:4mm) node[red] {$\theta-\phi$};
+
+    \draw[red] (44:1cm) -- node[above] {$1$} (0,0) -- (1cm, 0);
+
+    \filldraw[fill=blue!20,draw=blue] (0,0) -- (2mm,0pt) arc(0:14:2mm);
+    \draw (7:5mm) node[blue] {$\alpha-\phi$};
+
+    \draw[blue] (14:3cm) -- node [above] {$r$}(0,0) -- (0:3cm);
+
+    \draw[darkgreen] (14:3cm) -- (44:1cm);
+
+\end{tikzpicture}
+
+\end{document}
