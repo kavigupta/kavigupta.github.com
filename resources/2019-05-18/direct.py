@@ -1,6 +1,0 @@
-plt.figure(figsize=(5, 2.5))
-plt.plot([1, 2, 3], [4, 5, 6])
-plt.xlabel("x label")
-plt.ylabel("y label")
-plt.savefig("direct.png")
-print(imread("direct.png").shape) # outputs (250, 500, 4)
