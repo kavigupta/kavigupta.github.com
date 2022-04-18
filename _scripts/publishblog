@@ -22,6 +22,7 @@ if state not in {'serve', 'commit', 'build'}:
 system("mkdir resources")
 system ("cp -r _resources/* resources")
 system('./SimplePreprocessor/spp -s "_posts"')
+system("python3 _scripts/create_redirects.py redirect_links.py h")
 
 system('find resources -name *.svg -exec python3 _scripts/svgtopng.py {} \;')
 system('find resources -name *.tex -exec python3 _scripts/textopng.py {} \;')
@@ -49,6 +50,7 @@ system('./SimplePreprocessor/spp -s "_posts" -c')
 try:
     system ('_scripts/indexresources.py clean')
     system ('rm -r resources')
+    system ('rm -r h')
 except Exception as e:
     print (e)
 
