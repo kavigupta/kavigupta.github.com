@@ -100,13 +100,12 @@ def plot_voters(data):
             customdata=[f"#voter-{i + 1}" for i in range(len(data))],
             mode="markers",
             marker_color=[
-                "rgba(255, 0, 0, 0.5)"
-                if row.selected_party == "R"
-                else "rgba(0, 0, 255, 0.5)"
+                "#ff3322" if row.selected_party == "R" else "#2266ff"
                 for _, row in data.iterrows()
             ],
         )
     )
+    fig.update_traces(hovertemplate="%{text}<extra></extra>")
     fig.update_layout(
         title="Voter locations (click to jump to the relevant voter)",
         geo_scope="usa",
