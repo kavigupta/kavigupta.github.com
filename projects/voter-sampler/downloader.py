@@ -15,13 +15,13 @@ def api_key():
 
 
 @permacache("voter-sampler/downloader/download_streetview_2")
-def download_streetview_with_radius(x, y, radius=250):
+def download_streetview_with_radius(x, y, radius=250, fov=120):
     key = api_key()
     url = (
         "https://maps.googleapis.com/maps/api/streetview?"
         + "size=2000x2000&"
         + f"location={y:.6f},{x:.6f}&"
-        + f"radius={radius}&pitch=0&key={key}&fov=180"
+        + f"radius={radius}&pitch=0&key={key}&fov={fov}"
     )
     print(url)
     response = requests.get(url)
@@ -59,9 +59,9 @@ road_types = {
     "Trail": 1,
     "Way": 1,
     "Run": 1,
-    "Place" : 1,
-    "Park" : 1,
-    "Ridge" : 1,
+    "Place": 1,
+    "Park": 1,
+    "Ridge": 1,
     "Drive": 0,
     "Court": 0,
     "Ct": 0,
