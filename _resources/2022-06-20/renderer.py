@@ -1,6 +1,6 @@
 from downloader import reverse_geocode
 
-FOLDER = "/projects/voter-sampler/out"
+FOLDER = "/resources/2022-06-20/out"
 
 
 def precinct_label(row):
