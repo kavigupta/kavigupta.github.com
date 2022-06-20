@@ -1,6 +1,11 @@
 import re
+import numpy as np
+from PIL import Image, ImageDraw, ImageFont
 import plotly.graph_objects as go
 
+from permacache import permacache
+
+from data import load_data
 from downloader import reverse_geocode
 
 FOLDER = "/resources/2022-06-20/out"
@@ -158,3 +163,71 @@ def add_targets(graph_file):
     # Write out HTML file
     with open(graph_file, "w") as f:
         f.write(html_str)
+
+
+def render_image_grid(images, ncols):
+    size = max(max(x.size) for x in images)
+    nrows = (len(images) + ncols - 1) // ncols
+    out = np.ones((size * nrows, size * ncols, 3), dtype=np.uint8) * 255
+    for i in range(len(images)):
+        row, col = i // ncols, i % ncols
+        out[row * size : (row + 1) * size, col * size : (col + 1) * size] = images[i]
+    return out
+
+
+def render_image_grid_for_party(data, party, size):
+    images = [
+        Image.open(f"out/{i}.png") for i in np.where(data.selected_party == party)[0]
+    ]
+    for image in images:
+        image.thumbnail((size, size), Image.ANTIALIAS)
+
+    ncols = int(round(len(data) ** 0.5 * 1.2)) // 2
+    return render_image_grid(images, ncols)
+
+
+def centered(im, W, H, msg, font_size):
+    W, H = W * 2, H * 2
+    draw = ImageDraw.Draw(im)
+    myFont = ImageFont.truetype("Cantarell-Regular.otf", int(font_size))
+    w, h = draw.textsize(msg, font=myFont)
+    draw.text(((W - w) / 2, (H - h) / 2), msg, fill="black", font=myFont)
+
+
+@permacache("voter-sampler/renderer/single-image")
+def single_image(num_voters, size):
+    data = load_data(num_voters)
+    d = render_image_grid_for_party(data, "D", size)
+    r = render_image_grid_for_party(data, "R", size)
+    out = (
+        np.ones(
+            (max(d.shape[0], r.shape[0]), d.shape[1] + r.shape[1] + size, 3), np.uint8
+        )
+        * 255
+    )
+    out[: d.shape[0], : d.shape[1]] = d
+    out[: r.shape[0], d.shape[1] + size : d.shape[1] + size + r.shape[1]] = r
+
+    out = np.concatenate(
+        [np.ones((size, out.shape[1], 3), np.uint8) * 255, out], axis=0
+    )
+
+    out = Image.fromarray(out)
+
+    centered(out, d.shape[1] / 2, size / 2, "Democratic Voters", font_size=size / 2)
+    centered(
+        out,
+        d.shape[1] + size + r.shape[1] / 2,
+        size / 2,
+        "Republican Voters",
+        font_size=size / 2,
+    )
+    centered(
+        out,
+        d.shape[1] + r.shape[1],
+        out.size[1] - size / 4,
+        "@notkavi",
+        font_size=size / 4,
+    )
+
+    return out

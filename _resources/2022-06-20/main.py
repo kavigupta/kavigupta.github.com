@@ -1,6 +1,6 @@
 from data import load_data, get_precincts
 from downloader import download_streetview
-from renderer import add_targets, plot_voters, populate_template
+from renderer import add_targets, plot_voters, populate_template, single_image
 
 
 def main(count):
@@ -22,6 +22,9 @@ def main(count):
 
     plot_voters(selection).write_html("graph.html")
     add_targets("graph.html")
+
+    out = single_image(count, 100)
+    out.save("header_image.jpg")
 
 
 main(1000)
