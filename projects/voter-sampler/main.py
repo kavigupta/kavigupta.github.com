@@ -24,4 +24,4 @@ def main(count):
         f.write(populate_template(selection))
 
 
-main(10)
+main(100)

@@ -57,24 +57,51 @@ road_types = {
     "Circle": 1,
     "Terrace": 1,
     "Trail": 1,
+    "Way": 1,
+    "Run": 1,
+    "Place" : 1,
+    "Park" : 1,
+    "Ridge" : 1,
     "Drive": 0,
     "Court": 0,
     "Ct": 0,
     "Boulevard": 0,
+    "Tunnel": 0,
     "Freeway": -1,
     "Business": -1,
 }
 
+directions = (
+    "Northeast",
+    "Northwest",
+    "Southeast",
+    "Southwest",
+    "South",
+    "S",
+    "East",
+    "E",
+    "North",
+    "N",
+    "West",
+    "W",
+)
+
+road_names = ("West Mesquital del Oro", "Snead Fairway", "Yacht Wanderer")
+
 
 def classify_road_type(road_name):
-    for direction in ("Northwest",):
+    if "Highway" in road_name:
+        return -1
+    for direction in directions:
         if road_name.endswith(f" {direction}"):
             road_name = road_name[: -(len(direction) + 1)]
-    road_type = road_name.split(" ")[-1]
+    road_type = road_name.split(" ")[-1].title()
     if road_type in road_types:
         return road_types[road_type]
     if road_type.isnumeric():
         return -1
+    if road_name in road_names:
+        return True
     raise RuntimeError(road_name)
 
 
@@ -93,7 +120,12 @@ def refine_location(poly, tries=10):
             continue
         tries -= 1
         addr = reverse_geocode(x, y)
-        score = classify_road_type(addr.raw["address"]["road"])
+
+        score = (
+            classify_road_type(addr.raw["address"]["road"])
+            if "road" in addr.raw["address"]
+            else -2
+        )
         if not poly.contains(Point(addr.longitude, addr.latitude)):
             score -= 10
         with_score.append((addr, score))
