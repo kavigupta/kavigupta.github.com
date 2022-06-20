@@ -24,4 +24,4 @@ def main(count):
     add_targets("graph.html")
 
 
-main(100)
+main(1000)

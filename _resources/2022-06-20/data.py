@@ -5,6 +5,7 @@ import numpy as np
 import geopandas as gpd
 
 from permacache import permacache
+import tqdm
 
 from downloader import refine_location
 
@@ -57,6 +58,17 @@ def sample_voters_with_precincts(total_samples):
 
 def load_data(total_samples):
     data = pd.DataFrame(sample_voters_with_precincts(total_samples))
-    data["x"], data["y"] = np.array(list(data.geometry.map(refine_location))).T
+    results = []
+    errors = []
+    for p in tqdm.tqdm(data.geometry):
+        try:
+            results.append(refine_location(p))
+        except RuntimeError as e:
+            print(f"ERROR: {e}")
+            errors.append(str(e))
+    if errors:
+        print(errors)
+        raise RuntimeError()
+    data["x"], data["y"] = np.array(results).T
     data["ox"], data["oy"] = data["x"], data["y"]
     return data

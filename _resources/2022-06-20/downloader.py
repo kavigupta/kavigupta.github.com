@@ -50,10 +50,13 @@ def reverse_geocode(x, y):
 
 road_types = {
     "Avenue": 1,
+    "Ave": 1,
     "Street": 1,
+    "St": 1,
     "Road": 1,
     "Crossing": 1,
     "Lane": 1,
+    "Ln": 1,
     "Circle": 1,
     "Terrace": 1,
     "Trail": 1,
@@ -62,13 +65,38 @@ road_types = {
     "Place": 1,
     "Park": 1,
     "Ridge": 1,
+    "Creek": 1,
+    "Bend": 1,
+    "Walk": 1,
+    "Overlook": 1,
+    "Path": 1,
+    "Loop": 1,
+    "Alley": 1,
+    "Pike": 1,
+    "Track": 1,
     "Drive": 0,
+    "Dr": 0,
     "Court": 0,
     "Ct": 0,
+    "Center": 0,
+    "Point": 0,
+    "Square": 0,
+    "Broadway": 0,
     "Boulevard": 0,
+    "Blvd": 0,
     "Tunnel": 0,
+    "Expressway": 0,
+    "Skyway": 0,
+    "Pavillion": 0,
+    "Parkway": -1,
     "Freeway": -1,
     "Business": -1,
+    "Turnpike": -1,
+    "Thruway": -1,
+    "Real": -1,
+    "Connector": -1,
+    "Bypass": -1,
+    "Greenway": -1,
 }
 
 directions = (
@@ -86,12 +114,47 @@ directions = (
     "W",
 )
 
-road_names = ("West Mesquital del Oro", "Snead Fairway", "Yacht Wanderer")
+invalid_names = (
+    "Loundenville",
+    "Place Marquette",
+    "Melendy",
+    "Loundenville",
+    "Grand Pavilion",
+    "Champney",
+    "Bluffestates",
+    "Via Primero",
+    "Via Roma",
+    "John F. Kennedy Causeway",
+)
+road_names = (
+    "West Mesquital del Oro",
+    "Snead Fairway",
+    "Yacht Wanderer",
+    "Taft Pointe",
+    "Avenida Encinas",
+    "Scarlet Oak",
+    "HiHo Hill",
+    "Appaloosa Cove",
+    "Hanover Close",
+    "Avenue 19 1/2",
+    "Avenue 348 A",
+    "Bluff Hollow",
+    "Trouville Esplanade",
+)
 
 
 def classify_road_type(road_name):
-    if "Highway" in road_name:
+    if (
+        "Highway" in road_name
+        or "NDOT" in road_name
+        or "County Road" in road_name
+        or "County Route" in road_name
+    ):
         return -1
+    if road_name in invalid_names:
+        return -1
+    if road_name.endswith(")"):
+        road_name = road_name[:-1]
     for direction in directions:
         if road_name.endswith(f" {direction}"):
             road_name = road_name[: -(len(direction) + 1)]
