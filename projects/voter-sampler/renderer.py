@@ -1,14 +1,16 @@
 from downloader import reverse_geocode
 
+FOLDER = "/projects/voter-sampler/out"
+
 
 def precinct_label(row):
     total = row.R + row.D + row.O
     margin = row.D - row.R
     margin = margin / total
     if margin < 0:
-        return f'<div class="text gop_precinct">Precinct Margin: R+{-margin:.0%}</div>'
+        return f'<div class="text gop precinct">Precinct Margin: R+{-margin:.0%}</div>'
     else:
-        return f'<div class="text dem_precinct">Precinct Margin: D+{margin:.0%}</div>'
+        return f'<div class="text dem precinct">Precinct Margin: D+{margin:.0%}</div>'
 
 
 def render_degree(val, dirs):
@@ -30,16 +32,16 @@ def render_coordinate(row):
 
 def render_voter(row, idx):
     if row.selected_party == "D":
-        return f'<div class="text dem_voter">Voter {idx + 1} voted for Biden</div>'
+        return f'<div class="text dem voter">Voter {idx + 1} voted for Biden</div>'
     else:
-        return f'<div class="text gop_voter">Voter {idx + 1} voted for Trump</div>'
+        return f'<div class="text gop voter">Voter {idx + 1} voted for Trump</div>'
 
 
 def render_row(idx, row):
     x, y = row.ox, row.oy
     a = f"""
     <td style="width: 50%;">
-        <h2 class="text">Voter {idx + 1}'s Neighborhood</h2>
+        <h3 class="text voter_header">Voter {idx + 1}'s Neighborhood</h3>
 
         <!-- {render_voter(row, idx)} -->
         <div class="text coordinate"> {render_coordinate(row)}</div>
@@ -51,7 +53,7 @@ def render_row(idx, row):
     <td style="width: 50%;">
         <div class="fill">
             <a href="https://maps.google.com/?q={y},{x}&ll={y},{x}&z=8" target="_blank">
-                <image src="out/{idx}.png"/>
+                <image src="{FOLDER}/{idx}.png"/>
             </a>
         </div>
     </td>
