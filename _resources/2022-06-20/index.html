@@ -1,8 +1,98 @@
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create two equal columns that floats next to each other */
+    /* .row {
+        display: flex;
+    }
+
+    .column {
+        flex: 50%;
+    } */
+
+    .fill {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden
+    }
+
+    .fill a {
+        width: 100%;
+        min-height: 100%
+    }
+
+
+    .fill a img {
+        width: 100%;
+        min-height: 100%
+    }
+
+    .voter_header {
+        margin-bottom: 0px;
+    }
+
+    .text {
+        font-family: courier;
+        text-align: center;
+    }
+
+    .dem {
+        color: #26f;
+    }
+
+    .gop {
+        color: #f32;
+    }
+
+    .precinct {
+        font-size: 125%;
+        font-weight: bold;
+    }
+
+    .voter {
+        font-size: 100%;
+        font-style: italic;
+    }
+
+    .coordinate {
+        font-size: 100%;
+    }
+
+    .address {
+        font-size: 85%;
+    }
+
+    /* table specific stuff */
+    table {
+        width: 100%;
+    }
+
+    table, tr, td{
+        border:none;
+    }
+
+
+    table td,
+    table td * {
+        vertical-align: top;
+    }
+
+    .wider {
+        width: 80vw;
+        position: relative;
+        left: calc(-40vw + 50%);
+    }
+</style>
+
+
 <table class="wider">
     <tr>
         <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 1's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-1">Voter 1's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 1 voted for Biden</div> -->
         <div class="text coordinate"> 27&deg;37'0"N 80&deg;28'21"W</div>
@@ -12,7 +102,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 2's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-2">Voter 2's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 2 voted for Trump</div> -->
         <div class="text coordinate"> 34&deg;6'50"N 84&deg;34'53"W</div>
@@ -40,7 +130,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 3's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-3">Voter 3's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 3 voted for Biden</div> -->
         <div class="text coordinate"> 37&deg;41'40"N 122&deg;7'3"W</div>
@@ -50,7 +140,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 4's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-4">Voter 4's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 4 voted for Trump</div> -->
         <div class="text coordinate"> 35&deg;51'29"N 80&deg;4'38"W</div>
@@ -78,7 +168,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 5's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-5">Voter 5's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 5 voted for Biden</div> -->
         <div class="text coordinate"> 40&deg;37'12"N 74&deg;47'59"W</div>
@@ -88,7 +178,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 6's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-6">Voter 6's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 6 voted for Trump</div> -->
         <div class="text coordinate"> 35&deg;27'50"N 81&deg;1'18"W</div>
@@ -116,7 +206,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 7's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-7">Voter 7's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 7 voted for Biden</div> -->
         <div class="text coordinate"> 38&deg;44'36"N 121&deg;20'29"W</div>
@@ -126,7 +216,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 8's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-8">Voter 8's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 8 voted for Trump</div> -->
         <div class="text coordinate"> 33&deg;29'12"N 81&deg;33'47"W</div>
@@ -154,7 +244,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 9's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-9">Voter 9's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 9 voted for Biden</div> -->
         <div class="text coordinate"> 42&deg;58'0"N 78&deg;50'59"W</div>
@@ -164,7 +254,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 10's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-10">Voter 10's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 10 voted for Trump</div> -->
         <div class="text coordinate"> 45&deg;12'23"N 93&deg;19'10"W</div>
@@ -192,7 +282,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 11's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-11">Voter 11's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 11 voted for Biden</div> -->
         <div class="text coordinate"> 31&deg;51'53"N 81&deg;42'24"W</div>
@@ -202,7 +292,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 12's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-12">Voter 12's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 12 voted for Trump</div> -->
         <div class="text coordinate"> 48&deg;8'17"N 122&deg;17'10"W</div>
@@ -230,7 +320,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 13's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-13">Voter 13's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 13 voted for Biden</div> -->
         <div class="text coordinate"> 41&deg;41'7"N 71&deg;27'29"W</div>
@@ -240,7 +330,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 14's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-14">Voter 14's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 14 voted for Trump</div> -->
         <div class="text coordinate"> 44&deg;18'43"N 105&deg;28'29"W</div>
@@ -268,7 +358,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 15's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-15">Voter 15's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 15 voted for Biden</div> -->
         <div class="text coordinate"> 34&deg;5'44"N 118&deg;12'28"W</div>
@@ -278,7 +368,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 16's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-16">Voter 16's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 16 voted for Trump</div> -->
         <div class="text coordinate"> 29&deg;31'41"N 98&deg;39'9"W</div>
@@ -306,7 +396,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 17's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-17">Voter 17's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 17 voted for Biden</div> -->
         <div class="text coordinate"> 35&deg;56'50"N 78&deg;55'36"W</div>
@@ -316,7 +406,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 18's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-18">Voter 18's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 18 voted for Trump</div> -->
         <div class="text coordinate"> 29&deg;35'8"N 82&deg;0'24"W</div>
@@ -344,7 +434,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 19's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-19">Voter 19's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 19 voted for Biden</div> -->
         <div class="text coordinate"> 37&deg;7'57"N 76&deg;23'27"W</div>
@@ -354,7 +444,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 20's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-20">Voter 20's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 20 voted for Trump</div> -->
         <div class="text coordinate"> 36&deg;18'23"N 119&deg;23'1"W</div>
@@ -382,7 +472,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 21's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-21">Voter 21's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 21 voted for Biden</div> -->
         <div class="text coordinate"> 29&deg;37'47"N 95&deg;34'49"W</div>
@@ -392,7 +482,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 22's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-22">Voter 22's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 22 voted for Trump</div> -->
         <div class="text coordinate"> 40&deg;55'3"N 73&deg;51'50"W</div>
@@ -420,7 +510,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 23's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-23">Voter 23's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 23 voted for Biden</div> -->
         <div class="text coordinate"> 40&deg;27'18"N 80&deg;3'58"W</div>
@@ -430,7 +520,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 24's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-24">Voter 24's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 24 voted for Trump</div> -->
         <div class="text coordinate"> 40&deg;37'0"N 73&deg;58'52"W</div>
@@ -458,7 +548,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 25's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-25">Voter 25's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 25 voted for Biden</div> -->
         <div class="text coordinate"> 40&deg;4'24"N 80&deg;40'21"W</div>
@@ -468,7 +558,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 26's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-26">Voter 26's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 26 voted for Trump</div> -->
         <div class="text coordinate"> 35&deg;57'36"N 77&deg;53'59"W</div>
@@ -496,7 +586,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 27's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-27">Voter 27's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 27 voted for Biden</div> -->
         <div class="text coordinate"> 38&deg;59'26"N 94&deg;16'14"W</div>
@@ -506,7 +596,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 28's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-28">Voter 28's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 28 voted for Trump</div> -->
         <div class="text coordinate"> 45&deg;49'12"N 90&deg;26'36"W</div>
@@ -534,7 +624,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 29's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-29">Voter 29's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 29 voted for Biden</div> -->
         <div class="text coordinate"> 45&deg;36'15"N 94&deg;11'32"W</div>
@@ -544,7 +634,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 30's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-30">Voter 30's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 30 voted for Trump</div> -->
         <div class="text coordinate"> 41&deg;17'16"N 85&deg;47'38"W</div>
@@ -572,7 +662,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 31's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-31">Voter 31's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 31 voted for Biden</div> -->
         <div class="text coordinate"> 47&deg;31'14"N 122&deg;36'11"W</div>
@@ -582,7 +672,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 32's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-32">Voter 32's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 32 voted for Trump</div> -->
         <div class="text coordinate"> 35&deg;52'3"N 86&deg;28'27"W</div>
@@ -610,7 +700,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 33's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-33">Voter 33's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 33 voted for Biden</div> -->
         <div class="text coordinate"> 40&deg;18'7"N 75&deg;21'37"W</div>
@@ -620,7 +710,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 34's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-34">Voter 34's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 34 voted for Trump</div> -->
         <div class="text coordinate"> 40&deg;17'23"N 83&deg;57'38"W</div>
@@ -648,7 +738,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 35's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-35">Voter 35's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 35 voted for Biden</div> -->
         <div class="text coordinate"> 40&deg;48'51"N 74&deg;29'47"W</div>
@@ -658,7 +748,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 36's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-36">Voter 36's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 36 voted for Trump</div> -->
         <div class="text coordinate"> 42&deg;49'14"N 71&deg;14'7"W</div>
@@ -686,7 +776,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 37's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-37">Voter 37's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 37 voted for Biden</div> -->
         <div class="text coordinate"> 38&deg;31'27"N 122&deg;44'41"W</div>
@@ -696,7 +786,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 38's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-38">Voter 38's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 38 voted for Trump</div> -->
         <div class="text coordinate"> 33&deg;52'14"N 118&deg;22'25"W</div>
@@ -724,7 +814,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 39's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-39">Voter 39's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 39 voted for Biden</div> -->
         <div class="text coordinate"> 39&deg;44'51"N 104&deg;58'16"W</div>
@@ -734,7 +824,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 40's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-40">Voter 40's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 40 voted for Trump</div> -->
         <div class="text coordinate"> 33&deg;52'56"N 117&deg;52'17"W</div>
@@ -762,7 +852,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 41's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-41">Voter 41's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 41 voted for Biden</div> -->
         <div class="text coordinate"> 32&deg;23'35"N 111&deg;3'40"W</div>
@@ -772,7 +862,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 42's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-42">Voter 42's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 42 voted for Trump</div> -->
         <div class="text coordinate"> 30&deg;26'49"N 97&deg;46'23"W</div>
@@ -800,7 +890,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 43's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-43">Voter 43's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 43 voted for Biden</div> -->
         <div class="text coordinate"> 28&deg;1'37"N 82&deg;35'9"W</div>
@@ -810,7 +900,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 44's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-44">Voter 44's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 44 voted for Trump</div> -->
         <div class="text coordinate"> 43&deg;10'15"N 79&deg;2'29"W</div>
@@ -838,7 +928,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 45's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-45">Voter 45's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 45 voted for Biden</div> -->
         <div class="text coordinate"> 36&deg;34'57"N 93&deg;6'52"W</div>
@@ -848,7 +938,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 46's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-46">Voter 46's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 46 voted for Trump</div> -->
         <div class="text coordinate"> 34&deg;3'4"N 118&deg;6'46"W</div>
@@ -876,7 +966,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 47's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-47">Voter 47's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 47 voted for Biden</div> -->
         <div class="text coordinate"> 36&deg;31'36"N 79&deg;40'53"W</div>
@@ -886,7 +976,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 48's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-48">Voter 48's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 48 voted for Trump</div> -->
         <div class="text coordinate"> 40&deg;43'53"N 86&deg;13'54"W</div>
@@ -914,7 +1004,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 49's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-49">Voter 49's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 49 voted for Biden</div> -->
         <div class="text coordinate"> 33&deg;58'28"N 83&deg;57'18"W</div>
@@ -924,7 +1014,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 50's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-50">Voter 50's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 50 voted for Trump</div> -->
         <div class="text coordinate"> 38&deg;55'57"N 95&deg;53'29"W</div>
@@ -952,7 +1042,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 51's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-51">Voter 51's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 51 voted for Biden</div> -->
         <div class="text coordinate"> 34&deg;2'23"N 118&deg;13'50"W</div>
@@ -962,7 +1052,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 52's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-52">Voter 52's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 52 voted for Trump</div> -->
         <div class="text coordinate"> 30&deg;16'32"N 87&deg;40'5"W</div>
@@ -990,7 +1080,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 53's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-53">Voter 53's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 53 voted for Biden</div> -->
         <div class="text coordinate"> 43&deg;4'39"N 87&deg;53'58"W</div>
@@ -1000,7 +1090,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 54's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-54">Voter 54's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 54 voted for Trump</div> -->
         <div class="text coordinate"> 43&deg;43'5"N 84&deg;20'22"W</div>
@@ -1028,7 +1118,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 55's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-55">Voter 55's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 55 voted for Biden</div> -->
         <div class="text coordinate"> 40&deg;35'57"N 75&deg;23'57"W</div>
@@ -1038,7 +1128,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 56's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-56">Voter 56's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 56 voted for Trump</div> -->
         <div class="text coordinate"> 33&deg;46'11"N 92&deg;7'21"W</div>
@@ -1066,7 +1156,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 57's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-57">Voter 57's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 57 voted for Biden</div> -->
         <div class="text coordinate"> 41&deg;9'25"N 96&deg;2'24"W</div>
@@ -1076,7 +1166,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 58's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-58">Voter 58's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 58 voted for Trump</div> -->
         <div class="text coordinate"> 41&deg;41'33"N 83&deg;36'7"W</div>
@@ -1104,7 +1194,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 59's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-59">Voter 59's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 59 voted for Biden</div> -->
         <div class="text coordinate"> 37&deg;13'41"N 121&deg;59'12"W</div>
@@ -1114,7 +1204,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 60's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-60">Voter 60's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 60 voted for Trump</div> -->
         <div class="text coordinate"> 33&deg;19'45"N 111&deg;48'1"W</div>
@@ -1142,7 +1232,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 61's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-61">Voter 61's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 61 voted for Biden</div> -->
         <div class="text coordinate"> 45&deg;40'43"N 121&deg;32'32"W</div>
@@ -1152,7 +1242,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 62's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-62">Voter 62's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 62 voted for Trump</div> -->
         <div class="text coordinate"> 30&deg;23'10"N 91&deg;56'6"W</div>
@@ -1180,7 +1270,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 63's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-63">Voter 63's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 63 voted for Biden</div> -->
         <div class="text coordinate"> 30&deg;23'24"N 89&deg;5'13"W</div>
@@ -1190,7 +1280,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 64's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-64">Voter 64's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 64 voted for Trump</div> -->
         <div class="text coordinate"> 36&deg;4'5"N 82&deg;59'18"W</div>
@@ -1218,7 +1308,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 65's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-65">Voter 65's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 65 voted for Biden</div> -->
         <div class="text coordinate"> 41&deg;49'48"N 71&deg;23'27"W</div>
@@ -1228,7 +1318,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 66's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-66">Voter 66's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 66 voted for Trump</div> -->
         <div class="text coordinate"> 33&deg;8'58"N 96&deg;55'38"W</div>
@@ -1256,7 +1346,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 67's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-67">Voter 67's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 67 voted for Biden</div> -->
         <div class="text coordinate"> 39&deg;45'28"N 84&deg;10'11"W</div>
@@ -1266,7 +1356,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 68's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-68">Voter 68's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 68 voted for Trump</div> -->
         <div class="text coordinate"> 38&deg;2'54"N 87&deg;22'31"W</div>
@@ -1294,7 +1384,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 69's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-69">Voter 69's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 69 voted for Biden</div> -->
         <div class="text coordinate"> 34&deg;33'27"N 112&deg;20'22"W</div>
@@ -1304,7 +1394,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 70's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-70">Voter 70's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 70 voted for Trump</div> -->
         <div class="text coordinate"> 33&deg;40'10"N 117&deg;17'40"W</div>
@@ -1332,7 +1422,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 71's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-71">Voter 71's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 71 voted for Biden</div> -->
         <div class="text coordinate"> 45&deg;4'15"N 93&deg;22'46"W</div>
@@ -1342,7 +1432,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 72's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-72">Voter 72's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 72 voted for Trump</div> -->
         <div class="text coordinate"> 26&deg;25'54"N 81&deg;44'18"W</div>
@@ -1370,7 +1460,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 73's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-73">Voter 73's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 73 voted for Biden</div> -->
         <div class="text coordinate"> 35&deg;54'36"N 78&deg;55'35"W</div>
@@ -1380,7 +1470,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 74's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-74">Voter 74's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 74 voted for Trump</div> -->
         <div class="text coordinate"> 41&deg;34'27"N 72&deg;23'44"W</div>
@@ -1408,7 +1498,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 75's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-75">Voter 75's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 75 voted for Biden</div> -->
         <div class="text coordinate"> 35&deg;46'50"N 78&deg;37'33"W</div>
@@ -1418,7 +1508,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 76's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-76">Voter 76's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 76 voted for Trump</div> -->
         <div class="text coordinate"> 36&deg;48'43"N 76&deg;23'41"W</div>
@@ -1446,7 +1536,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 77's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-77">Voter 77's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 77 voted for Biden</div> -->
         <div class="text coordinate"> 42&deg;36'15"N 83&deg;6'35"W</div>
@@ -1456,7 +1546,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 78's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-78">Voter 78's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 78 voted for Trump</div> -->
         <div class="text coordinate"> 45&deg;17'42"N 92&deg;41'53"W</div>
@@ -1484,7 +1574,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 79's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-79">Voter 79's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 79 voted for Biden</div> -->
         <div class="text coordinate"> 38&deg;54'1"N 77&deg;0'55"W</div>
@@ -1494,7 +1584,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 80's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-80">Voter 80's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 80 voted for Trump</div> -->
         <div class="text coordinate"> 33&deg;36'59"N 117&deg;51'16"W</div>
@@ -1522,7 +1612,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 81's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-81">Voter 81's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 81 voted for Biden</div> -->
         <div class="text coordinate"> 42&deg;18'37"N 88&deg;51'30"W</div>
@@ -1532,7 +1622,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 82's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-82">Voter 82's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 82 voted for Trump</div> -->
         <div class="text coordinate"> 31&deg;53'13"N 82&deg;34'4"W</div>
@@ -1560,7 +1650,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 83's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-83">Voter 83's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 83 voted for Biden</div> -->
         <div class="text coordinate"> 41&deg;6'11"N 85&deg;6'22"W</div>
@@ -1570,7 +1660,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 84's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-84">Voter 84's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 84 voted for Trump</div> -->
         <div class="text coordinate"> 37&deg;45'51"N 120&deg;50'19"W</div>
@@ -1598,7 +1688,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 85's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-85">Voter 85's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 85 voted for Biden</div> -->
         <div class="text coordinate"> 32&deg;48'29"N 117&deg;13'35"W</div>
@@ -1608,7 +1698,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 86's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-86">Voter 86's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 86 voted for Trump</div> -->
         <div class="text coordinate"> 44&deg;2'38"N 121&deg;12'12"W</div>
@@ -1636,7 +1726,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 87's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-87">Voter 87's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 87 voted for Biden</div> -->
         <div class="text coordinate"> 41&deg;25'41"N 87&deg;40'44"W</div>
@@ -1646,7 +1736,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 88's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-88">Voter 88's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 88 voted for Trump</div> -->
         <div class="text coordinate"> 27&deg;25'51"N 82&deg;34'21"W</div>
@@ -1674,7 +1764,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 89's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-89">Voter 89's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 89 voted for Biden</div> -->
         <div class="text coordinate"> 37&deg;40'47"N 121&deg;2'41"W</div>
@@ -1684,7 +1774,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 90's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-90">Voter 90's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 90 voted for Trump</div> -->
         <div class="text coordinate"> 33&deg;36'48"N 86&deg;40'41"W</div>
@@ -1712,7 +1802,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 91's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-91">Voter 91's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 91 voted for Biden</div> -->
         <div class="text coordinate"> 32&deg;56'20"N 96&deg;38'43"W</div>
@@ -1722,7 +1812,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 92's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-92">Voter 92's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 92 voted for Trump</div> -->
         <div class="text coordinate"> 38&deg;55'47"N 104&deg;44'58"W</div>
@@ -1750,7 +1840,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 93's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-93">Voter 93's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 93 voted for Biden</div> -->
         <div class="text coordinate"> 42&deg;45'35"N 73&deg;52'26"W</div>
@@ -1760,7 +1850,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 94's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-94">Voter 94's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 94 voted for Trump</div> -->
         <div class="text coordinate"> 32&deg;28'14"N 96&deg;0'54"W</div>
@@ -1788,7 +1878,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 95's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-95">Voter 95's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 95 voted for Biden</div> -->
         <div class="text coordinate"> 42&deg;9'57"N 73&deg;20'47"W</div>
@@ -1798,7 +1888,7 @@
     
 
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 96's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-96">Voter 96's Neighborhood</h3>
 
         <!-- <div class="text gop voter">Voter 96 voted for Trump</div> -->
         <div class="text coordinate"> 41&deg;2'10"N 73&deg;45'59"W</div>
@@ -1826,7 +1916,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 97's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-97">Voter 97's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 97 voted for Biden</div> -->
         <div class="text coordinate"> 35&deg;44'48"N 79&deg;20'4"W</div>
@@ -1845,7 +1935,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 98's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-98">Voter 98's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 98 voted for Biden</div> -->
         <div class="text coordinate"> 43&deg;47'4"N 87&deg;57'41"W</div>
@@ -1864,7 +1954,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 99's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-99">Voter 99's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 99 voted for Biden</div> -->
         <div class="text coordinate"> 40&deg;38'48"N 73&deg;53'54"W</div>
@@ -1883,7 +1973,7 @@
     </tr>
 <tr>
     <td style="width: 50%;">
-        <h3 class="text voter_header">Voter 100's Neighborhood</h3>
+        <h3 class="text voter_header" id="voter-100">Voter 100's Neighborhood</h3>
 
         <!-- <div class="text dem voter">Voter 100 voted for Biden</div> -->
         <div class="text coordinate"> 33&deg;34'14"N 111&deg;45'38"W</div>

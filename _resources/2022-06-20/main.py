@@ -1,9 +1,6 @@
-import io
-from PIL import Image
-
 from data import load_data, get_precincts
 from downloader import download_streetview
-from renderer import populate_template
+from renderer import add_targets, plot_voters, populate_template
 
 
 def main(count):
@@ -22,6 +19,9 @@ def main(count):
 
     with open("index.html", "w") as f:
         f.write(populate_template(selection))
+
+    plot_voters(selection).write_html("graph.html")
+    add_targets("graph.html")
 
 
 main(100)
