@@ -16,11 +16,12 @@ def main(count):
     print(rs_in_d, ds_in_r)
     images = []
     for _, row in selection.iterrows():
-        images.append(Image.open(io.BytesIO(download_streetview(row.x, row.y))))
+        images.append(download_streetview(row.x, row.y))
     for idx in range(len(images)):
         images[idx].save(f"out/{idx}.png")
 
     with open("index.html", "w") as f:
         f.write(populate_template(selection))
+
 
 main(10)

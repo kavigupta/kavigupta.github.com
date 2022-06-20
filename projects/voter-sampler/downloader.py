@@ -1,8 +1,12 @@
+import io
 import requests
 
 from permacache import permacache
 
+import numpy as np
 from geopy.geocoders import Nominatim
+from shapely.geometry import Point
+from PIL import Image
 
 
 def api_key():
@@ -10,18 +14,29 @@ def api_key():
         return f.read().strip()
 
 
-@permacache("voter-sampler/downloader/download_streetview")
-def download_streetview(x, y, radius=250):
+@permacache("voter-sampler/downloader/download_streetview_2")
+def download_streetview_with_radius(x, y, radius=250):
     key = api_key()
     url = (
         "https://maps.googleapis.com/maps/api/streetview?"
         + "size=2000x2000&"
         + f"location={y:.6f},{x:.6f}&"
-        + f"radius={radius}&pitch=0&key={key}"
+        + f"radius={radius}&pitch=0&key={key}&fov=180"
     )
     print(url)
     response = requests.get(url)
     return response.content
+
+
+def download_streetview(x, y):
+    radius = 100
+    while True:
+        content = download_streetview_with_radius(x, y, radius)
+        image = Image.open(io.BytesIO(content))
+        beigeness = (np.array(image) == [228, 227, 223]).all(-1).mean()
+        if beigeness < 0.95:
+            return image
+        radius *= 2
 
 
 @permacache("voter-sampler/downloader/reverse_geocode_2")
@@ -41,6 +56,7 @@ road_types = {
     "Lane": 1,
     "Circle": 1,
     "Terrace": 1,
+    "Trail": 1,
     "Drive": 0,
     "Court": 0,
     "Ct": 0,
@@ -62,12 +78,26 @@ def classify_road_type(road_name):
     raise RuntimeError(road_name)
 
 
-def refine_location(x, y, delta=0.001):
-    deltas = [0, -delta, delta]
-    neighboring_coordinates = [(x + dx, y + dy) for dx in deltas for dy in deltas]
-    c = max(
-        neighboring_coordinates,
-        key=lambda xy: classify_road_type(reverse_geocode(*xy).raw["address"]["road"]),
-    )
-    c = reverse_geocode(*c)
-    return c.longitude, c.latitude
+def refine_location(poly, tries=10):
+    rng = np.random.RandomState(1)
+
+    min_x, min_y, max_x, max_y = poly.bounds
+
+    with_score = []
+
+    while tries:
+        x = rng.rand() * (max_x - min_x) + min_x
+        y = rng.rand() * (max_y - min_y) + min_y
+
+        if not poly.contains(Point(x, y)):
+            continue
+        tries -= 1
+        addr = reverse_geocode(x, y)
+        score = classify_road_type(addr.raw["address"]["road"])
+        if not poly.contains(Point(addr.longitude, addr.latitude)):
+            score -= 10
+        with_score.append((addr, score))
+        if score == 1:
+            break
+    best_addr = max(with_score, key=lambda x: x[1])[0]
+    return best_addr.longitude, best_addr.latitude
