@@ -1,6 +1,3 @@
-preprocess:
-    replace "IMAGE: ([^;\n]+);?(.*)" -> "<center><img src=\"/resources/2018-01-12/\\1.png\" \\2 /></center>"
-    replace "<!--a*-->" -> ""
 ---
 layout: post
 title: The Efficiency Gap Makes No Sense (but all metrics show Republicans are better at gerrymandering)
@@ -15,7 +12,7 @@ To measure both cracking and packing, we can use the concept of a wasted vote. A
 
 For example, let's say that there are just two parties[^1] and 1000 voters in a district. The number of wasted votes for X in terms of the number of votes for X is as such:
 
-IMAGE: img/wasted_votes
+<center><img src="/resources/2018-01-12/img/wasted_votes.png"  /></center>
 
 <!--end excerpt-->
 
@@ -27,7 +24,7 @@ We calculate the efficiency gap as \\(\\frac{w_D - w_R}{v_D + v_R}\\), where \\(
 
 Sounds pretty intuitive, right? Here's why it makes no sense.
 
-IMAGE: img/red_state
+<center><img src="/resources/2018-01-12/img/red_state.png"  /></center>
 
 Let's say you have a state with 100 voters and 20 districts. In this state, 80 voters are Republicans. The Republicans tries to arrange it such that they win all the seats instead of the 80 you'd expect them to win. And let's say they do it the simple way, by cracking the 20% Democratic vote equally among all the districts (as above) so they have 80% of the vote in every district. Therefore, 30% of votes are wasted Republican votes (80% - 50%) and 20% of votes are wasted Democratic votes (they waste all their votes). This means that the efficiency gap is 10% *in favor of the Democrats*.
 
@@ -42,7 +39,7 @@ If we use the above example, we get that 37.5% of the Republican votes are waste
 
 Does this make a difference when calculated against practical data?[^3]
 
-IMAGE: img/effic_vs_effic_perc
+<center><img src="/resources/2018-01-12/img/effic_vs_effic_perc.png"  /></center>
 
 This graph plots the gap towards the Republicans on both metrics. For example, Maryland is on the bottom left as a state gerrymandered in favor of the Democrats while North Carolina is on the top right as a state gerrymandered in favor of the Republicans.
 
@@ -52,7 +49,7 @@ Using the efficiency percentage gap does in fact make a difference in lopsided c
 
 In fact, party affiliation correlates more heavily with the efficiency percentage gap than with the efficiency gap, suggesting that it's a better model for measuring gerrymandering.
 
-IMAGE: img/party_affil_vs_effics
+<center><img src="/resources/2018-01-12/img/party_affil_vs_effics.png"  /></center>
 
 ## Effectiveness gap
 
@@ -64,7 +61,7 @@ In our example, the Republicans got 80% of the votes but 100% of the seats, so t
 
 It turns out that this measure is pretty much the same as the efficiency percentage gap in practice (even though it differed in this theoretical unrealistically lopsided state).
 
-IMAGE: img/effic_perc_vs_effect
+<center><img src="/resources/2018-01-12/img/effic_perc_vs_effect.png"  /></center>
 
 It looks like the efficiency percentage gap tends to somewhat overate the effectiveness gap in highly partisan states, but other than that, they track quite closely.
 
@@ -72,13 +69,13 @@ It looks like the efficiency percentage gap tends to somewhat overate the effect
 
 One problem with the effectiveness gap is that it might be somewhat sensitive to turnout differences. For example, take this state which has 100 voters and 10 districts.
 
-IMAGE: img/blue_state
+<center><img src="/resources/2018-01-12/img/blue_state.png"  /></center>
 
 In this example, the map is clearly gerrymandered against Republicans, with an effectiveness gap of 64%-40%=24% in favor of Democrats. However, let's say that non-competitive districts have 50% less turnout. Then we have an overall turnout of 80 votes, of which the Republicans get 44 and the Democrats get 36, for an effectiveness gap of 55%-40% = 15%, a much smaller result.
 
 We can adjust for this effect by acting as if every district had an equal turnout when calculating what percentage of votes a given party received. We call this measure the weighted effectiveness gap. Interestingly, this adjustment seems to have little to no effect on the existing map.
 
-IMAGE: img/effect_vs_weighted_effect
+<center><img src="/resources/2018-01-12/img/effect_vs_weighted_effect.png"  /></center>
 
 So the effectivenss gap seems to be fairly robust to this potential problem.
 
