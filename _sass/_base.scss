@@ -2,6 +2,38 @@
 //
 // Update the foundational and global aspects of the page.
 
+@font-face {
+  font-family: "Jost";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/public/fonts/jost-regular-400.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Jost";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/public/fonts/jost-bold-700.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Jost";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/public/fonts/jost-italic-400.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Jost";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/public/fonts/jost-italic-700.ttf") format("truetype");
+}
+
 * {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -24,7 +56,7 @@
 }
 
 html {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Jost", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
 
@@ -35,7 +67,7 @@ html {
 
 body {
   color: #515151;
-  background-color: #fff;
+  background-color: #fff8f0;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
