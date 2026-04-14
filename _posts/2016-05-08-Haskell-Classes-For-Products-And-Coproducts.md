@@ -1,9 +1,14 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "haskellcomment" -> "haskell"
+    replace "<!--_-->" -> ""
 ---
 layout: post
 title: Haskell Classes for Products and Coproducts
 comments: True
 ---
 
+dump: haskell as hs
 
 <!--
 ```haskell

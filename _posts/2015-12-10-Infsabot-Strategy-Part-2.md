@@ -1,9 +1,14 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "haskellcomment" -> "haskell"
+    replace "<!--_-->" -> "<!--_-->"
 ---
 layout: post
 title: Infsabot Strategy Part 2
 comments: True
 ---
 
+dump: haskell as hs
 
 OK, so to continue our Infsaboting.
 
