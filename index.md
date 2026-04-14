@@ -31,6 +31,7 @@ a latent variable
         style="max-width: 100%; height: auto;">
 </p>
 
+TL;DR: We introduce a new model of RNA splicing refines predictions of rna-protein binding, a known intermediate step variable in the splicing process, by training on end-to-end splicing data. We validate that our model is superior to an unadjusted one in prediction of the intermediate as well as a causal counterfactual prediction task.
 
 
 ## Links
