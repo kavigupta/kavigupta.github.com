@@ -1,9 +1,16 @@
+preprocess:
+    pass ../_scripts/codetosources.py
+    replace "```srt" -> "```perl"
+    include
+    replace "<!--_-->" -> "<!--_-->"
 ---
 layout: post
 title: Stupid Regex Tricks
 comments: True
 ---
 
+dump: python as py to ../resources/2015-12-31/srt.py
+dump: srt as srt to ../resources/2015-12-31/sample{block_number}.srt
 
 ## Regexes, the duct tape of CS
 
@@ -150,7 +157,7 @@ Implementing this isn't that complicated; an interpret, along with the code samp
 
 Let's specify an input format: a string of 1s and 0s, and an output format, a string of 1s.
 
-```perl
+```srt
 repeat
     s/\b([01]+)0\b/\1,\1/
     s/\b([01]+)1\b/\g<1>0,1/
@@ -166,7 +173,7 @@ This function replaces any odd binary number with "that number,1" and any even b
 
 Input/Output, strings of 0s and 1s.
 
-```perl
+```srt
 s/(.+)/\1,/
 repeat
     s/([01]*)0,/\g<1>1/
@@ -180,7 +187,7 @@ This particular regex works by using a comma to represent a "carry". It starts t
 
 OK, so this puts together the last two examples. It takes expressions of the from "100110101 + 1010111" and outputs the binary sum of the two numbers.
 
-```perl
+```srt
 s/([01]+)[^01]+([01]+)/\1,\2/
 repeat
     s/\b([01]+)0\b/\1,\1/
@@ -223,87 +230,8 @@ Initially, I was using unary internally, but that's a complete pain to type and 
 
 Internally, it will store the remaining program on the first line, the remaining input on the second, it's working stack on the third (comma separated unary, with target cell starting with a `;`), and the program output on the fourth.
 
-```perl
-# sanitize BF code
-repeat
-    s/^(.*)[^+\-.,<>\[\]\n]+/\1/
-# add empty second line if none exists
-s/^([^\n]*(?!\n))$/\1\n/
-# make sure that there are at most two lines
-s/^.*\n.*\n(\n|.)*$/Error: Input should have at most two lines/
-# make sure the second line is comma-separated binary
-s/.*\n.*[^01,]/Error: The second line should be in comma separated binary/
-# sanitize second line (before @ everything is sanitized)
-s/\n(.+)(?<!,)/\n\1,/
-s/\n/\n@/
-repeat
-    s/@$//
-    s/(.|\n)*@([01]{8}[01]+),(.|\n)*/Error: bytes must be at most 11111111/
-    s/@([01]{8}),/\1,@/
-    s/@([01]*),/@0\1,/
-# make sure that the number of [ == the number of ]
-s/\[/{/
-s/\]/}/
-repeat
-    s/\{(.+)\}/[\1]/
-    s/\}(.+)\{/]\1[/
-s/^(\n|.)*\{(\n|.)*$/Error: unmatched [/
-s/^(\n|.)*\}(\n|.)*$/Error: unmatched ]/
-# add lines for data and output. Add cursor @ to front.
-s/([^\n]*)\n([^\n]*)\n?/@\1\n\2\n;00000000,\n/
-repeat
-    # handle + edge case
-    s/@\+(.*\n.*\n[^;]*;)11111111(,.*)/+@\g<1>00000000\2/
-    # handle + standard case
-    #   : represents current position of add
-    s/@\+(.*\n.*\n[^;]*;[01]+)/+@\1:/
-    repeat
-        s/(;[01]*)0:/\g<1>1/
-        # carry by moving : to the left
-        s/(;[01]*)1:/\g<1>:0/
-        # handle overflow by ignoring high bit
-        s/;:/;/
-    # handle - edge case
-    s/@-(.*\n.*\n[^;]*;)00000000(,.*)/-@\g<1>11111111\2/
-    # handle - standard case
-    s/@-(.*\n.*\n[^;]*;[01]+)(,.*)/-@\g<1>:\2/
-    repeat
-        s/(;[01]*)1:/\g<1>0/
-        s/(;[01]*)0:/\g<1>:1/
-        # handle overflow by ignoring high bit
-        s/;:/;/
-    # output current byte
-    s/@\.(.*\n.*\n[^;]*;)([^,]*)(.*\n.*)/.@\1\2\3,\2/
-    # error if no input when input expected
-    s/@,.*\n[^01,]*\n(\n|.)*/Error: input expected but none found/
-    # input current byte
-    s/@,(.*\n)([^,]*),?(.*\n[^;]*;)([^,]*),/,@\1\3\2,/
-    # shift right (edge case when at right)
-    s/@>(.*\n.*\n)([^;]*);([01]*,)\n/>@\1\2\3;00000000,\n/
-    # shift right (other cases).
-    # The (.+) at the end makes sure this doesn't cover same case as above
-    s/@>(.*\n.*\n)([^;]*);([01]*,)(.+\n)/>@\1\2\3;\4/
-    # shift left (edge case when at left)
-    s/(\n|.)*@<.*\n.*\n;(\n|.)*/Error: Pointer attempted to be moved before 0/
-    # shift left in other cases (lazy .*? so that it moves the ; all the way to the left.)
-    s/@<(.*\n.*\n.*?)([01]*,);/<@\1;\2/
-    # '[' in the skip case; replace with ! and skip through
-    s/@\[(.*\n.*\n[^;]*;0+,)/!@\1/
-    repeat
-        # If current block is ] terminated, skip to end and replace opening ! with [
-        s/!([^!]*)@([^[\]!]*)\]/[\1\2]@/
-        # If there is a nested [ block, replace with a ! so it will too be processed.
-        # move the cursor inside the block
-        s/!([^!]*)@([^[\]!]+)\[/!\1\2!@/
-    # '[' in any other case; move the cursor to the right, replace current bracket with brace
-    s/@\[(.*\n.*\n[^;]*;[01]+,)/{@\1/
-    # encountered close bracket. move back to the last open brace
-    s/\{([^{]*)@\]/@[\1]/
-
-# get rid of everything but output
-s/.*\n.*\n.*\n//
-# get rid of leading , in output
-s/^,//
+```srt
+include "../_resources/2015-12-31/sample3.srt"
 ```
 
 Try it out on some BF samples, which you can find online. I have tested it, but do not guarantee it's correctness.

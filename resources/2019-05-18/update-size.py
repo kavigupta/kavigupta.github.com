@@ -1,7 +1,0 @@
-fig = plt.figure()
-fig.gca().plot([1, 2, 3], [4, 5, 6])
-plt.gca().set_xlabel("x label")
-plt.gca().set_ylabel("y label")
-set_size(fig, (5, 2.5))
-plt.savefig("update-size.png", bbox_inches='tight')
-print(imread("update-size.png").shape) # outputs (250, 500, 4)
