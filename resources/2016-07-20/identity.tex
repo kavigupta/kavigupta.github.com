@@ -1,0 +1,35 @@
+\documentclass{standalone}
+
+\usepackage{ifthen}
+\usepackage{tikz}
+
+\begin{document}
+
+\def\SIZE{5}
+
+\begin{tikzpicture}
+    [%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        box/.style={rectangle,draw=black,thick, minimum size=2cm},
+        wbox/.style={rectangle,draw=white,fill=white,thick, minimum size=2cm},
+    ]%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\foreach \x in {1,2,...,\SIZE}{
+    \foreach \y in {1,2,...,\SIZE}{
+        \node[box, fill=orange] at (\the\numexpr\x*2\relax,\the\numexpr\y*2\relax){$a_{\the\numexpr\x+1\relax} \star a_{\the\numexpr\y+1\relax}$};
+    }
+}
+\node[wbox, fill=green!40!white] at (-2, 0){$e$};
+\node[wbox, fill=green!40!white] at (0, -2){$e$};
+\node[wbox, fill=cyan] at (-2, -2){$\star$};
+\node[box, fill=green] at (0, 0){$e \star e$};
+\foreach \x in {1,2,...,\SIZE}{
+    \node[wbox, fill=orange!40!white] at (-2, \the\numexpr\x*2\relax){$a_{\the\numexpr\x+1\relax}$};
+    \node[box, fill=green] at (0, \the\numexpr\x*2\relax){$e \star a_{\the\numexpr\x+1\relax}$};
+    \node[wbox, fill=orange!40!white] at (\the\numexpr\x*2\relax, -2){$a_{\the\numexpr\x+1\relax}$};
+    \node[box, fill=green] at (\the\numexpr\x*2\relax, 0){$a_{\the\numexpr\x+1\relax} \star e$};
+}
+
+\end{tikzpicture}
+
+
+\end{document}
