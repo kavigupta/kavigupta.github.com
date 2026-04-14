@@ -26,6 +26,8 @@ Biden's America and Trump's America look like: not two disjoint nations, but two
 and intertwined distributions. You can click each dot to jump down to the voter represented
 by the dot.
 
+<!--end excerpt-->
+
 <iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="/resources/2022-06-20/graph.html" height="525" width="100%"></iframe>
 
 Biden's voters are placed on the left, while Trump's are on the right. I have provided

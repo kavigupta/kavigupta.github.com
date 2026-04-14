@@ -7,6 +7,8 @@ author: Kavi Gupta and Lakshya Jain
 
 A common refrain in politics-adjacent discourse is "why bother voting? there's no chance your individual vote will affect the outcome of the election!" This concept is often conceptualized in political science as the Paradox of Voting. However, with a few simple assumptions, the paradox disappears.
 
+<!--end excerpt-->
+
 ## Yes, voting is unlikely to directly change the outcome,
 
 Assume there's v voters and the election is predicted to have a margin of $$x \pm y$$ points. We can model the predicted margin as a normal distribution (usually a reasonable assumption) and then stretch this out by $$v$$ to give a distribution of raw vote margins.
