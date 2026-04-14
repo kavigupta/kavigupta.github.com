@@ -5,7 +5,8 @@ title: Home
 
 
 Hello there! I'm Kavi Gupta, a PhD candidate at MIT, studying neurosymbolic approaches to machine learning, with a focus on
-interpretability. I am advised by [Prof. Armando Solar-Lezama](https://people.csail.mit.edu/asolar/).
+interpretability. I am advised by [Prof. Armando Solar-Lezama](https://people.csail.mit.edu/asolar/). Contact me at
+kavig at mit dot edu.
 
 ## Recent Publications
 
