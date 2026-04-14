@@ -18,7 +18,7 @@ interpretability. I am advised by [Prof. Armando Solar-Lezama](https://people.cs
         style="max-width: 100%; height: auto;">
 </p>
 
-TL;DR: We prove it is possible to identify an extremely sparse intermediate latent variable with only end-to-end
+We prove it is possible to identify an extremely sparse intermediate latent variable with only end-to-end
 supervision, and introduce Sparling, an extreme activation sparsity layer and optimization algorithm that can learn such
 a latent variable
 
@@ -31,7 +31,7 @@ a latent variable
         style="max-width: 100%; height: auto;">
 </p>
 
-TL;DR: We introduce a new model of RNA splicing refines predictions of rna-protein binding, a known intermediate step variable in the splicing process, by training on end-to-end splicing data. We validate that our model is superior to an unadjusted one in prediction of the intermediate as well as a causal counterfactual prediction task.
+We introduce a new model of RNA splicing refines predictions of rna-protein binding, a known intermediate step variable in the splicing process, by training on end-to-end splicing data. We validate that our model is superior to an unadjusted one in prediction of the intermediate as well as a causal counterfactual prediction task.
 
 
 ## Links
