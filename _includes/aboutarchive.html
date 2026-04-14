@@ -1,6 +1,11 @@
 <span class = "major_link">
-    <a href = "{{ site.baseurl }}/about"> About </a>
+    <a href = "{{ site.baseurl }}/"> Home </a>
     |
-    <a href = "{{ site.baseurl }}/archive"> Archive </a></span>
+    <a href = "{{ site.baseurl }}/blog"> Blog </a>
+    {% if page.title == "Blog" or page.title == "Archive" %}
+    |
+    <a href = "{{ site.baseurl }}/archive"> Archive </a>
+    {% endif %}
+</span>
 <br>
 <br>
