@@ -17,7 +17,7 @@ For example, consider the following two islands:
  
 IMAGE: density.svg
  
-<!-- end excerpt -->
+<!--end excerpt-->
  
 In both islands, the population is 700 people, and the areas are also identical. So by a standard population
 density metric, the two islands are the same "density". This metric, however, misses something. The island on

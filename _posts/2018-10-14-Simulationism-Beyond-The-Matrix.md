@@ -8,7 +8,7 @@ Simulationism is a fairly popular concept. There are many who subscribe to it: f
 
 However, lurking beneath the seeming simplicity of the idea lies a far more radical set of implications.
 
-<!-- end excerpt -->
+<!--end excerpt-->
 
 ## Pure simulationism vs the Matrix
 

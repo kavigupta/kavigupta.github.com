@@ -22,7 +22,7 @@ return x
 
 we write `(begin (define x (f y)) x)`. The real scheme language has many more constructs, including ones that simulate python's `def` statements, and some unique ones that allow you to assign variables in a local frame, simulate `elif` trees, have short-circuited `and/or` constructs, or even define your own language constructs. For brevity, we will stick to this subset, which is still very powerful.
 
-<!-- end excerpt -->
+<!--end excerpt-->
 
 ## Lexing
 

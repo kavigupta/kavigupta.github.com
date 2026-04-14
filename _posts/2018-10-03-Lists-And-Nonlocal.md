@@ -26,7 +26,7 @@ The `c` is called multiple times and returns a different value every time; but i
 
 The Python programming language allows for the creation of mutable closures in two different ways: one that is traditionally considered "functional" and one that is traditionally considered "object-oriented". Let's take a look at them now:
 
-<!-- end excerpt -->
+<!--end excerpt-->
 
 ## Nonlocal: Functional mutable closures
 

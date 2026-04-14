@@ -8,7 +8,7 @@ The Python interepreter has this convenient feature that when you type something
 
 But with convenience often comes complexity, let's look at how this feature works!
 
-<!-- end excerpt -->
+<!--end excerpt-->
 
 ## How does the print function work?
 

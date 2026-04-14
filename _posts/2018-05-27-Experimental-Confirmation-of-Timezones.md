@@ -8,7 +8,7 @@ I was listening to an episode of [Oh No, Ross and Carrie!](https://en.wikipedia.
 
 However, let's say someone denied this. How would you prove it, with the minimum amount of trust?
 
-<!-- end excerpt -->
+<!--end excerpt-->
 
 ## Can we do this while trusting nobody?
 

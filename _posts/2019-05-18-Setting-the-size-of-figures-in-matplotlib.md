@@ -16,7 +16,7 @@ Setting the actual size of figures in matplotlib.pyplot is *difficult*. Setting 
 include "../_resources/2019-05-18/direct.py"
 ```
 
-<!-- end excerpt -->
+<!--end excerpt-->
 
 <img src="/resources/2019-05-18/direct.png" border="2"/>
 

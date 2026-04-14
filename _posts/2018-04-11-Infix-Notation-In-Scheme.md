@@ -10,7 +10,7 @@ This makes scheme relatively simple to parse and evaluate, however it does lead 
 
 But simplicity is overrated.
 
-<!-- end excerpt -->
+<!--end excerpt-->
 
 ## Homoiconicity, or writing a scheme program to write a scheme program
 

@@ -12,7 +12,7 @@ If you're on twitter or Facebook you've probably seen this expression (or a vari
 
 The question that goes with it is "can you solve this?" and there's usually a massive debate among people in the comments about whether the answer is 9 (corresponding to dividing first then multiplying by (1+2)) or 1 (corresponding to multiplying first to get 6 then dividing).
 
-<!-- end excerpt -->
+<!--end excerpt-->
 
 # Order of Operations
 
