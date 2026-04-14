@@ -11,7 +11,23 @@
 .masthead-title {
   margin-top: 0;
   margin-bottom: 0;
+  font-size: 1.25rem;
   color: #505050;
+
+  .header {
+    display: flex;
+    align-items: center;
+  }
+
+  .header img {
+    float: none;
+    margin: 0;
+  }
+
+  .header a {
+    display: block;
+    line-height: 1;
+  }
 
   a {
     color: #505050;
