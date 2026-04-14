@@ -15,7 +15,7 @@ interpretability. I am advised by [Prof. Armando Solar-Lezama](https://people.cs
 
 <p>
     <a href="https://openreview.net/pdf?id=yfBs0GQxx9" style="text-decoration: none; color: inherit;">
-        <img alt="Sparling figure" src="{{ site.baseurl }}/resources/2026-04-13/top-figure.png"
+        <img alt="Sparling figure" src="{{ site.baseurl }}/resources/2026-04-13/top-figure-nobackground.png"
             style="max-width: 100%; height: auto;">
     </a>
 </p>
@@ -30,7 +30,7 @@ a latent variable
 
 <p>
     <a href="https://link.springer.com/article/10.1186/s13059-023-03162-x" style="text-decoration: none; color: inherit;">
-        <img alt="Sparse Adjusted Motif figure" src="{{ site.baseurl }}/resources/2026-04-13/intro-wide.png"
+        <img alt="Sparse Adjusted Motif figure" src="{{ site.baseurl }}/resources/2026-04-13/intro-wide-no-background.png"
             style="max-width: 100%; height: auto;">
     </a>
 </p>
