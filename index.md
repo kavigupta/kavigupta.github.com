@@ -4,14 +4,14 @@ title: Home
 ---
 
 
-I'm Kavi Gupta and I'm a PhD candidate at MIT, studying neurosymbolic approaches to machine learning, with a focus on
+Hello there! I'm Kavi Gupta, a PhD candidate at MIT, studying neurosymbolic approaches to machine learning, with a focus on
 interpretability. I am advised by [Prof. Armando Solar-Lezama](https://people.csail.mit.edu/asolar/).
 
-## Research
+## Recent Publications
 
 ### Sparling
 
-**K. Gupta**, O. Bastani, and A. Solar-Lezama. *"Sparling: End-to-End Spatial Concept Learning via Extremely Sparse Activations."* The Fourteenth International Conference on Learning Representations. [Paper](https://openreview.net/pdf?id=yfBs0GQxx9)
+**K. Gupta**, O. Bastani, and A. Solar-Lezama. *"Sparling: End-to-End Spatial Concept Learning via Extremely Sparse Activations."* The Fourteenth International Conference on Learning Representations (2026). [Paper](https://openreview.net/pdf?id=yfBs0GQxx9)
 
 <p>
     <img alt="Sparling figure" src="{{ site.baseurl }}/resources/2026-04-13/top-figure.png"
@@ -35,11 +35,15 @@ a latent variable
 
 ## Links
 
-StackOverflow: [k_g][1]
+Github: [kavigupta][1]
 
-Github: [kavigupta][2]
+Google Scholar: [Kavi Gupta][2]
 
+## Personal Projects
 
+[Urban Stats](https://urbanstats.org/): database of various statistics related to density, housing, race, transportation, elections, and climate change in the United States for a variety of regions; as well as density globally.
 
-[1]: http://stackoverflow.com/users/1549476/k-g
-[2]: https://github.com/kavigupta
+[Visiting Every MBTA station](https://youtu.be/vdNgFHqidnY?si=t7gTPnydFmxxsl4d): I visited every station! I'm also trying to 100% Cambridge on foot.
+
+[1]: https://github.com/kavigupta
+[2]: https://scholar.google.com/citations?user=OqL9swoAAAAJ&hl=en&oi=sra
