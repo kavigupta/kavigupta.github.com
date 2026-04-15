@@ -1,5 +1,3 @@
-preprocess:
-    replace "```coq" -> "```python"
 ---
 layout: post
 title: Dependent Types and Categories, Part 1
@@ -84,7 +82,7 @@ A language that supports these features is Coq. It's an interesting language tha
 
 First, we declare a class named `Category` of two parameters, a type `O` and a higher kinded type `M`.
 
-```coq
+```python
 Class Category {O : Type} {M : O -> O -> Type}
 ```
 
@@ -92,7 +90,7 @@ Notice that unlike Haskell's higher-kinded types, `M` is restricted; rather than
 
 We then specify the methods
 
-```coq
+```python
         (id : forall x : O, M x x)
         (comp : forall a b c : O, M b c -> M a b -> M a c)
             : Prop
@@ -102,7 +100,7 @@ note the similarity between these declarations and the Haskell equivalents. Note
 
 Also, the `Prop` at the end means that a class is Coq is in fact a proposition, or law. The next section is a list of laws.
 
-```coq
+```python
     := Build_Category {
         comp_assoc : forall (a b c d : O) (x : M a b) (y : M b c) (z : M c d), (comp a c d z (comp a b c y x) =  comp a b d (comp b c d z y) x);
         id_left : forall (a b : O) (f : M a b), comp a b b (id b) f = f;
@@ -124,14 +122,14 @@ instance Category (->) where
 
 Of course, we never actually prove any of the laws. In Coq, we don't get away so easily. First, we have to define function composition with explicit types (Coq can be implicit too if you're willing to give up some flexibility):
 
-```coq
+```python
 Definition comp_fn (A B C : Type) (f : arrow B C) (g : arrow A B) : arrow A C
     := compose f g.
 ```
 
 And then we can instance the category class:
 
-```coq
+```python
 Instance FunCat : Category (fun (X : Type) (x : X) => x) comp_fn.
     split.
         trivial.
